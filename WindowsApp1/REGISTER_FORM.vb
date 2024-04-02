@@ -38,7 +38,8 @@ Public Class REGISTER_FORM
         adapter.Fill(table)
 
         MessageBox.Show("Registration Successful!")
-        Me.Close()
+        Me.Hide()
+        LOGIN_FORM.Show()
 
     End Sub
 End Class

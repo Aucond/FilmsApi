@@ -86,6 +86,7 @@ Public Class Form1
                 Next
             End If
         End Using
+
     End Function
 
     ' Метод для обновления ListView, вызываемый из SearchMoviesAsync
