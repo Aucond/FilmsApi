@@ -85,6 +85,7 @@ Public Class Form1
                     Console.WriteLine(prop.Name)
                 Next
             End If
+
         End Using
 
     End Function
@@ -104,11 +105,23 @@ Public Class Form1
         ListViewMovies.Columns.Add("Rating", 50)
         ListViewMovies.SmallImageList = posters
 
+        Dim allFilms As New List(Of Integer)() 
+        Dim runtime As New List(Of Integer)() 
+
+        For Each movie In searchResults.results
+            allFilms.Add(movie.id)
+        Next
+
+        For Each filmId As Integer In allFilms
+            Console.WriteLine(filmId)
+        Next
+
         ' Populate ListView with items
         For Each movie In searchResults.results
             Dim item As New ListViewItem(movie.title)
             Dim year As String = If(Not String.IsNullOrEmpty(movie.release_date) AndAlso movie.release_date.Length >= 4, movie.release_date.Substring(0, 4), "N/A")
             Dim genreNames As New List(Of String)()
+
 
             ' Retrieve genre names based on genre IDs
             For Each genreId In movie.genre_ids
@@ -158,6 +171,7 @@ Public Class Form1
         For Each kvp As KeyValuePair(Of Integer, String) In genreDictionary
             ComboBox3.Items.Add(kvp.Value)
         Next
+
     End Sub
     Private Sub ComboBox3_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox3.SelectedIndexChanged
         ' Get the selected genre name
@@ -201,6 +215,8 @@ Public Class Form1
             End If
         End Using
     End Function
+
+
 End Class
 
 ' Классы для десериализации ответа API должны остаться без изменений.
