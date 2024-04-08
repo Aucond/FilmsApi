@@ -31,39 +31,24 @@ Public Class Form1
         {37, "Western"}
     }
 
-
-
-    Public Sub New()
-        ' Этот вызов необходим конструктору Windows Forms.
-        InitializeComponent()
-
-        ' Инициализация searchTimer
-        searchTimer.Interval = 500 ' Задержка в миллисекундах
-    End Sub
-
-    ' Обработчик события тика таймера.
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
-        ' Останавливаем таймер
         searchTimer.Stop()
-
-        ' Получаем поисковый запрос из TextBox
         Dim searchQuery As String = TextBox1.Text
         If Not String.IsNullOrWhiteSpace(searchQuery) Then
-            ' Вызываем функцию поиска фильмов асинхронно
+
             Await SearchMoviesAsync(searchQuery)
         Else
-            ' Если строка поиска пуста, очищаем ListView
+
             ListViewMovies.Items.Clear()
         End If
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-        ' Перезапуск таймера при каждом изменении текста
         searchTimer.Stop()
         searchTimer.Start()
     End Sub
 
-    ' Асинхронная функция для поиска фильмов.
+
     Public Async Function SearchMoviesAsync(searchQuery As String) As Task
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim requestUrl As String = $"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&query={Uri.EscapeDataString(searchQuery)}"
@@ -108,7 +93,7 @@ Public Class Form1
         End Using
     End Function
 
-    ' Метод для обновления ListView, вызываемый из SearchMoviesAsync
+
     Private Async Sub UpdateListView(searchResults As TmdbSearchResult)
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
@@ -184,7 +169,7 @@ Public Class Form1
                 End Using
             End Using
         Catch ex As Exception
-            ' Обработка ошибок загрузки изображения, например, можно вернуть Nothing или изображение-замещение
+
             Return Nothing
         End Try
     End Function
@@ -290,7 +275,7 @@ Public Class Form1
 
 End Class
 
-' Классы для десериализации ответа API должны остаться без изменений.
+
 Public Class TmdbSearchResult
     Public Property results As List(Of TmdbMovie)
 End Class

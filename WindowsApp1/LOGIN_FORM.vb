@@ -52,12 +52,8 @@ Public Class LOGIN_FORM
             adapter.Fill(table)
 
             If table.Rows.Count > 0 Then
-                If table.Rows(0)("userType").Equals("user") Or table.Rows(0)("userType").Equals("admin") Or table.Rows(0)("userType").Equals("") Then
-
-                    Me.Hide()
-                    Form1.Show()
-
-                End If
+                Me.Hide()
+                Form1.Show()
             Else
 
                 MessageBox.Show("This Username Or Password Doesn't Exists", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)

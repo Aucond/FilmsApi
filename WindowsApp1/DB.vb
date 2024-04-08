@@ -4,7 +4,7 @@ Imports MySql.Data.MySqlClient
 
 Public Class DB
 
-    Private connection As New MySqlConnection("datasource=localhost;port=3306;username=root;password=;database=users")
+    Private connection As New MySqlConnection("datasource=localhost;port=3306;username=root;password=admin;database=users")
 
 
     ' create a unction to return the connection
