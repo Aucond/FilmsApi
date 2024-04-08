@@ -73,4 +73,9 @@ Public Class LOGIN_FORM
         Me.Hide()
         REGISTER_FORM.Show()
     End Sub
+
+    Private Sub guestBtn_Click(sender As Object, e As EventArgs) Handles guestBtn.Click
+        Me.Hide()
+        Form1.Show()
+    End Sub
 End Class

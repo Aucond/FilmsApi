@@ -31,6 +31,8 @@ Public Class Form1
         {37, "Western"}
     }
 
+
+
     Public Sub New()
         ' Этот вызов необходим конструктору Windows Forms.
         InitializeComponent()
@@ -90,8 +92,24 @@ Public Class Form1
 
     End Function
 
+    Public Async Function SearchMovieRuntimeAsync(filmId As Integer) As Task(Of Integer)
+        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+        Dim requestUrl As String = $"https://api.themoviedb.org/3/movie/{filmId}?api_key={apiKey}"
+
+        Using httpClient As New HttpClient()
+            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
+            Dim movieDetails = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(response)
+
+            If movieDetails IsNot Nothing AndAlso movieDetails.ContainsKey("runtime") Then
+                Return Convert.ToInt32(movieDetails("runtime"))
+            Else
+                Return -1 ' Indicate runtime not found
+            End If
+        End Using
+    End Function
+
     ' Метод для обновления ListView, вызываемый из SearchMoviesAsync
-    Private Sub UpdateListView(searchResults As TmdbSearchResult)
+    Private Async Sub UpdateListView(searchResults As TmdbSearchResult)
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
         posters.ImageSize = New Size(100, 140) ' Approximate poster size
@@ -103,13 +121,15 @@ Public Class Form1
         ListViewMovies.Columns.Add("Year", 100)
         ListViewMovies.Columns.Add("Genres", 200)
         ListViewMovies.Columns.Add("Rating", 50)
+        ListViewMovies.Columns.Add("Length", 50)
         ListViewMovies.SmallImageList = posters
 
-        Dim allFilms As New List(Of Integer)() 
-        Dim runtime As New List(Of Integer)() 
+        Dim allFilms As New List(Of Integer)()
+        Dim runtime As New List(Of Integer)()
 
         For Each movie In searchResults.results
             allFilms.Add(movie.id)
+
         Next
 
         For Each filmId As Integer In allFilms
@@ -121,7 +141,8 @@ Public Class Form1
             Dim item As New ListViewItem(movie.title)
             Dim year As String = If(Not String.IsNullOrEmpty(movie.release_date) AndAlso movie.release_date.Length >= 4, movie.release_date.Substring(0, 4), "N/A")
             Dim genreNames As New List(Of String)()
-
+            Dim movieRuntime As Integer = Await SearchMovieRuntimeAsync(movie.id)
+            Dim runtimeString As String = If(movieRuntime >= 0, $"{movieRuntime} min", "N/A")
 
             ' Retrieve genre names based on genre IDs
             For Each genreId In movie.genre_ids
@@ -136,6 +157,7 @@ Public Class Form1
             item.SubItems.Add(year)
             item.SubItems.Add(genres)
             item.SubItems.Add(rating)
+            item.SubItems.Add(runtimeString)
 
             ' Load poster image
             Dim posterUrl As String = $"https://image.tmdb.org/t/p/w500{movie.poster_path}"
@@ -187,6 +209,23 @@ Public Class Form1
             End If
         Next
         FilterMoviesAsync(genreId)
+
+    End Sub
+
+    Private ascendingOrder As Boolean = True ' Default to ascending order
+
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+        ' Get the selected sorting option
+        Dim selectedSortOption As String = ComboBox1.SelectedItem.ToString()
+
+        ' Sort movies based on the selected option
+        If selectedSortOption = "ascending" Then
+            ascendingOrder = True
+            SortMoviesByLength()
+        Else
+            ascendingOrder = Not ascendingOrder
+            SortMoviesByLength()
+        End If
     End Sub
 
     Public Async Function FilterMoviesAsync(genreId As String) As Task
@@ -215,7 +254,39 @@ Public Class Form1
             End If
         End Using
     End Function
+    Private Sub SortMoviesByLength()
+        ' Toggle sorting order
 
+        ' Sort ListView items by movie length (runtime)
+        ListViewMovies.ListViewItemSorter = New ListViewRuntimeComparer(ascendingOrder)
+        ListViewMovies.Sort()
+    End Sub
+
+    Public Class ListViewRuntimeComparer
+        Implements IComparer
+
+        Private ascending As Boolean
+
+        Public Sub New(asc As Boolean)
+            ascending = asc
+        End Sub
+
+        Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
+            Dim itemX As ListViewItem = DirectCast(x, ListViewItem)
+            Dim itemY As ListViewItem = DirectCast(y, ListViewItem)
+
+            ' Parse runtime from subitem text
+            Dim runtimeX As Integer = If(itemX.SubItems(4).Text <> "N/A", Integer.Parse(itemX.SubItems(4).Text.Split(" "c)(0)), 0)
+            Dim runtimeY As Integer = If(itemY.SubItems(4).Text <> "N/A", Integer.Parse(itemY.SubItems(4).Text.Split(" "c)(0)), 0)
+
+            ' Compare runtimes based on sorting order
+            If ascending Then
+                Return runtimeX.CompareTo(runtimeY)
+            Else
+                Return runtimeY.CompareTo(runtimeX)
+            End If
+        End Function
+    End Class
 
 End Class
 

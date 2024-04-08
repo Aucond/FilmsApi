@@ -23,7 +23,7 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup7 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ComboBox3 = New System.Windows.Forms.ComboBox()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
@@ -37,12 +37,16 @@ Partial Class Form1
         Me.ListViewMovies = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.ComboBox3)
         Me.Panel1.Controls.Add(Me.ComboBox1)
         Me.Panel1.Location = New System.Drawing.Point(9, 33)
@@ -53,23 +57,24 @@ Partial Class Form1
         '
         'ComboBox3
         '
+        Me.ComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Location = New System.Drawing.Point(3, 37)
+        Me.ComboBox3.Location = New System.Drawing.Point(3, 74)
         Me.ComboBox3.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(139, 24)
         Me.ComboBox3.TabIndex = 6
-        Me.ComboBox3.Text = "Filter By"
         '
         'ComboBox1
         '
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(3, 4)
+        Me.ComboBox1.Items.AddRange(New Object() {"ascending", "descending"})
+        Me.ComboBox1.Location = New System.Drawing.Point(3, 26)
         Me.ComboBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(139, 24)
         Me.ComboBox1.TabIndex = 0
-        Me.ComboBox1.Text = "Sort By"
         '
         'MenuStrip1
         '
@@ -126,9 +131,9 @@ Partial Class Form1
         '
         Me.ListViewMovies.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ListViewMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
-        ListViewGroup1.Header = "ListViewGroup"
-        ListViewGroup1.Name = "ListViewGroup1"
-        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
+        ListViewGroup7.Header = "ListViewGroup"
+        ListViewGroup7.Name = "ListViewGroup1"
+        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup7})
         Me.ListViewMovies.HideSelection = False
         Me.ListViewMovies.Location = New System.Drawing.Point(160, 33)
         Me.ListViewMovies.Margin = New System.Windows.Forms.Padding(4)
@@ -136,6 +141,24 @@ Partial Class Form1
         Me.ListViewMovies.Size = New System.Drawing.Size(1173, 650)
         Me.ListViewMovies.TabIndex = 10
         Me.ListViewMovies.UseCompatibleStateImageBehavior = False
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(3, 6)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(50, 16)
+        Me.Label1.TabIndex = 7
+        Me.Label1.Text = "Sort By"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(3, 54)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(36, 16)
+        Me.Label2.TabIndex = 8
+        Me.Label2.Text = "Filter"
         '
         'Form1
         '
@@ -151,6 +174,7 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
@@ -171,4 +195,6 @@ Partial Class Form1
     Friend WithEvents ListViewMovies As ListView
     Friend WithEvents Timer1 As Timer
     Friend WithEvents ColumnHeader1 As ColumnHeader
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label1 As Label
 End Class
