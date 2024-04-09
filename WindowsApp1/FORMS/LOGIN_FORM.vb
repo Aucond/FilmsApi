@@ -36,7 +36,6 @@ Public Class LOGIN_FORM
         Dim username As String = TextBox_username.Text.Trim()
         Dim password As String = TextBox_password.Text.Trim()
 
-
         Dim mydb As New DB()
         Dim adapter As New MySqlDataAdapter()
         Dim table As New DataTable()
@@ -57,10 +56,14 @@ Public Class LOGIN_FORM
             adapter.Fill(table)
 
             If table.Rows.Count > 0 Then
-                Me.Hide()
-                MOVIE_FORM.Show()
+                If table.Rows(0)("age") >= 18 Then
+                    Me.Hide()
+                    MOVIE_FORM.Show()
+                Else
+                    MessageBox.Show("no")
+                End If
             Else
-                MessageBox.Show("This Username Or Password Doesn't Exists", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                    MessageBox.Show("This Username Or Password Doesn't Exist", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             End If
 
 
