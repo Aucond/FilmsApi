@@ -53,10 +53,19 @@ Public Class LOGIN_FORM
             adapter.SelectCommand = command
             adapter.Fill(table)
 
+            Dim movieForm As New MOVIE_FORM
+            Dim age As Integer
+            age = table.Rows(0)("age")
+
             If table.Rows.Count > 0 Then
-                Dim movieForm As New MOVIE_FORM
-                Me.Hide()
-                MOVIE_FORM.Show1(table.Rows(0)("age"))
+                If age < 18 Then
+                    Me.Hide()
+                    MOVIE_FORM.Show1(table.Rows(0)("age"))
+                Else
+                    Me.Hide()
+                    MOVIE_FORM.Show()
+                End If
+
             Else
                 MessageBox.Show("This Username Or Password Doesn't Exist", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             End If

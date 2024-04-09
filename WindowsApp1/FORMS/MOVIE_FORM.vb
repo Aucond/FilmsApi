@@ -29,6 +29,10 @@ Public Class MOVIE_FORM
         ' Here you can use the age parameter as needed
         If age < 18 Then
             Me.Show()
+            TextBox1.Hide()
+            Label2.Hide()
+            ComboBox3.Hide()
+            Button1.Hide()
             Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
             Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
 
