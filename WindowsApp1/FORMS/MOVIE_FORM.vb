@@ -129,11 +129,37 @@ Public Class MOVIE_FORM
         End Using
 
     End Function
+    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+        Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
+
+        Using httpClient As New HttpClient()
+            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
+            Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
+
+            If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
+                If ListViewMovies.InvokeRequired Then
+                    ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
+                Else
+                    UpdateListView(searchResults)
+                End If
+
+                ' Log column names or properties
+                Dim type As Type = GetType(TmdbSearchResult)
+                Dim properties As PropertyInfo() = type.GetProperties()
+
+                For Each prop As PropertyInfo In properties
+                    Console.WriteLine(prop.Name)
+                Next
+            End If
+        End Using
+    End Sub
     Private Async Sub UpdateListView(searchResults As TmdbSearchResult)
 
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
         posters.ImageSize = New Size(100, 140) ' Approximate poster size
+
         ' Create a dictionary for genres
         ' Configure ListView columns
         ListViewMovies.Clear()
@@ -148,15 +174,6 @@ Public Class MOVIE_FORM
 
         Dim allFilms As New List(Of Integer)()
         Dim runtime As New List(Of Integer)()
-
-        For Each movie In searchResults.results
-            allFilms.Add(movie.id)
-
-        Next
-
-        For Each filmId As Integer In allFilms
-            Console.WriteLine(filmId)
-        Next
 
         ' Populate ListView with items
         For Each movie In searchResults.results
@@ -176,12 +193,20 @@ Public Class MOVIE_FORM
             Dim genres As String = String.Join(", ", genreNames) ' Join genre names with a comma
             Dim rating As String = movie.vote_average.ToString("0.0") ' Format rating to one decimal place
             Dim voteCount As String = movie.vote_count.ToString()
+            Dim adultContent As String = movie.adult.ToString()
+            allFilms.Add(movie.id)
 
             item.SubItems.Add(year)
             item.SubItems.Add(genres)
             item.SubItems.Add(rating)
             item.SubItems.Add(runtimeString)
             item.SubItems.Add(voteCount)
+
+            ' If adultContent Is "false" Then
+            ' item.SubItems.Add("No")
+            ' Else
+            ' item.SubItems.Add("Yes")
+            ' End If
 
             ' Load poster image
             Dim posterUrl As String = $"https://image.tmdb.org/t/p/w500{movie.poster_path}"
@@ -297,5 +322,4 @@ Public Class MOVIE_FORM
         ListViewMovies.Sort()
 
     End Sub
-
 End Class
