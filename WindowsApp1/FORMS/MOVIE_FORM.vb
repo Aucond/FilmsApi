@@ -316,4 +316,5 @@ Public Class MOVIE_FORM
         ListViewMovies.Sort()
 
     End Sub
+
 End Class

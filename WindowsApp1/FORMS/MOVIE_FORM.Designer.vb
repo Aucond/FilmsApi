@@ -23,23 +23,20 @@ Partial Class MOVIE_FORM
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ComboBox3 = New System.Windows.Forms.ComboBox()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ViewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AccountToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.ListViewMovies = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -56,6 +53,15 @@ Partial Class MOVIE_FORM
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(147, 236)
         Me.Panel1.TabIndex = 9
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(3, 203)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(139, 30)
+        Me.Button1.TabIndex = 9
+        Me.Button1.Text = "Family Friendly"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -99,42 +105,24 @@ Partial Class MOVIE_FORM
         'MenuStrip1
         '
         Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ViewToolStripMenuItem, Me.ListToolStripMenuItem, Me.AccountToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListToolStripMenuItem, Me.AccountToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(1376, 28)
         Me.MenuStrip1.TabIndex = 12
         Me.MenuStrip1.Text = "MenuStrip1"
         '
-        'FileToolStripMenuItem
-        '
-        Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(46, 24)
-        Me.FileToolStripMenuItem.Text = "File"
-        '
-        'EditToolStripMenuItem
-        '
-        Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
-        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(49, 24)
-        Me.EditToolStripMenuItem.Text = "Edit"
-        '
-        'ViewToolStripMenuItem
-        '
-        Me.ViewToolStripMenuItem.Name = "ViewToolStripMenuItem"
-        Me.ViewToolStripMenuItem.Size = New System.Drawing.Size(55, 24)
-        Me.ViewToolStripMenuItem.Text = "View"
-        '
         'ListToolStripMenuItem
         '
         Me.ListToolStripMenuItem.Name = "ListToolStripMenuItem"
-        Me.ListToolStripMenuItem.Size = New System.Drawing.Size(45, 24)
-        Me.ListToolStripMenuItem.Text = "List"
+        Me.ListToolStripMenuItem.Size = New System.Drawing.Size(60, 24)
+        Me.ListToolStripMenuItem.Text = "Login"
         '
         'AccountToolStripMenuItem
         '
         Me.AccountToolStripMenuItem.Name = "AccountToolStripMenuItem"
-        Me.AccountToolStripMenuItem.Size = New System.Drawing.Size(77, 24)
-        Me.AccountToolStripMenuItem.Text = "Account"
+        Me.AccountToolStripMenuItem.Size = New System.Drawing.Size(98, 24)
+        Me.AccountToolStripMenuItem.Text = "Watch later"
         '
         'TextBox1
         '
@@ -151,9 +139,9 @@ Partial Class MOVIE_FORM
         '
         Me.ListViewMovies.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ListViewMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
-        ListViewGroup2.Header = "ListViewGroup"
-        ListViewGroup2.Name = "ListViewGroup1"
-        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        ListViewGroup1.Header = "ListViewGroup"
+        ListViewGroup1.Name = "ListViewGroup1"
+        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.ListViewMovies.HideSelection = False
         Me.ListViewMovies.Location = New System.Drawing.Point(160, 33)
         Me.ListViewMovies.Margin = New System.Windows.Forms.Padding(4)
@@ -161,15 +149,6 @@ Partial Class MOVIE_FORM
         Me.ListViewMovies.Size = New System.Drawing.Size(1173, 650)
         Me.ListViewMovies.TabIndex = 10
         Me.ListViewMovies.UseCompatibleStateImageBehavior = False
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(3, 203)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(139, 30)
-        Me.Button1.TabIndex = 9
-        Me.Button1.Text = "Family Friendly"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'MOVIE_FORM
         '
@@ -197,9 +176,6 @@ Partial Class MOVIE_FORM
     Friend WithEvents ComboBox3 As ComboBox
     Friend WithEvents ComboBox1 As ComboBox
     Friend WithEvents MenuStrip1 As MenuStrip
-    Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents EditToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ViewToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ListToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AccountToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TextBox1 As TextBox
