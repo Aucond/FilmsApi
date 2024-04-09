@@ -6,8 +6,8 @@ Imports System.Windows.Forms
 Imports System.Net.Http
 Imports System.Reflection
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Public Class Form1
-
+Public Class MOVIE_FORM
+    Private ascendingOrder As Boolean = True ' Default to ascending order
     Private WithEvents searchTimer As New System.Windows.Forms.Timer()
     Dim genreDictionary As New Dictionary(Of Integer, String) From {
         {28, "Action"},
@@ -32,24 +32,32 @@ Public Class Form1
     }
 
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
+
         searchTimer.Stop()
         Dim searchQuery As String = TextBox1.Text
         If Not String.IsNullOrWhiteSpace(searchQuery) Then
-
             Await SearchMoviesAsync(searchQuery)
         Else
-
             ListViewMovies.Items.Clear()
         End If
+
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+
         searchTimer.Stop()
         searchTimer.Start()
+
     End Sub
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        For Each kvp As KeyValuePair(Of Integer, String) In genreDictionary
+            ComboBox3.Items.Add(kvp.Value)
+        Next
 
+    End Sub
     Public Async Function SearchMoviesAsync(searchQuery As String) As Task
+
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim requestUrl As String = $"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&query={Uri.EscapeDataString(searchQuery)}"
 
@@ -78,6 +86,7 @@ Public Class Form1
     End Function
 
     Public Async Function SearchMovieRuntimeAsync(filmId As Integer) As Task(Of Integer)
+
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim requestUrl As String = $"https://api.themoviedb.org/3/movie/{filmId}?api_key={apiKey}"
 
@@ -91,10 +100,37 @@ Public Class Form1
                 Return -1 ' Indicate runtime not found
             End If
         End Using
+
     End Function
+    Public Async Function FilterMoviesAsync(genreId As String) As Task
 
+        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+        Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres={genreId}"
 
+        Using httpClient As New HttpClient()
+            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
+            Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
+
+            If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
+                If ListViewMovies.InvokeRequired Then
+                    ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
+                Else
+                    UpdateListView(searchResults)
+                End If
+
+                ' Log column names or properties
+                Dim type As Type = GetType(TmdbSearchResult)
+                Dim properties As PropertyInfo() = type.GetProperties()
+
+                For Each prop As PropertyInfo In properties
+                    Console.WriteLine(prop.Name)
+                Next
+            End If
+        End Using
+
+    End Function
     Private Async Sub UpdateListView(searchResults As TmdbSearchResult)
+
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
         posters.ImageSize = New Size(100, 140) ' Approximate poster size
@@ -107,6 +143,7 @@ Public Class Form1
         ListViewMovies.Columns.Add("Genres", 200)
         ListViewMovies.Columns.Add("Rating", 50)
         ListViewMovies.Columns.Add("Length", 50)
+        ListViewMovies.Columns.Add("Vote Count", 50)
         ListViewMovies.SmallImageList = posters
 
         Dim allFilms As New List(Of Integer)()
@@ -138,11 +175,13 @@ Public Class Form1
 
             Dim genres As String = String.Join(", ", genreNames) ' Join genre names with a comma
             Dim rating As String = movie.vote_average.ToString("0.0") ' Format rating to one decimal place
+            Dim voteCount As String = movie.vote_count.ToString()
 
             item.SubItems.Add(year)
             item.SubItems.Add(genres)
             item.SubItems.Add(rating)
             item.SubItems.Add(runtimeString)
+            item.SubItems.Add(voteCount)
 
             ' Load poster image
             Dim posterUrl As String = $"https://image.tmdb.org/t/p/w500{movie.poster_path}"
@@ -159,9 +198,11 @@ Public Class Form1
         For i As Integer = 0 To ListViewMovies.Columns.Count - 1
             ListViewMovies.Columns(i).Width = -2
         Next
+
     End Sub
 
     Private Function LoadImageFromUrl(url As String) As Image
+
         Try
             Using client As New WebClient()
                 Using stream As Stream = client.OpenRead(url)
@@ -172,15 +213,10 @@ Public Class Form1
 
             Return Nothing
         End Try
+
     End Function
-
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        For Each kvp As KeyValuePair(Of Integer, String) In genreDictionary
-            ComboBox3.Items.Add(kvp.Value)
-        Next
-
-    End Sub
     Private Sub ComboBox3_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox3.SelectedIndexChanged
+
         ' Get the selected genre name
         Dim selectedGenreName As String = ComboBox3.SelectedItem.ToString()
 
@@ -197,94 +233,69 @@ Public Class Form1
 
     End Sub
 
-    Private ascendingOrder As Boolean = True ' Default to ascending order
-
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+
         ' Get the selected sorting option
         Dim selectedSortOption As String = ComboBox1.SelectedItem.ToString()
 
         ' Sort movies based on the selected option
-        If selectedSortOption = "ascending" Then
+        If selectedSortOption = "Ascending length" Then
             ascendingOrder = True
             SortMoviesByLength()
-        Else
+        ElseIf selectedSortOption = "Descending length" Then
             ascendingOrder = Not ascendingOrder
             SortMoviesByLength()
+        ElseIf selectedSortOption = "Ascending rating" Then
+            SortMoviesByRating(ascending:=True)
+        ElseIf selectedSortOption = "Descending rating" Then
+            SortMoviesByRating(ascending:=False)
+        ElseIf selectedSortOption = "Ascending year" Then
+            SortMoviesByReleaseDate(ascending:=True)
+        ElseIf selectedSortOption = "Descending year" Then
+            SortMoviesByReleaseDate(ascending:=False)
+        ElseIf selectedSortOption = "Ascending vote" Then
+            SortMoviesByVoteCount(ascending:=True)
+        ElseIf selectedSortOption = "Descending vote" Then
+            SortMoviesByVoteCount(ascending:=False)
         End If
+
     End Sub
-
-    Public Async Function FilterMoviesAsync(genreId As String) As Task
-        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-        Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres={genreId}"
-
-
-        Using httpClient As New HttpClient()
-            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-            Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
-
-            If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
-                If ListViewMovies.InvokeRequired Then
-                    ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
-                Else
-                    UpdateListView(searchResults)
-                End If
-
-                ' Log column names or properties
-                Dim type As Type = GetType(TmdbSearchResult)
-                Dim properties As PropertyInfo() = type.GetProperties()
-
-                For Each prop As PropertyInfo In properties
-                    Console.WriteLine(prop.Name)
-                Next
-            End If
-        End Using
-    End Function
     Private Sub SortMoviesByLength()
+
         ' Toggle sorting order
 
         ' Sort ListView items by movie length (runtime)
         ListViewMovies.ListViewItemSorter = New ListViewRuntimeComparer(ascendingOrder)
         ListViewMovies.Sort()
+
     End Sub
 
-    Public Class ListViewRuntimeComparer
-        Implements IComparer
+    Private Sub SortMoviesByRating(ascending As Boolean)
 
-        Private ascending As Boolean
+        ' Toggle sorting order
 
-        Public Sub New(asc As Boolean)
-            ascending = asc
-        End Sub
+        ' Sort ListView items by movie rating
+        ListViewMovies.ListViewItemSorter = New ListViewRatingComparer(ascending)
+        ListViewMovies.Sort()
 
-        Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
-            Dim itemX As ListViewItem = DirectCast(x, ListViewItem)
-            Dim itemY As ListViewItem = DirectCast(y, ListViewItem)
+    End Sub
 
-            ' Parse runtime from subitem text
-            Dim runtimeX As Integer = If(itemX.SubItems(4).Text <> "N/A", Integer.Parse(itemX.SubItems(4).Text.Split(" "c)(0)), 0)
-            Dim runtimeY As Integer = If(itemY.SubItems(4).Text <> "N/A", Integer.Parse(itemY.SubItems(4).Text.Split(" "c)(0)), 0)
+    Private Sub SortMoviesByReleaseDate(ascending As Boolean)
 
-            ' Compare runtimes based on sorting order
-            If ascending Then
-                Return runtimeX.CompareTo(runtimeY)
-            Else
-                Return runtimeY.CompareTo(runtimeX)
-            End If
-        End Function
-    End Class
+        ' Toggle sorting order
 
-End Class
+        ' Sort ListView items by movie release date
+        ListViewMovies.ListViewItemSorter = New ListViewReleaseDateComparer(ascending)
+        ListViewMovies.Sort()
 
+    End Sub
 
-Public Class TmdbSearchResult
-    Public Property results As List(Of TmdbMovie)
-End Class
+    Private Sub SortMoviesByVoteCount(ascending As Boolean)
 
-Public Class TmdbMovie
-    Public Property title As String
-    Public Property release_date As String
-    Public Property genre_ids As List(Of Integer)
-    Public Property vote_average As Double
-    Public Property poster_path As String
-    Public Property id As Integer
+        ' Sort ListView items by movie vote count
+        ListViewMovies.ListViewItemSorter = New ListViewVoteCountComparer(ascending)
+        ListViewMovies.Sort()
+
+    End Sub
+
 End Class

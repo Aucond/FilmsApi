@@ -24,6 +24,8 @@ Partial Class LOGIN_FORM
     Private Sub InitializeComponent()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.guestBtn = New System.Windows.Forms.Button()
+        Me.guestLbl = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Button_login = New System.Windows.Forms.Button()
@@ -35,8 +37,6 @@ Partial Class LOGIN_FORM
         Me.Label_Close = New System.Windows.Forms.Label()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.guestLbl = New System.Windows.Forms.Label()
-        Me.guestBtn = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel3.SuspendLayout()
@@ -54,7 +54,7 @@ Partial Class LOGIN_FORM
         '
         'Panel2
         '
-        Me.Panel2.BackColor = System.Drawing.Color.FromArgb(CType(CType(36, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(42, Byte), Integer))
+        Me.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.Panel2.Controls.Add(Me.guestBtn)
         Me.Panel2.Controls.Add(Me.guestLbl)
         Me.Panel2.Controls.Add(Me.Button1)
@@ -72,6 +72,34 @@ Partial Class LOGIN_FORM
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(509, 435)
         Me.Panel2.TabIndex = 0
+        '
+        'guestBtn
+        '
+        Me.guestBtn.BackColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(129, Byte), Integer))
+        Me.guestBtn.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.guestBtn.FlatAppearance.BorderColor = System.Drawing.Color.White
+        Me.guestBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.guestBtn.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.guestBtn.ForeColor = System.Drawing.Color.White
+        Me.guestBtn.Location = New System.Drawing.Point(325, 392)
+        Me.guestBtn.Margin = New System.Windows.Forms.Padding(4)
+        Me.guestBtn.Name = "guestBtn"
+        Me.guestBtn.Size = New System.Drawing.Size(148, 31)
+        Me.guestBtn.TabIndex = 12
+        Me.guestBtn.Text = "Guest"
+        Me.guestBtn.UseVisualStyleBackColor = False
+        '
+        'guestLbl
+        '
+        Me.guestLbl.AutoSize = True
+        Me.guestLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.guestLbl.ForeColor = System.Drawing.Color.White
+        Me.guestLbl.Location = New System.Drawing.Point(320, 358)
+        Me.guestLbl.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.guestLbl.Name = "guestLbl"
+        Me.guestLbl.Size = New System.Drawing.Size(170, 25)
+        Me.guestLbl.TabIndex = 11
+        Me.guestLbl.Text = "Continue as guest"
         '
         'Button1
         '
@@ -205,34 +233,6 @@ Partial Class LOGIN_FORM
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Login"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'guestLbl
-        '
-        Me.guestLbl.AutoSize = True
-        Me.guestLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.guestLbl.ForeColor = System.Drawing.Color.White
-        Me.guestLbl.Location = New System.Drawing.Point(320, 358)
-        Me.guestLbl.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.guestLbl.Name = "guestLbl"
-        Me.guestLbl.Size = New System.Drawing.Size(170, 25)
-        Me.guestLbl.TabIndex = 11
-        Me.guestLbl.Text = "Continue as guest"
-        '
-        'guestBtn
-        '
-        Me.guestBtn.BackColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(129, Byte), Integer))
-        Me.guestBtn.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.guestBtn.FlatAppearance.BorderColor = System.Drawing.Color.White
-        Me.guestBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.guestBtn.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.guestBtn.ForeColor = System.Drawing.Color.White
-        Me.guestBtn.Location = New System.Drawing.Point(325, 392)
-        Me.guestBtn.Margin = New System.Windows.Forms.Padding(4)
-        Me.guestBtn.Name = "guestBtn"
-        Me.guestBtn.Size = New System.Drawing.Size(148, 31)
-        Me.guestBtn.TabIndex = 12
-        Me.guestBtn.Text = "Guest"
-        Me.guestBtn.UseVisualStyleBackColor = False
         '
         'LOGIN_FORM
         '

@@ -53,11 +53,9 @@ Public Class LOGIN_FORM
 
             If table.Rows.Count > 0 Then
                 Me.Hide()
-                Form1.Show()
+                MOVIE_FORM.Show()
             Else
-
                 MessageBox.Show("This Username Or Password Doesn't Exists", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-
             End If
 
 
@@ -66,12 +64,16 @@ Public Class LOGIN_FORM
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
         Me.Hide()
         REGISTER_FORM.Show()
+
     End Sub
 
     Private Sub guestBtn_Click(sender As Object, e As EventArgs) Handles guestBtn.Click
+
         Me.Hide()
-        Form1.Show()
+        MOVIE_FORM.Show()
     End Sub
+
 End Class
