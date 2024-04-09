@@ -23,10 +23,6 @@ Public Class LOGIN_FORM
 
     End Sub
 
-    Public Function IsOver18() As Boolean
-        Return True
-    End Function
-
     Private Sub Button_login_Click(sender As Object, e As EventArgs) Handles Button_login.Click
 
         ' the login button 
