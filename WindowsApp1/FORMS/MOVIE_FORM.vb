@@ -1,13 +1,8 @@
 ﻿Imports System.Net
 Imports System.IO
-Imports System.Drawing
 Imports Newtonsoft.Json
-Imports System.Windows.Forms
 Imports System.Net.Http
-Imports System.Reflection
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Public Class MOVIE_FORM
-    Private ascendingOrder As Boolean = True ' Default to ascending order
     Private WithEvents searchTimer As New System.Windows.Forms.Timer()
     Dim genreDictionary As New Dictionary(Of Integer, String) From {
         {28, "Action"},
@@ -57,31 +52,28 @@ Public Class MOVIE_FORM
 
     End Sub
     Public Async Function SearchMoviesAsync(searchQuery As String) As Task
+        If LOGIN_FORM.IsOver18() Then
+            Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+            Dim requestUrl As String = $"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&query={Uri.EscapeDataString(searchQuery)}"
 
-        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-        Dim requestUrl As String = $"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&query={Uri.EscapeDataString(searchQuery)}"
+            Using httpClient As New HttpClient()
+                Dim response As String = Await httpClient.GetStringAsync(requestUrl)
+                Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
 
-        Using httpClient As New HttpClient()
-            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-            Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
+                If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
+                    If ListViewMovies.InvokeRequired Then
+                        ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
+                    Else
+                        UpdateListView(searchResults)
+                    End If
 
-            If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
-                If ListViewMovies.InvokeRequired Then
-                    ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
-                Else
-                    UpdateListView(searchResults)
                 End If
 
-                ' Log column names or properties
-                Dim type As Type = GetType(TmdbSearchResult)
-                Dim properties As PropertyInfo() = type.GetProperties()
+            End Using
+        Else
+            MessageBox.Show("no")
 
-                For Each prop As PropertyInfo In properties
-                    Console.WriteLine(prop.Name)
-                Next
-            End If
-
-        End Using
+        End If
 
     End Function
 
@@ -118,13 +110,6 @@ Public Class MOVIE_FORM
                     UpdateListView(searchResults)
                 End If
 
-                ' Log column names or properties
-                Dim type As Type = GetType(TmdbSearchResult)
-                Dim properties As PropertyInfo() = type.GetProperties()
-
-                For Each prop As PropertyInfo In properties
-                    Console.WriteLine(prop.Name)
-                Next
             End If
         End Using
 
@@ -144,13 +129,6 @@ Public Class MOVIE_FORM
                     UpdateListView(searchResults)
                 End If
 
-                ' Log column names or properties
-                Dim type As Type = GetType(TmdbSearchResult)
-                Dim properties As PropertyInfo() = type.GetProperties()
-
-                For Each prop As PropertyInfo In properties
-                    Console.WriteLine(prop.Name)
-                Next
             End If
         End Using
     End Sub
@@ -265,11 +243,9 @@ Public Class MOVIE_FORM
 
         ' Sort movies based on the selected option
         If selectedSortOption = "Ascending length" Then
-            ascendingOrder = True
-            SortMoviesByLength()
+            SortMoviesByLength(ascending:=True)
         ElseIf selectedSortOption = "Descending length" Then
-            ascendingOrder = Not ascendingOrder
-            SortMoviesByLength()
+            SortMoviesByLength(ascending:=False)
         ElseIf selectedSortOption = "Ascending rating" Then
             SortMoviesByRating(ascending:=True)
         ElseIf selectedSortOption = "Descending rating" Then
@@ -285,12 +261,12 @@ Public Class MOVIE_FORM
         End If
 
     End Sub
-    Private Sub SortMoviesByLength()
+    Private Sub SortMoviesByLength(ascending As Boolean)
 
         ' Toggle sorting order
 
         ' Sort ListView items by movie length (runtime)
-        ListViewMovies.ListViewItemSorter = New ListViewRuntimeComparer(ascendingOrder)
+        ListViewMovies.ListViewItemSorter = New ListViewRuntimeComparer(ascending)
         ListViewMovies.Sort()
 
     End Sub

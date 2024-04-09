@@ -1,4 +1,5 @@
-﻿Imports MySql.Data.MySqlClient
+﻿Imports System.Data.SqlClient
+Imports MySql.Data.MySqlClient
 
 Public Class LOGIN_FORM
 
@@ -24,12 +25,17 @@ Public Class LOGIN_FORM
 
     End Sub
 
+    Public Function IsOver18() As Boolean
+        Return True
+    End Function
+
     Private Sub Button_login_Click(sender As Object, e As EventArgs) Handles Button_login.Click
 
         ' the login button 
         ' allow the user or not to access the application main window ( the dashboard )
         Dim username As String = TextBox_username.Text.Trim()
         Dim password As String = TextBox_password.Text.Trim()
+
 
         Dim mydb As New DB()
         Dim adapter As New MySqlDataAdapter()
@@ -41,7 +47,6 @@ Public Class LOGIN_FORM
 
         ElseIf password = "" Then
             MessageBox.Show("Enter The Password", "Empty Password", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
         Else
             ' check if this user exist
 
