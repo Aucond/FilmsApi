@@ -25,9 +25,29 @@ Public Class MOVIE_FORM
         {10752, "War"},
         {37, "Western"}
     }
+    Public Async Sub Show1(age As Integer)
+        ' Here you can use the age parameter as needed
+        If age < 18 Then
+            Me.Show()
+            Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+            Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
 
+            Using httpClient As New HttpClient()
+                Dim response As String = Await httpClient.GetStringAsync(requestUrl)
+                Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
+
+                If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
+                    If ListViewMovies.InvokeRequired Then
+                        ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
+                    Else
+                        UpdateListView(searchResults)
+                    End If
+
+                End If
+            End Using
+        End If
+    End Sub
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
-
         searchTimer.Stop()
         Dim searchQuery As String = TextBox1.Text
         If Not String.IsNullOrWhiteSpace(searchQuery) Then
@@ -35,7 +55,6 @@ Public Class MOVIE_FORM
         Else
             ListViewMovies.Items.Clear()
         End If
-
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
@@ -52,28 +71,23 @@ Public Class MOVIE_FORM
 
     End Sub
     Public Async Function SearchMoviesAsync(searchQuery As String) As Task
-        If LOGIN_FORM.IsOver18() Then
-            Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-            Dim requestUrl As String = $"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&query={Uri.EscapeDataString(searchQuery)}"
+        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+        Dim requestUrl As String = $"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&query={Uri.EscapeDataString(searchQuery)}"
 
-            Using httpClient As New HttpClient()
-                Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-                Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
+        Using httpClient As New HttpClient()
+            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
+            Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
 
-                If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
-                    If ListViewMovies.InvokeRequired Then
-                        ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
-                    Else
-                        UpdateListView(searchResults)
-                    End If
-
+            If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
+                If ListViewMovies.InvokeRequired Then
+                    ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
+                Else
+                    UpdateListView(searchResults)
                 End If
 
-            End Using
-        Else
-            MessageBox.Show("no")
+            End If
 
-        End If
+        End Using
 
     End Function
 

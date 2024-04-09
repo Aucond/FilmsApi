@@ -2,8 +2,6 @@
 Imports MySql.Data.MySqlClient
 
 Public Class LOGIN_FORM
-
-
     Private Sub Label_Close_Click(sender As Object, e As EventArgs) Handles Label_Close.Click
 
         ' close this form
@@ -56,14 +54,11 @@ Public Class LOGIN_FORM
             adapter.Fill(table)
 
             If table.Rows.Count > 0 Then
-                If table.Rows(0)("age") >= 18 Then
-                    Me.Hide()
-                    MOVIE_FORM.Show()
-                Else
-                    MessageBox.Show("no")
-                End If
+                Dim movieForm As New MOVIE_FORM
+                Me.Hide()
+                MOVIE_FORM.Show1(table.Rows(0)("age"))
             Else
-                    MessageBox.Show("This Username Or Password Doesn't Exist", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                MessageBox.Show("This Username Or Password Doesn't Exist", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             End If
 
 
