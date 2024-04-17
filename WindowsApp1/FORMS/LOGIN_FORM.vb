@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports MySql.Data.MySqlClient
+Imports Mysqlx.XDevAPI.Relational
 Imports Npgsql
 Imports NpgsqlTypes
 
@@ -46,19 +47,18 @@ Public Class LOGIN_FORM
             ' check if this user exist
 
             command.Parameters.Add("@usn", NpgsqlDbType.Varchar).Value = username
-            command.Parameters.Add("@pass", NpgsqlDbType.VarChar).Value = password
+            command.Parameters.Add("@pass", NpgsqlDbType.Varchar).Value = password
 
             adapter.SelectCommand = command
             adapter.Fill(table)
 
-            Dim movieForm As New MOVIE_FORM
-            Dim age As Integer
-            age = table.Rows(0)("age")
-
             If table.Rows.Count > 0 Then
+                Dim movieForm As New MOVIE_FORM
+                Dim age As Integer
+                age = table.Rows(0)("age")
                 If age < 18 Then
                     Me.Hide()
-                    MOVIE_FORM.Show1(table.Rows(0)("age"))
+                    MOVIE_FORM.Under18(table.Rows(0)("age"))
                 Else
                     Me.Hide()
                     MOVIE_FORM.Show()
@@ -81,9 +81,8 @@ Public Class LOGIN_FORM
     End Sub
 
     Private Sub guestBtn_Click(sender As Object, e As EventArgs) Handles guestBtn.Click
-
         Me.Hide()
-        MOVIE_FORM.Show()
+        MOVIE_FORM.Guest(10)
     End Sub
 
 End Class

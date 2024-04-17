@@ -25,32 +25,6 @@ Public Class MOVIE_FORM
         {10752, "War"},
         {37, "Western"}
     }
-    Public Async Sub Show1(age As Integer)
-        ' Here you can use the age parameter as needed
-        If age < 18 Then
-            Me.Show()
-            TextBox1.Hide()
-            Label2.Hide()
-            ComboBox3.Hide()
-            Button1.Hide()
-            Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-            Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
-
-            Using httpClient As New HttpClient()
-                Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-                Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
-
-                If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
-                    If ListViewMovies.InvokeRequired Then
-                        ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
-                    Else
-                        UpdateListView(searchResults)
-                    End If
-
-                End If
-            End Using
-        End If
-    End Sub
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
         searchTimer.Stop()
         Dim searchQuery As String = TextBox1.Text
@@ -73,6 +47,60 @@ Public Class MOVIE_FORM
             ComboBox3.Items.Add(kvp.Value)
         Next
 
+    End Sub
+    Public Async Sub Under18(age As Integer)
+        ' Here you can use the age parameter as needed
+        If age < 18 Then
+            Me.Show()
+            TextBox1.Hide()
+            Label2.Hide()
+            ComboBox3.Hide()
+            Button1.Hide()
+            ListToolStripMenuItem.Visible = False
+            Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+            Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
+
+            Using httpClient As New HttpClient()
+                Dim response As String = Await httpClient.GetStringAsync(requestUrl)
+                Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
+
+                If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
+                    If ListViewMovies.InvokeRequired Then
+                        ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
+                    Else
+                        UpdateListView(searchResults)
+                    End If
+
+                End If
+            End Using
+        End If
+    End Sub
+    Public Async Sub Guest(age As Integer)
+        ' Here you can use the age parameter as needed
+        If age < 18 Then
+            Me.Show()
+            TextBox1.Hide()
+            Label2.Hide()
+            ComboBox3.Hide()
+            Button1.Hide()
+            AccountToolStripMenuItem.Visible = False
+            Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+            Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
+
+            Using httpClient As New HttpClient()
+                Dim response As String = Await httpClient.GetStringAsync(requestUrl)
+                Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
+
+                If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
+                    If ListViewMovies.InvokeRequired Then
+                        ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
+                    Else
+                        UpdateListView(searchResults)
+                    End If
+
+                End If
+            End Using
+        End If
     End Sub
     Public Async Function SearchMoviesAsync(searchQuery As String) As Task
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
