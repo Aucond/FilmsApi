@@ -1,7 +1,4 @@
-﻿Imports System.Data.SqlClient
-Imports MySql.Data.MySqlClient
-Imports Mysqlx.XDevAPI.Relational
-Imports Npgsql
+﻿Imports Npgsql
 Imports NpgsqlTypes
 
 Public Class LOGIN_FORM

@@ -1,5 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
-Imports Npgsql
+﻿Imports Npgsql
 
 Public Class REGISTER_FORM
     Private Sub Button_register_Click(sender As Object, e As EventArgs) Handles Button_register.Click
