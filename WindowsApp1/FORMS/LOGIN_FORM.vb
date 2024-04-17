@@ -63,6 +63,8 @@ Public Class LOGIN_FORM
                     Else
                         Me.Hide()
                         MOVIE_FORM.Show()
+                        MOVIE_FORM.ListToolStripMenuItem.Visible = False
+                        MOVIE_FORM.AccountToolStripMenuItem.Visible = True
                     End If
                 Else
                     MessageBox.Show("This Username Or Password Doesn't Exist", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)

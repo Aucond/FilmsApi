@@ -178,6 +178,28 @@ Public Class MOVIE_FORM
             End If
         End Using
     End Sub
+    Private Async Function GetProductionCompanyNamesAsync(movieId As Integer) As Task(Of String)
+
+        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+        Dim requestUrl As String = $"https://api.themoviedb.org/3/movie/{movieId}?api_key={apiKey}"
+
+        Using httpClient As New HttpClient()
+            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
+            Dim movieDetails = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(response)
+
+            Dim productionCompanies As New List(Of String)()
+
+            If movieDetails IsNot Nothing AndAlso movieDetails.ContainsKey("production_companies") Then
+                For Each company In movieDetails("production_companies")
+                    productionCompanies.Add(company("name").ToString())
+                Next
+            End If
+
+            Return String.Join(", ", productionCompanies)
+        End Using
+
+    End Function
+
     Private Async Sub UpdateListView(searchResults As TmdbSearchResult)
 
         ' Create ImageList and configure ListView
@@ -214,6 +236,7 @@ Public Class MOVIE_FORM
                 End If
             Next
 
+            Dim productionCompanies As String = Await GetProductionCompanyNamesAsync(movie.id)
             Dim genres As String = String.Join(", ", genreNames) ' Join genre names with a comma
             Dim rating As String = movie.vote_average.ToString("0.0") ' Format rating to one decimal place
             Dim voteCount As String = movie.vote_count.ToString()
@@ -346,4 +369,8 @@ Public Class MOVIE_FORM
 
     End Sub
 
+    Private Sub ListToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ListToolStripMenuItem.Click
+        Me.Hide()
+        LOGIN_FORM.Show()
+    End Sub
 End Class

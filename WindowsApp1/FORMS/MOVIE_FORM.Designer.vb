@@ -37,12 +37,16 @@ Partial Class MOVIE_FORM
         Me.ListViewMovies = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.cmbboxCompanies = New System.Windows.Forms.ComboBox()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
+        Me.Panel1.Controls.Add(Me.Label3)
+        Me.Panel1.Controls.Add(Me.cmbboxCompanies)
         Me.Panel1.Controls.Add(Me.btnFamilyFriendly)
         Me.Panel1.Controls.Add(Me.Label2)
         Me.Panel1.Controls.Add(Me.Label1)
@@ -150,6 +154,25 @@ Partial Class MOVIE_FORM
         Me.ListViewMovies.TabIndex = 10
         Me.ListViewMovies.UseCompatibleStateImageBehavior = False
         '
+        'cmbboxCompanies
+        '
+        Me.cmbboxCompanies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbboxCompanies.FormattingEnabled = True
+        Me.cmbboxCompanies.Location = New System.Drawing.Point(4, 125)
+        Me.cmbboxCompanies.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmbboxCompanies.Name = "cmbboxCompanies"
+        Me.cmbboxCompanies.Size = New System.Drawing.Size(139, 24)
+        Me.cmbboxCompanies.TabIndex = 10
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(3, 105)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(76, 16)
+        Me.Label3.TabIndex = 11
+        Me.Label3.Text = "Companies"
+        '
         'MOVIE_FORM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -185,4 +208,6 @@ Partial Class MOVIE_FORM
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents btnFamilyFriendly As Button
+    Friend WithEvents cmbboxCompanies As ComboBox
+    Friend WithEvents Label3 As Label
 End Class
