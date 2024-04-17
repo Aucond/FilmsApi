@@ -1,5 +1,7 @@
 ﻿Imports System.Data.SqlClient
 Imports MySql.Data.MySqlClient
+Imports Npgsql
+Imports NpgsqlTypes
 
 Public Class LOGIN_FORM
     Private Sub Label_Close_Click(sender As Object, e As EventArgs) Handles Label_Close.Click
@@ -31,9 +33,9 @@ Public Class LOGIN_FORM
         Dim password As String = TextBox_password.Text.Trim()
 
         Dim mydb As New DB()
-        Dim adapter As New MySqlDataAdapter()
+        Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
-        Dim command As New MySqlCommand("SELECT * FROM `users_info` WHERE `username`=@usn and `password`=@pass", mydb.getConnection)
+        Dim command As New NpgsqlCommand("SELECT * FROM users_info WHERE username = @usn AND password = @pass", mydb.getConnection)
 
         If username = "" Then
             MessageBox.Show("Enter The Username", "Empty Username", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -43,8 +45,8 @@ Public Class LOGIN_FORM
         Else
             ' check if this user exist
 
-            command.Parameters.Add("@usn", MySqlDbType.VarChar).Value = username
-            command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = password
+            command.Parameters.Add("@usn", NpgsqlDbType.Varchar).Value = username
+            command.Parameters.Add("@pass", NpgsqlDbType.VarChar).Value = password
 
             adapter.SelectCommand = command
             adapter.Fill(table)

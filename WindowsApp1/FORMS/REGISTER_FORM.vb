@@ -1,4 +1,5 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports Npgsql
 
 Public Class REGISTER_FORM
     Private Sub Button_register_Click(sender As Object, e As EventArgs) Handles Button_register.Click
@@ -22,10 +23,10 @@ Public Class REGISTER_FORM
         End If
 
         Dim mydb As New DB()
-        Dim adapter As New MySqlDataAdapter()
+        Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
 
-        Dim cmd As New MySqlCommand("INSERT INTO users_info (first_name, last_name, username, password, age) VALUES (@first_name, @last_name, @username, @password, @age)", mydb.getConnection)
+        Dim cmd As New NpgsqlCommand("INSERT INTO users_info (first_name, last_name, username, password, age) VALUES (@first_name, @last_name, @username, @password, @age)", mydb.getConnection)
         With cmd.Parameters
             .AddWithValue("@first_name", TextBox_fname.Text)
             .AddWithValue("@last_name", TextBox_lname.Text)

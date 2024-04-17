@@ -1,14 +1,15 @@
 ﻿
 Imports MySql.Data.MySqlClient
+Imports Npgsql
 
 
 Public Class DB
 
-    Private connection As New MySqlConnection("datasource=localhost;port=3306;username=root;password=admin;database=users")
+    Private connection As New NpgsqlConnection("Host=snuffleupagus.db.elephantsql.com;Port=5432;Username=mmrfecqh;Password=IZCtzNu-HIZIVnOtTfX-R4F5eO_oQNW7;Database=mmrfecqh;")
 
 
     ' create a unction to return the connection
-    ReadOnly Property getConnection() As MySqlConnection
+    ReadOnly Property getConnection() As NpgsqlConnection
         Get
             Return connection
         End Get
@@ -34,9 +35,9 @@ Public Class DB
     End Sub
 
     ' create a Function to get data
-    Public Function getData(ByVal query As String, ByVal params() As MySqlParameter) As DataTable
+    Public Function getData(ByVal query As String, ByVal params() As NpgsqlParameter) As DataTable
 
-        Dim command As New MySqlCommand(query, connection)
+        Dim command As New NpgsqlCommand(query, connection)
 
         If params IsNot Nothing Then
 
@@ -45,7 +46,7 @@ Public Class DB
         End If
 
         Dim table As New DataTable
-        Dim adapter As New MySqlDataAdapter
+        Dim adapter As New NpgsqlDataAdapter
         adapter.SelectCommand = command
         adapter.Fill(table)
 
@@ -55,9 +56,9 @@ Public Class DB
 
 
     ' create a Function to set data and execute a query
-    Public Function setData(ByVal query As String, ByVal params As MySqlParameter()) As Integer
+    Public Function setData(ByVal query As String, ByVal params As NpgsqlParameter()) As Integer
 
-        Dim command As New MySqlCommand(query, connection)
+        Dim command As New NpgsqlCommand(query, connection)
 
         If params IsNot Nothing Then
 
