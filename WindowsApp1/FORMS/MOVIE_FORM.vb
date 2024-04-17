@@ -288,23 +288,24 @@ Public Class MOVIE_FORM
         Dim selectedSortOption As String = ComboBox1.SelectedItem.ToString()
 
         ' Sort movies based on the selected option
-        If selectedSortOption = "Ascending length" Then
-            SortMoviesByLength(ascending:=True)
-        ElseIf selectedSortOption = "Descending length" Then
-            SortMoviesByLength(ascending:=False)
-        ElseIf selectedSortOption = "Ascending rating" Then
-            SortMoviesByRating(ascending:=True)
-        ElseIf selectedSortOption = "Descending rating" Then
-            SortMoviesByRating(ascending:=False)
-        ElseIf selectedSortOption = "Ascending year" Then
-            SortMoviesByReleaseDate(ascending:=True)
-        ElseIf selectedSortOption = "Descending year" Then
-            SortMoviesByReleaseDate(ascending:=False)
-        ElseIf selectedSortOption = "Ascending vote" Then
-            SortMoviesByVoteCount(ascending:=True)
-        ElseIf selectedSortOption = "Descending vote" Then
-            SortMoviesByVoteCount(ascending:=False)
-        End If
+        Select Case selectedSortOption
+            Case "Ascending length"
+                SortMoviesByLength(ascending:=True)
+            Case "Descending length"
+                SortMoviesByLength(ascending:=False)
+            Case "Ascending rating"
+                SortMoviesByRating(ascending:=True)
+            Case "Descending rating"
+                SortMoviesByRating(ascending:=False)
+            Case "Ascending year"
+                SortMoviesByReleaseDate(ascending:=True)
+            Case "Descending year"
+                SortMoviesByReleaseDate(ascending:=False)
+            Case "Ascending vote"
+                SortMoviesByVoteCount(ascending:=True)
+            Case "Descending vote"
+                SortMoviesByVoteCount(ascending:=False)
+        End Select
 
     End Sub
     Private Sub SortMoviesByLength(ascending As Boolean)
