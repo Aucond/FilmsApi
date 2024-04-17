@@ -33,7 +33,7 @@ Public Class LOGIN_FORM
         Dim mydb As New DB()
         Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
-        Dim command As New NpgsqlCommand("SELECT * FROM users_info WHERE username = @usn AND password = @pass", mydb.getConnection)
+        Dim command As New NpgsqlCommand("SELECT * FROM users_info WHERE username = @usn", mydb.getConnection)
 
         If username = "" Then
             MessageBox.Show("Enter The Username", "Empty Username", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -44,28 +44,31 @@ Public Class LOGIN_FORM
             ' check if this user exist
 
             command.Parameters.Add("@usn", NpgsqlDbType.Varchar).Value = username
-            command.Parameters.Add("@pass", NpgsqlDbType.Varchar).Value = password
 
             adapter.SelectCommand = command
             adapter.Fill(table)
 
             If table.Rows.Count > 0 Then
-                Dim movieForm As New MOVIE_FORM
-                Dim age As Integer
-                age = table.Rows(0)("age")
-                If age < 18 Then
-                    Me.Hide()
-                    MOVIE_FORM.Under18(table.Rows(0)("age"))
+                Dim hashedPasswordFromDB As String = table.Rows(0)("password").ToString()
+                Dim salt As String = table.Rows(0)("salt").ToString()
+                Dim inputPassword = CPasswordHash.HashPassword(password, salt)
+
+                If hashedPasswordFromDB = inputPassword Then
+                    Dim movieForm As New MOVIE_FORM
+                    Dim age As Integer
+                    age = table.Rows(0)("age")
+                    If age < 18 Then
+                        Me.Hide()
+                        MOVIE_FORM.Under18(table.Rows(0)("age"))
+                    Else
+                        Me.Hide()
+                        MOVIE_FORM.Show()
+                    End If
                 Else
-                    Me.Hide()
-                    MOVIE_FORM.Show()
+                    MessageBox.Show("This Username Or Password Doesn't Exist", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)
                 End If
 
-            Else
-                MessageBox.Show("This Username Or Password Doesn't Exist", "Wrong Info", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             End If
-
-
         End If
 
     End Sub
