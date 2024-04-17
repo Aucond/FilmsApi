@@ -27,7 +27,7 @@ Public Class MOVIE_FORM
     }
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
         searchTimer.Stop()
-        Dim searchQuery As String = TextBox1.Text
+        Dim searchQuery As String = txtboxSearch.Text
         If Not String.IsNullOrWhiteSpace(searchQuery) Then
             Await SearchMoviesAsync(searchQuery)
         Else
@@ -35,7 +35,7 @@ Public Class MOVIE_FORM
         End If
     End Sub
 
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+    Private Sub txtboxSearch_TextChanged(sender As Object, e As EventArgs) Handles txtboxSearch.TextChanged
 
         searchTimer.Stop()
         searchTimer.Start()
@@ -44,7 +44,7 @@ Public Class MOVIE_FORM
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         For Each kvp As KeyValuePair(Of Integer, String) In genreDictionary
-            ComboBox3.Items.Add(kvp.Value)
+            cmbboxFilter.Items.Add(kvp.Value)
         Next
 
     End Sub
@@ -52,10 +52,10 @@ Public Class MOVIE_FORM
         ' Here you can use the age parameter as needed
         If age < 18 Then
             Me.Show()
-            TextBox1.Hide()
+            txtboxSearch.Hide()
             Label2.Hide()
-            ComboBox3.Hide()
-            Button1.Hide()
+            cmbboxFilter.Hide()
+            btnFamilyFriendly.Hide()
             ListToolStripMenuItem.Visible = False
             Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
             Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
@@ -79,10 +79,10 @@ Public Class MOVIE_FORM
         ' Here you can use the age parameter as needed
         If age < 18 Then
             Me.Show()
-            TextBox1.Hide()
+            txtboxSearch.Hide()
             Label2.Hide()
-            ComboBox3.Hide()
-            Button1.Hide()
+            cmbboxFilter.Hide()
+            btnFamilyFriendly.Hide()
             AccountToolStripMenuItem.Visible = False
             Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
             Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
@@ -160,7 +160,7 @@ Public Class MOVIE_FORM
         End Using
 
     End Function
-    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Async Sub btnFamilyFriendly_Click(sender As Object, e As EventArgs) Handles btnFamilyFriendly.Click
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
 
@@ -264,10 +264,10 @@ Public Class MOVIE_FORM
         End Try
 
     End Function
-    Private Sub ComboBox3_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox3.SelectedIndexChanged
+    Private Sub cmbboxFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbboxFilter.SelectedIndexChanged
 
         ' Get the selected genre name
-        Dim selectedGenreName As String = ComboBox3.SelectedItem.ToString()
+        Dim selectedGenreName As String = cmbboxFilter.SelectedItem.ToString()
 
         ' Find the corresponding genre ID from genreDictionary
         Dim genreId As Integer = -1 ' Default value if genre ID is not found
@@ -282,10 +282,10 @@ Public Class MOVIE_FORM
 
     End Sub
 
-    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+    Private Sub cmbboxSort_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbboxSort.SelectedIndexChanged
 
         ' Get the selected sorting option
-        Dim selectedSortOption As String = ComboBox1.SelectedItem.ToString()
+        Dim selectedSortOption As String = cmbboxSort.SelectedItem.ToString()
 
         ' Sort movies based on the selected option
         Select Case selectedSortOption

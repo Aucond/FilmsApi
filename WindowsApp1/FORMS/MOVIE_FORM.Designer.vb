@@ -23,17 +23,17 @@ Partial Class MOVIE_FORM
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnFamilyFriendly = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.ComboBox3 = New System.Windows.Forms.ComboBox()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.cmbboxFilter = New System.Windows.Forms.ComboBox()
+        Me.cmbboxSort = New System.Windows.Forms.ComboBox()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AccountToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.txtboxSearch = New System.Windows.Forms.TextBox()
         Me.ListViewMovies = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
@@ -43,25 +43,25 @@ Partial Class MOVIE_FORM
         '
         'Panel1
         '
-        Me.Panel1.Controls.Add(Me.Button1)
+        Me.Panel1.Controls.Add(Me.btnFamilyFriendly)
         Me.Panel1.Controls.Add(Me.Label2)
         Me.Panel1.Controls.Add(Me.Label1)
-        Me.Panel1.Controls.Add(Me.ComboBox3)
-        Me.Panel1.Controls.Add(Me.ComboBox1)
+        Me.Panel1.Controls.Add(Me.cmbboxFilter)
+        Me.Panel1.Controls.Add(Me.cmbboxSort)
         Me.Panel1.Location = New System.Drawing.Point(9, 33)
         Me.Panel1.Margin = New System.Windows.Forms.Padding(4)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(147, 236)
         Me.Panel1.TabIndex = 9
         '
-        'Button1
+        'btnFamilyFriendly
         '
-        Me.Button1.Location = New System.Drawing.Point(3, 203)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(139, 30)
-        Me.Button1.TabIndex = 9
-        Me.Button1.Text = "Family Friendly"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnFamilyFriendly.Location = New System.Drawing.Point(3, 203)
+        Me.btnFamilyFriendly.Name = "btnFamilyFriendly"
+        Me.btnFamilyFriendly.Size = New System.Drawing.Size(139, 30)
+        Me.btnFamilyFriendly.TabIndex = 9
+        Me.btnFamilyFriendly.Text = "Family Friendly"
+        Me.btnFamilyFriendly.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -81,26 +81,26 @@ Partial Class MOVIE_FORM
         Me.Label1.TabIndex = 7
         Me.Label1.Text = "Sort By"
         '
-        'ComboBox3
+        'cmbboxFilter
         '
-        Me.ComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Location = New System.Drawing.Point(3, 74)
-        Me.ComboBox3.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBox3.Name = "ComboBox3"
-        Me.ComboBox3.Size = New System.Drawing.Size(139, 24)
-        Me.ComboBox3.TabIndex = 6
+        Me.cmbboxFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbboxFilter.FormattingEnabled = True
+        Me.cmbboxFilter.Location = New System.Drawing.Point(3, 74)
+        Me.cmbboxFilter.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmbboxFilter.Name = "cmbboxFilter"
+        Me.cmbboxFilter.Size = New System.Drawing.Size(139, 24)
+        Me.cmbboxFilter.TabIndex = 6
         '
-        'ComboBox1
+        'cmbboxSort
         '
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {"Ascending length", "Descending length", "", "Ascending rating", "Descending rating", "", "Ascending year", "Descending year", "", "Ascending vote", "Descending vote"})
-        Me.ComboBox1.Location = New System.Drawing.Point(3, 26)
-        Me.ComboBox1.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(139, 24)
-        Me.ComboBox1.TabIndex = 0
+        Me.cmbboxSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbboxSort.FormattingEnabled = True
+        Me.cmbboxSort.Items.AddRange(New Object() {"Ascending length", "Descending length", "", "Ascending rating", "Descending rating", "", "Ascending year", "Descending year", "", "Ascending vote", "Descending vote"})
+        Me.cmbboxSort.Location = New System.Drawing.Point(3, 26)
+        Me.cmbboxSort.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmbboxSort.Name = "cmbboxSort"
+        Me.cmbboxSort.Size = New System.Drawing.Size(139, 24)
+        Me.cmbboxSort.TabIndex = 0
         '
         'MenuStrip1
         '
@@ -124,24 +124,24 @@ Partial Class MOVIE_FORM
         Me.AccountToolStripMenuItem.Size = New System.Drawing.Size(98, 24)
         Me.AccountToolStripMenuItem.Text = "Watch later"
         '
-        'TextBox1
+        'txtboxSearch
         '
-        Me.TextBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
-        Me.TextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
-        Me.TextBox1.Location = New System.Drawing.Point(408, 70)
-        Me.TextBox1.Margin = New System.Windows.Forms.Padding(4)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(656, 22)
-        Me.TextBox1.TabIndex = 11
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.txtboxSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtboxSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtboxSearch.Location = New System.Drawing.Point(408, 70)
+        Me.txtboxSearch.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtboxSearch.Name = "txtboxSearch"
+        Me.txtboxSearch.Size = New System.Drawing.Size(656, 22)
+        Me.txtboxSearch.TabIndex = 11
+        Me.txtboxSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'ListViewMovies
         '
         Me.ListViewMovies.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ListViewMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
-        ListViewGroup1.Header = "ListViewGroup"
-        ListViewGroup1.Name = "ListViewGroup1"
-        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
+        ListViewGroup2.Header = "ListViewGroup"
+        ListViewGroup2.Name = "ListViewGroup1"
+        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
         Me.ListViewMovies.HideSelection = False
         Me.ListViewMovies.Location = New System.Drawing.Point(160, 33)
         Me.ListViewMovies.Margin = New System.Windows.Forms.Padding(4)
@@ -158,7 +158,7 @@ Partial Class MOVIE_FORM
         Me.ClientSize = New System.Drawing.Size(1376, 719)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.MenuStrip1)
-        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.txtboxSearch)
         Me.Controls.Add(Me.ListViewMovies)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "MOVIE_FORM"
@@ -173,16 +173,16 @@ Partial Class MOVIE_FORM
     End Sub
 
     Friend WithEvents Panel1 As Panel
-    Friend WithEvents ComboBox3 As ComboBox
-    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents cmbboxFilter As ComboBox
+    Friend WithEvents cmbboxSort As ComboBox
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents ListToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AccountToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents txtboxSearch As TextBox
     Friend WithEvents ListViewMovies As ListView
     Friend WithEvents Timer1 As Timer
     Friend WithEvents ColumnHeader1 As ColumnHeader
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btnFamilyFriendly As Button
 End Class

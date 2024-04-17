@@ -26,7 +26,7 @@ Partial Class LOGIN_FORM
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.guestBtn = New System.Windows.Forms.Button()
         Me.guestLbl = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnRegister = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Button_login = New System.Windows.Forms.Button()
         Me.TextBox_password = New System.Windows.Forms.TextBox()
@@ -57,7 +57,7 @@ Partial Class LOGIN_FORM
         Me.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.Panel2.Controls.Add(Me.guestBtn)
         Me.Panel2.Controls.Add(Me.guestLbl)
-        Me.Panel2.Controls.Add(Me.Button1)
+        Me.Panel2.Controls.Add(Me.btnRegister)
         Me.Panel2.Controls.Add(Me.Label5)
         Me.Panel2.Controls.Add(Me.Button_login)
         Me.Panel2.Controls.Add(Me.TextBox_password)
@@ -101,21 +101,21 @@ Partial Class LOGIN_FORM
         Me.guestLbl.TabIndex = 11
         Me.guestLbl.Text = "Continue as guest"
         '
-        'Button1
+        'btnRegister
         '
-        Me.Button1.BackColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(129, Byte), Integer))
-        Me.Button1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button1.FlatAppearance.BorderColor = System.Drawing.Color.White
-        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.ForeColor = System.Drawing.Color.White
-        Me.Button1.Location = New System.Drawing.Point(53, 392)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(4)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(148, 31)
-        Me.Button1.TabIndex = 10
-        Me.Button1.Text = "Register here"
-        Me.Button1.UseVisualStyleBackColor = False
+        Me.btnRegister.BackColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(129, Byte), Integer))
+        Me.btnRegister.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnRegister.FlatAppearance.BorderColor = System.Drawing.Color.White
+        Me.btnRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnRegister.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRegister.ForeColor = System.Drawing.Color.White
+        Me.btnRegister.Location = New System.Drawing.Point(53, 392)
+        Me.btnRegister.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnRegister.Name = "btnRegister"
+        Me.btnRegister.Size = New System.Drawing.Size(148, 31)
+        Me.btnRegister.TabIndex = 10
+        Me.btnRegister.Text = "Register here"
+        Me.btnRegister.UseVisualStyleBackColor = False
         '
         'Label5
         '
@@ -264,7 +264,7 @@ Partial Class LOGIN_FORM
     Friend WithEvents TextBox_username As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btnRegister As Button
     Friend WithEvents Label5 As Label
     Friend WithEvents guestBtn As Button
     Friend WithEvents guestLbl As Label

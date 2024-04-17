@@ -73,7 +73,7 @@ Public Class LOGIN_FORM
 
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub btnRegister_Click(sender As Object, e As EventArgs) Handles btnRegister.Click
 
         Me.Hide()
         REGISTER_FORM.Show()

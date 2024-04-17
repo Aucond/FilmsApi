@@ -159,7 +159,7 @@
     <Compile Include="CLASSES\ListViewReleaseDateComparer.vb" />
     <Compile Include="CLASSES\ListViewRuntimeComparer.vb" />
     <Compile Include="CLASSES\ListViewVoteCountComparer.vb" />
-    <Compile Include="CPasswordHash.vb" />
+    <Compile Include="CLASSES\CPasswordHash.vb" />
     <Compile Include="DATABASE\DB.vb" />
     <Compile Include="FORMS\MOVIE_FORM.vb">
       <SubType>Form</SubType>
