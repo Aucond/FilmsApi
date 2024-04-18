@@ -61,10 +61,11 @@ Public Class MOVIE_FORM
         ListViewMovies.View = View.Details
         ListViewMovies.Columns.Add("Name", 300)
         ListViewMovies.Columns.Add("Year", 100)
-        ListViewMovies.Columns.Add("Genres", 200)
+        ListViewMovies.Columns.Add("Genres", 100)
         ListViewMovies.Columns.Add("Rating", 50)
         ListViewMovies.Columns.Add("Length", 50)
         ListViewMovies.Columns.Add("Vote Count", 50)
+        ListViewMovies.Columns.Add("Company", 50)
         ListViewMovies.SmallImageList = posters
 
         Dim allFilms As New List(Of Integer)()
@@ -99,6 +100,7 @@ Public Class MOVIE_FORM
             item.SubItems.Add(rating)
             item.SubItems.Add(runtimeString)
             item.SubItems.Add(voteCount)
+            item.SubItems.Add(productionCompanies)
 
             ' If adultContent Is "false" Then
             ' item.SubItems.Add("No")
@@ -224,5 +226,13 @@ Public Class MOVIE_FORM
     Private Sub ListToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ListToolStripMenuItem.Click
         Me.Hide()
         LOGIN_FORM.Show()
+    End Sub
+
+    Private Async Sub cmbboxCompanies_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbboxCompanies.SelectedIndexChanged
+        Dim CSearch As New CSearch
+        If cmbboxCompanies.SelectedItem IsNot Nothing Then
+            Dim companies As String = cmbboxCompanies.SelectedItem.ToString()
+            Await CSearch.SearchMoviesByCompanyAsync(companies)
+        End If
     End Sub
 End Class
