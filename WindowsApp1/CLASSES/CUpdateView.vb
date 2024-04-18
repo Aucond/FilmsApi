@@ -1,6 +1,10 @@
 ﻿Public Class CUpdateView
+    Public Property userid As Integer
+    Public Sub SetIntegerValue(value As Integer)
+        userid = value
+        AddHandler MOVIE_FORM.ListViewMovies.ItemActivate, AddressOf ListViewMovies_ItemActivate
+    End Sub
     Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
-
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
         posters.ImageSize = New Size(100, 140) ' Approximate poster size
@@ -17,6 +21,7 @@
         MOVIE_FORM.ListViewMovies.Columns.Add("Vote Count", 50)
         MOVIE_FORM.ListViewMovies.Columns.Add("Company", 50)
         MOVIE_FORM.ListViewMovies.SmallImageList = posters
+
 
         Dim allFilms As New List(Of Integer)()
         Dim runtime As New List(Of Integer)()
@@ -51,7 +56,6 @@
             item.SubItems.Add(runtimeString)
             item.SubItems.Add(voteCount)
             item.SubItems.Add(productionCompanies)
-
             ' If adultContent Is "false" Then
             ' item.SubItems.Add("No")
             ' Else
@@ -68,11 +72,19 @@
 
             MOVIE_FORM.ListViewMovies.Items.Add(item)
         Next
-
         ' Automatically adjust column widths for better viewing
         For i As Integer = 0 To MOVIE_FORM.ListViewMovies.Columns.Count - 1
             MOVIE_FORM.ListViewMovies.Columns(i).Width = -2
         Next
 
+    End Sub
+    Public Sub ListViewMovies_ItemActivate(sender As Object, e As EventArgs)
+
+        ' Retrieve the selected item
+        Dim selectedItem As ListViewItem = DirectCast(MOVIE_FORM.ListViewMovies.SelectedItems(0), ListViewItem)
+        ' Retrieve the movie ID from the selected item
+        Dim movieId As Integer = CInt(selectedItem.ImageKey)
+        MessageBox.Show($"Clicked on movie with ID: {movieId}")
+        MessageBox.Show($"Person ID: {userid}")
     End Sub
 End Class

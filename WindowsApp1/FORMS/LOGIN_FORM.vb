@@ -1,7 +1,9 @@
-﻿Imports Npgsql
+﻿Imports Microsoft.VisualBasic.ApplicationServices
+Imports Npgsql
 Imports NpgsqlTypes
 
 Public Class LOGIN_FORM
+    Public personID As Double
     Private Sub Label_Close_Click(sender As Object, e As EventArgs) Handles Label_Close.Click
 
         ' close this form
@@ -53,12 +55,16 @@ Public Class LOGIN_FORM
                 Dim salt As String = table.Rows(0)("salt").ToString()
                 Dim inputPassword = CPasswordHash.HashPassword(password, salt)
                 Dim id As Integer = table.Rows(0)("id")
+                Dim updateView As New CUpdateView()
 
                 If hashedPasswordFromDB = inputPassword Then
                     Dim CAccountType As New CAccountType
                     Dim idNR As New MOVIE_FORM
                     Dim age As Integer = table.Rows(0)("age")
+
                     idNR.idNR(table.Rows(0)("id"))
+                    updateView.SetIntegerValue(table.Rows(0)("id"))
+
                     If age < 18 Then
                         Me.Hide()
                         CAccountType.Under18(table.Rows(0)("age"))

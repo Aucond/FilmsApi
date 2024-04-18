@@ -174,4 +174,8 @@ Public Class MOVIE_FORM
         End If
     End Sub
 
+
+    Private Sub ListViewMovies_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles ListViewMovies.ItemSelectionChanged
+
+    End Sub
 End Class
