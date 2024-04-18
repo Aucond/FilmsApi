@@ -22,7 +22,6 @@ Public Class CSearch
         End Using
 
     End Function
-
     Public Async Function SearchMovieRuntimeAsync(filmId As Integer) As Task(Of Integer)
 
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"

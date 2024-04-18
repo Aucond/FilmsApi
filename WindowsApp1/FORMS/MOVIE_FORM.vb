@@ -5,6 +5,7 @@ Imports System.Net.Http
 Public Class MOVIE_FORM
     Private WithEvents searchTimer As New System.Windows.Forms.Timer()
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
+
         searchTimer.Stop()
         Dim CSearch As New CSearch
         Dim searchQuery As String = txtboxSearch.Text
@@ -13,13 +14,17 @@ Public Class MOVIE_FORM
         Else
             ListViewMovies.Items.Clear()
         End If
+
     End Sub
 
     Private Sub txtboxSearch_TextChanged(sender As Object, e As EventArgs) Handles txtboxSearch.TextChanged
+
         searchTimer.Stop()
         searchTimer.Start()
+
     End Sub
     Public Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         Dim list As New CLists
         For Each kvp As KeyValuePair(Of Integer, String) In list.genreDictionary
             cmbboxFilter.Items.Add(kvp.Value)
@@ -31,6 +36,7 @@ Public Class MOVIE_FORM
 
     End Sub
     Public Async Sub btnFamilyFriendly_Click(sender As Object, e As EventArgs) Handles btnFamilyFriendly.Click
+
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
 
@@ -47,6 +53,7 @@ Public Class MOVIE_FORM
 
             End If
         End Using
+
     End Sub
 
     Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
@@ -224,15 +231,20 @@ Public Class MOVIE_FORM
     End Sub
 
     Private Sub ListToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ListToolStripMenuItem.Click
+
         Me.Hide()
         LOGIN_FORM.Show()
+
     End Sub
 
     Private Async Sub cmbboxCompanies_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbboxCompanies.SelectedIndexChanged
+
         Dim CSearch As New CSearch
         If cmbboxCompanies.SelectedItem IsNot Nothing Then
             Dim companies As String = cmbboxCompanies.SelectedItem.ToString()
             Await CSearch.SearchMoviesByCompanyAsync(companies)
         End If
+
     End Sub
+
 End Class
