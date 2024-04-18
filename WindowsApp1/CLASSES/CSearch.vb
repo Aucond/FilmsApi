@@ -3,6 +3,7 @@ Imports System.Net.Http
 
 Public Class CSearch
     Public Async Function SearchMoviesAsync(searchQuery As String) As Task
+        Dim CUpdateView As New CUpdateView
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim requestUrl As String = $"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&query={Uri.EscapeDataString(searchQuery)}"
 
@@ -12,9 +13,9 @@ Public Class CSearch
 
             If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
                 If MOVIE_FORM.ListViewMovies.InvokeRequired Then
-                    MOVIE_FORM.ListViewMovies.Invoke(Sub() MOVIE_FORM.UpdateListView(searchResults))
+                    MOVIE_FORM.ListViewMovies.Invoke(Sub() CUpdateView.UpdateListView(searchResults))
                 Else
-                    MOVIE_FORM.UpdateListView(searchResults)
+                    CUpdateView.UpdateListView(searchResults)
                 End If
 
             End If
@@ -40,7 +41,7 @@ Public Class CSearch
 
     End Function
     Public Async Function FilterMoviesAsync(genreId As String) As Task
-
+        Dim CUpdateView As New CUpdateView
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres={genreId}"
 
@@ -50,9 +51,9 @@ Public Class CSearch
 
             If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
                 If MOVIE_FORM.ListViewMovies.InvokeRequired Then
-                    MOVIE_FORM.ListViewMovies.Invoke(Sub() MOVIE_FORM.UpdateListView(searchResults))
+                    MOVIE_FORM.ListViewMovies.Invoke(Sub() CUpdateView.UpdateListView(searchResults))
                 Else
-                    MOVIE_FORM.UpdateListView(searchResults)
+                    CUpdateView.UpdateListView(searchResults)
                 End If
 
             End If
@@ -83,6 +84,7 @@ Public Class CSearch
     End Function
     Public Async Function SearchMoviesByCompanyAsync(companyName As String) As Task
         Dim list As New CLists
+        Dim CUpdateView As New CUpdateView
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim companyId As Integer = list.companyNames(companyName)
         Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_companies={companyId}"
@@ -93,9 +95,9 @@ Public Class CSearch
 
             If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
                 If MOVIE_FORM.ListViewMovies.InvokeRequired Then
-                    MOVIE_FORM.ListViewMovies.Invoke(Sub() MOVIE_FORM.UpdateListView(searchResults))
+                    MOVIE_FORM.ListViewMovies.Invoke(Sub() CUpdateView.UpdateListView(searchResults))
                 Else
-                    MOVIE_FORM.UpdateListView(searchResults)
+                    CUpdateView.UpdateListView(searchResults)
                 End If
             End If
         End Using

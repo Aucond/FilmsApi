@@ -163,6 +163,7 @@
     <Compile Include="CLASSES\ListViewVoteCountComparer.vb" />
     <Compile Include="CLASSES\CPasswordHash.vb" />
     <Compile Include="CLASSES\CSearch.vb" />
+    <Compile Include="CLASSES\CUpdateView.vb" />
     <Compile Include="DATABASE\DB.vb" />
     <Compile Include="FORMS\MOVIE_FORM.vb">
       <SubType>Form</SubType>

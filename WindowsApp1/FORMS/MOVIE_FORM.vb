@@ -36,7 +36,7 @@ Public Class MOVIE_FORM
 
     End Sub
     Public Async Sub btnFamilyFriendly_Click(sender As Object, e As EventArgs) Handles btnFamilyFriendly.Click
-
+        Dim CUpdateView As New CUpdateView
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
 
@@ -46,9 +46,9 @@ Public Class MOVIE_FORM
 
             If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
                 If ListViewMovies.InvokeRequired Then
-                    ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
+                    ListViewMovies.Invoke(Sub() CUpdateView.UpdateListView(searchResults))
                 Else
-                    UpdateListView(searchResults)
+                    CUpdateView.UpdateListView(searchResults)
                 End If
 
             End If
@@ -56,84 +56,7 @@ Public Class MOVIE_FORM
 
     End Sub
 
-    Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
-
-        ' Create ImageList and configure ListView
-        Dim posters As New ImageList()
-        posters.ImageSize = New Size(100, 140) ' Approximate poster size
-
-        ' Create a dictionary for genres
-        ' Configure ListView columns
-        ListViewMovies.Clear()
-        ListViewMovies.View = View.Details
-        ListViewMovies.Columns.Add("Name", 300)
-        ListViewMovies.Columns.Add("Year", 100)
-        ListViewMovies.Columns.Add("Genres", 100)
-        ListViewMovies.Columns.Add("Rating", 50)
-        ListViewMovies.Columns.Add("Length", 50)
-        ListViewMovies.Columns.Add("Vote Count", 50)
-        ListViewMovies.Columns.Add("Company", 50)
-        ListViewMovies.SmallImageList = posters
-
-        Dim allFilms As New List(Of Integer)()
-        Dim runtime As New List(Of Integer)()
-
-        ' Populate ListView with items
-        For Each movie In searchResults.results
-            Dim CSearch As New CSearch
-            Dim list As New CLists
-            Dim item As New ListViewItem(movie.title)
-            Dim year As String = If(Not String.IsNullOrEmpty(movie.release_date) AndAlso movie.release_date.Length >= 4, movie.release_date.Substring(0, 4), "N/A")
-            Dim genreNames As New List(Of String)()
-            Dim movieRuntime As Integer = Await CSearch.SearchMovieRuntimeAsync(movie.id)
-            Dim runtimeString As String = If(movieRuntime >= 0, $"{movieRuntime} min", "N/A")
-
-            ' Retrieve genre names based on genre IDs
-            For Each genreId In movie.genre_ids
-                If list.genreDictionary.ContainsKey(genreId) Then
-                    genreNames.Add(list.genreDictionary(genreId))
-                End If
-            Next
-
-            Dim productionCompanies As String = Await CSearch.GetProductionCompanyNamesAsync(movie.id)
-            Dim genres As String = String.Join(", ", genreNames) ' Join genre names with a comma
-            Dim rating As String = movie.vote_average.ToString("0.0") ' Format rating to one decimal place
-            Dim voteCount As String = movie.vote_count.ToString()
-            Dim adultContent As String = movie.adult.ToString()
-            allFilms.Add(movie.id)
-
-            item.SubItems.Add(year)
-            item.SubItems.Add(genres)
-            item.SubItems.Add(rating)
-            item.SubItems.Add(runtimeString)
-            item.SubItems.Add(voteCount)
-            item.SubItems.Add(productionCompanies)
-
-            ' If adultContent Is "false" Then
-            ' item.SubItems.Add("No")
-            ' Else
-            ' item.SubItems.Add("Yes")
-            ' End If
-
-            ' Load poster image
-            Dim posterUrl As String = $"https://image.tmdb.org/t/p/w500{movie.poster_path}"
-            Dim poster As Image = LoadImageFromUrl(posterUrl) ' Make sure LoadImageFromUrl supports synchronous requests
-            If poster IsNot Nothing Then
-                posters.Images.Add(movie.id.ToString(), poster)
-                item.ImageKey = movie.id.ToString()
-            End If
-
-            ListViewMovies.Items.Add(item)
-        Next
-
-        ' Automatically adjust column widths for better viewing
-        For i As Integer = 0 To ListViewMovies.Columns.Count - 1
-            ListViewMovies.Columns(i).Width = -2
-        Next
-
-    End Sub
-
-    Private Function LoadImageFromUrl(url As String) As Image
+    Public Function LoadImageFromUrl(url As String) As Image
 
         Try
             Using client As New WebClient()
@@ -238,13 +161,11 @@ Public Class MOVIE_FORM
     End Sub
 
     Private Async Sub cmbboxCompanies_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbboxCompanies.SelectedIndexChanged
-
         Dim CSearch As New CSearch
         If cmbboxCompanies.SelectedItem IsNot Nothing Then
             Dim companies As String = cmbboxCompanies.SelectedItem.ToString()
             Await CSearch.SearchMoviesByCompanyAsync(companies)
         End If
-
     End Sub
 
 End Class
