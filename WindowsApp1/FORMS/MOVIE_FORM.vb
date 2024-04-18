@@ -27,9 +27,10 @@ Public Class MOVIE_FORM
     }
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
         searchTimer.Stop()
+        Dim CSearch As New CSearch
         Dim searchQuery As String = txtboxSearch.Text
         If Not String.IsNullOrWhiteSpace(searchQuery) Then
-            Await SearchMoviesAsync(searchQuery)
+            Await CSearch.SearchMoviesAsync(searchQuery)
         Else
             ListViewMovies.Items.Clear()
         End If
@@ -48,119 +49,7 @@ Public Class MOVIE_FORM
         Next
 
     End Sub
-    Public Async Sub Under18(age As Integer)
-        ' Here you can use the age parameter as needed
-        If age < 18 Then
-            Me.Show()
-            txtboxSearch.Hide()
-            Label2.Hide()
-            cmbboxFilter.Hide()
-            btnFamilyFriendly.Hide()
-            ListToolStripMenuItem.Visible = False
-            Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-            Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
-
-            Using httpClient As New HttpClient()
-                Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-                Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
-
-                If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
-                    If ListViewMovies.InvokeRequired Then
-                        ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
-                    Else
-                        UpdateListView(searchResults)
-                    End If
-
-                End If
-            End Using
-        End If
-    End Sub
-    Public Async Sub Guest(age As Integer)
-        ' Here you can use the age parameter as needed
-        If age < 18 Then
-            Me.Show()
-            txtboxSearch.Hide()
-            Label2.Hide()
-            cmbboxFilter.Hide()
-            btnFamilyFriendly.Hide()
-            AccountToolStripMenuItem.Visible = False
-            Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-            Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
-
-            Using httpClient As New HttpClient()
-                Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-                Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
-
-                If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
-                    If ListViewMovies.InvokeRequired Then
-                        ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
-                    Else
-                        UpdateListView(searchResults)
-                    End If
-
-                End If
-            End Using
-        End If
-    End Sub
-    Public Async Function SearchMoviesAsync(searchQuery As String) As Task
-        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-        Dim requestUrl As String = $"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&query={Uri.EscapeDataString(searchQuery)}"
-
-        Using httpClient As New HttpClient()
-            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-            Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
-
-            If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
-                If ListViewMovies.InvokeRequired Then
-                    ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
-                Else
-                    UpdateListView(searchResults)
-                End If
-
-            End If
-
-        End Using
-
-    End Function
-
-    Public Async Function SearchMovieRuntimeAsync(filmId As Integer) As Task(Of Integer)
-
-        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-        Dim requestUrl As String = $"https://api.themoviedb.org/3/movie/{filmId}?api_key={apiKey}"
-
-        Using httpClient As New HttpClient()
-            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-            Dim movieDetails = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(response)
-
-            If movieDetails IsNot Nothing AndAlso movieDetails.ContainsKey("runtime") Then
-                Return Convert.ToInt32(movieDetails("runtime"))
-            Else
-                Return -1 ' Indicate runtime not found
-            End If
-        End Using
-
-    End Function
-    Public Async Function FilterMoviesAsync(genreId As String) As Task
-
-        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-        Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres={genreId}"
-
-        Using httpClient As New HttpClient()
-            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-            Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
-
-            If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
-                If ListViewMovies.InvokeRequired Then
-                    ListViewMovies.Invoke(Sub() UpdateListView(searchResults))
-                Else
-                    UpdateListView(searchResults)
-                End If
-
-            End If
-        End Using
-
-    End Function
-    Private Async Sub btnFamilyFriendly_Click(sender As Object, e As EventArgs) Handles btnFamilyFriendly.Click
+    Public Async Sub btnFamilyFriendly_Click(sender As Object, e As EventArgs) Handles btnFamilyFriendly.Click
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim requestUrl As String = $"https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&with_genres=10751"
 
@@ -178,29 +67,8 @@ Public Class MOVIE_FORM
             End If
         End Using
     End Sub
-    Private Async Function GetProductionCompanyNamesAsync(movieId As Integer) As Task(Of String)
 
-        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-        Dim requestUrl As String = $"https://api.themoviedb.org/3/movie/{movieId}?api_key={apiKey}"
-
-        Using httpClient As New HttpClient()
-            Dim response As String = Await httpClient.GetStringAsync(requestUrl)
-            Dim movieDetails = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(response)
-
-            Dim productionCompanies As New List(Of String)()
-
-            If movieDetails IsNot Nothing AndAlso movieDetails.ContainsKey("production_companies") Then
-                For Each company In movieDetails("production_companies")
-                    productionCompanies.Add(company("name").ToString())
-                Next
-            End If
-
-            Return String.Join(", ", productionCompanies)
-        End Using
-
-    End Function
-
-    Private Async Sub UpdateListView(searchResults As TmdbSearchResult)
+    Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
 
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
@@ -223,10 +91,11 @@ Public Class MOVIE_FORM
 
         ' Populate ListView with items
         For Each movie In searchResults.results
+            Dim CSearch As New CSearch
             Dim item As New ListViewItem(movie.title)
             Dim year As String = If(Not String.IsNullOrEmpty(movie.release_date) AndAlso movie.release_date.Length >= 4, movie.release_date.Substring(0, 4), "N/A")
             Dim genreNames As New List(Of String)()
-            Dim movieRuntime As Integer = Await SearchMovieRuntimeAsync(movie.id)
+            Dim movieRuntime As Integer = Await CSearch.SearchMovieRuntimeAsync(movie.id)
             Dim runtimeString As String = If(movieRuntime >= 0, $"{movieRuntime} min", "N/A")
 
             ' Retrieve genre names based on genre IDs
@@ -236,7 +105,7 @@ Public Class MOVIE_FORM
                 End If
             Next
 
-            Dim productionCompanies As String = Await GetProductionCompanyNamesAsync(movie.id)
+            Dim productionCompanies As String = Await CSearch.GetProductionCompanyNamesAsync(movie.id)
             Dim genres As String = String.Join(", ", genreNames) ' Join genre names with a comma
             Dim rating As String = movie.vote_average.ToString("0.0") ' Format rating to one decimal place
             Dim voteCount As String = movie.vote_count.ToString()
@@ -291,6 +160,7 @@ Public Class MOVIE_FORM
 
         ' Get the selected genre name
         Dim selectedGenreName As String = cmbboxFilter.SelectedItem.ToString()
+        Dim CSearch As New CSearch
 
         ' Find the corresponding genre ID from genreDictionary
         Dim genreId As Integer = -1 ' Default value if genre ID is not found
@@ -301,7 +171,7 @@ Public Class MOVIE_FORM
                 Exit For
             End If
         Next
-        FilterMoviesAsync(genreId)
+        CSearch.FilterMoviesAsync(genreId)
 
     End Sub
 

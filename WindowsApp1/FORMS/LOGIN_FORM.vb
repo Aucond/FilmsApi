@@ -54,12 +54,12 @@ Public Class LOGIN_FORM
                 Dim inputPassword = CPasswordHash.HashPassword(password, salt)
 
                 If hashedPasswordFromDB = inputPassword Then
-                    Dim movieForm As New MOVIE_FORM
+                    Dim CAccountType As New CAccountType
                     Dim age As Integer
                     age = table.Rows(0)("age")
                     If age < 18 Then
                         Me.Hide()
-                        MOVIE_FORM.Under18(table.Rows(0)("age"))
+                        CAccountType.Under18(table.Rows(0)("age"))
                     Else
                         Me.Hide()
                         MOVIE_FORM.Show()
@@ -83,8 +83,9 @@ Public Class LOGIN_FORM
     End Sub
 
     Private Sub guestBtn_Click(sender As Object, e As EventArgs) Handles guestBtn.Click
+        Dim CAccountType As New CAccountType
         Me.Hide()
-        MOVIE_FORM.Guest(10)
+        CAccountType.Guest(10)
     End Sub
 
 End Class
