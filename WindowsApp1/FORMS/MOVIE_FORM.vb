@@ -4,27 +4,6 @@ Imports Newtonsoft.Json
 Imports System.Net.Http
 Public Class MOVIE_FORM
     Private WithEvents searchTimer As New System.Windows.Forms.Timer()
-    Dim genreDictionary As New Dictionary(Of Integer, String) From {
-        {28, "Action"},
-        {12, "Adventure"},
-        {16, "Animation"},
-        {35, "Comedy"},
-        {80, "Crime"},
-        {99, "Documentary"},
-        {18, "Drama"},
-        {10751, "Family"},
-        {14, "Fantasy"},
-        {36, "History"},
-        {27, "Horror"},
-        {10402, "Music"},
-        {9648, "Mystery"},
-        {10749, "Romance"},
-        {878, "Science Fiction"},
-        {10770, "TV Movie"},
-        {53, "Thriller"},
-        {10752, "War"},
-        {37, "Western"}
-    }
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
         searchTimer.Stop()
         Dim CSearch As New CSearch
@@ -37,15 +16,17 @@ Public Class MOVIE_FORM
     End Sub
 
     Private Sub txtboxSearch_TextChanged(sender As Object, e As EventArgs) Handles txtboxSearch.TextChanged
-
         searchTimer.Stop()
         searchTimer.Start()
-
     End Sub
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        For Each kvp As KeyValuePair(Of Integer, String) In genreDictionary
+    Public Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim list As New CLists
+        For Each kvp As KeyValuePair(Of Integer, String) In list.genreDictionary
             cmbboxFilter.Items.Add(kvp.Value)
+        Next
+
+        For Each kvp As KeyValuePair(Of String, Integer) In list.companyNames
+            cmbboxCompanies.Items.Add(kvp.Key)
         Next
 
     End Sub
@@ -92,6 +73,7 @@ Public Class MOVIE_FORM
         ' Populate ListView with items
         For Each movie In searchResults.results
             Dim CSearch As New CSearch
+            Dim list As New CLists
             Dim item As New ListViewItem(movie.title)
             Dim year As String = If(Not String.IsNullOrEmpty(movie.release_date) AndAlso movie.release_date.Length >= 4, movie.release_date.Substring(0, 4), "N/A")
             Dim genreNames As New List(Of String)()
@@ -100,8 +82,8 @@ Public Class MOVIE_FORM
 
             ' Retrieve genre names based on genre IDs
             For Each genreId In movie.genre_ids
-                If genreDictionary.ContainsKey(genreId) Then
-                    genreNames.Add(genreDictionary(genreId))
+                If list.genreDictionary.ContainsKey(genreId) Then
+                    genreNames.Add(list.genreDictionary(genreId))
                 End If
             Next
 
@@ -161,11 +143,11 @@ Public Class MOVIE_FORM
         ' Get the selected genre name
         Dim selectedGenreName As String = cmbboxFilter.SelectedItem.ToString()
         Dim CSearch As New CSearch
-
+        Dim list As New CLists
         ' Find the corresponding genre ID from genreDictionary
         Dim genreId As Integer = -1 ' Default value if genre ID is not found
 
-        For Each kvp As KeyValuePair(Of Integer, String) In genreDictionary
+        For Each kvp As KeyValuePair(Of Integer, String) In List.genreDictionary
             If kvp.Value = selectedGenreName Then
                 genreId = kvp.Key
                 Exit For

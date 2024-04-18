@@ -155,6 +155,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CLASSES\CLists.vb" />
     <Compile Include="CLASSES\CAccountType.vb" />
     <Compile Include="CLASSES\ListViewRatingComparer.vb" />
     <Compile Include="CLASSES\ListViewReleaseDateComparer.vb" />
