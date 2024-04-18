@@ -23,7 +23,7 @@ Public Class LOGIN_FORM
 
     End Sub
 
-    Private Sub Button_login_Click(sender As Object, e As EventArgs) Handles Button_login.Click
+    Public Sub Button_login_Click(sender As Object, e As EventArgs) Handles Button_login.Click
 
         ' the login button 
         ' allow the user or not to access the application main window ( the dashboard )
@@ -52,11 +52,13 @@ Public Class LOGIN_FORM
                 Dim hashedPasswordFromDB As String = table.Rows(0)("password").ToString()
                 Dim salt As String = table.Rows(0)("salt").ToString()
                 Dim inputPassword = CPasswordHash.HashPassword(password, salt)
+                Dim id As Integer = table.Rows(0)("id")
 
                 If hashedPasswordFromDB = inputPassword Then
                     Dim CAccountType As New CAccountType
-                    Dim age As Integer
-                    age = table.Rows(0)("age")
+                    Dim idNR As New MOVIE_FORM
+                    Dim age As Integer = table.Rows(0)("age")
+                    idNR.idNR(table.Rows(0)("id"))
                     If age < 18 Then
                         Me.Hide()
                         CAccountType.Under18(table.Rows(0)("age"))

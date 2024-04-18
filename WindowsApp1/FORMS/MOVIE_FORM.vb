@@ -3,6 +3,8 @@ Imports System.IO
 Imports Newtonsoft.Json
 Imports System.Net.Http
 Public Class MOVIE_FORM
+
+
     Private WithEvents searchTimer As New System.Windows.Forms.Timer()
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
 
@@ -17,6 +19,10 @@ Public Class MOVIE_FORM
 
     End Sub
 
+    Public Function idNR(nr As Integer)
+        Return nr
+    End Function
+
     Private Sub txtboxSearch_TextChanged(sender As Object, e As EventArgs) Handles txtboxSearch.TextChanged
 
         searchTimer.Stop()
@@ -24,7 +30,6 @@ Public Class MOVIE_FORM
 
     End Sub
     Public Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         Dim list As New CLists
         For Each kvp As KeyValuePair(Of Integer, String) In list.genreDictionary
             cmbboxFilter.Items.Add(kvp.Value)
@@ -33,6 +38,7 @@ Public Class MOVIE_FORM
         For Each kvp As KeyValuePair(Of String, Integer) In list.companyNames
             cmbboxCompanies.Items.Add(kvp.Key)
         Next
+
 
     End Sub
     Public Async Sub btnFamilyFriendly_Click(sender As Object, e As EventArgs) Handles btnFamilyFriendly.Click
@@ -79,7 +85,7 @@ Public Class MOVIE_FORM
         ' Find the corresponding genre ID from genreDictionary
         Dim genreId As Integer = -1 ' Default value if genre ID is not found
 
-        For Each kvp As KeyValuePair(Of Integer, String) In List.genreDictionary
+        For Each kvp As KeyValuePair(Of Integer, String) In list.genreDictionary
             If kvp.Value = selectedGenreName Then
                 genreId = kvp.Key
                 Exit For
