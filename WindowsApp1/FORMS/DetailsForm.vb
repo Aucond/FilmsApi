@@ -1,7 +1,10 @@
 ﻿Imports System.Net
 Imports System.IO
+Imports Npgsql
+Imports NpgsqlTypes
 Imports Newtonsoft.Json
 Imports System.Net.Http
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
 Public Class DetailsForm
     Private movie As TmdbMovie
     Private posterPath As String
@@ -63,6 +66,44 @@ Public Class DetailsForm
     End Sub
 
     Private Sub btnWatchlist_Click(sender As Object, e As EventArgs) Handles btnWatchlist.Click
-        MessageBox.Show(userid)
+
+        Dim mydb As New DB()
+        Dim adapter As New NpgsqlDataAdapter()
+        Dim table As New DataTable()
+        Dim commandCheck As New NpgsqlCommand("SELECT movieid FROM users_info WHERE id = @UserID;", mydb.getConnection)
+
+        commandCheck.Parameters.AddWithValue("@UserID", userid)
+        adapter.SelectCommand = commandCheck
+        adapter.Fill(table)
+
+        If table.Rows.Count > 0 AndAlso Not table.Rows(0)("movieid") Is DBNull.Value Then
+            ' Assuming 'table' has a single row for the user
+            Dim movieIds As Integer() = CType(table.Rows(0)("movieid"), Integer())
+
+            ' Check if the movie ID already exists in the array
+            Dim movieExists As Boolean = False
+            For Each id As Integer In movieIds
+                If id = movie.id Then
+                    movieExists = True
+                    Exit For
+                End If
+            Next
+
+            ' If the movie already exists, display a message and exit
+            If movieExists Then
+                MessageBox.Show("Movie already exists in your watch list")
+                Return
+            End If
+        End If
+
+        Dim command As New NpgsqlCommand("UPDATE users_info SET movieid = array_append(movieid, @MovieID) WHERE id = @UserID;", mydb.getConnection)
+
+        command.Parameters.AddWithValue("@MovieID", movie.id)
+        command.Parameters.AddWithValue("@UserID", userid)
+
+        adapter.SelectCommand = command
+        adapter.Fill(table)
+
+        MessageBox.Show("Movie has been added to your watch list")
     End Sub
 End Class
