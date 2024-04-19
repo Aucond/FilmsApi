@@ -5,10 +5,12 @@ Imports System.Net.Http
 Public Class DetailsForm
     Private movie As TmdbMovie
     Private posterPath As String
+    Private userid As Integer
 
-    Public Sub New(parentForm As Form, movie As TmdbMovie)
+    Public Sub New(parentForm As Form, movie As TmdbMovie, id As Integer)
         InitializeComponent()
         Me.movie = movie
+        Me.userid = id
         Me.posterPath = "https://image.tmdb.org/t/p/w500" & movie.poster_path
         DisplayMovieDetails()
     End Sub
@@ -57,4 +59,7 @@ Public Class DetailsForm
         End Try
     End Sub
 
+    Private Sub btnWatchlist_Click(sender As Object, e As EventArgs) Handles btnWatchlist.Click
+        MessageBox.Show(userid)
+    End Sub
 End Class

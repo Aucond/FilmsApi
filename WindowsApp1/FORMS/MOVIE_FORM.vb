@@ -3,7 +3,10 @@ Imports System.IO
 Imports Newtonsoft.Json
 Imports System.Net.Http
 Public Class MOVIE_FORM
-
+    Public Property _userid As Integer
+    Public Sub SetIntegerValue(value As Integer)
+        _userid = value
+    End Sub
 
     Private WithEvents searchTimer As New System.Windows.Forms.Timer()
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
@@ -175,7 +178,7 @@ Public Class MOVIE_FORM
     End Sub
     Private Sub ListViewMovies_MouseClick(sender As Object, e As MouseEventArgs) Handles ListViewMovies.MouseClick
         Dim info As ListViewHitTestInfo = ListViewMovies.HitTest(e.Location)
-
+        Dim userid As Integer = _userid
         If info.Item IsNot Nothing Then
             Dim movie As TmdbMovie = CType(info.Item.Tag, TmdbMovie)
             If movie IsNot Nothing AndAlso Not String.IsNullOrEmpty(movie.poster_path) Then
@@ -185,7 +188,7 @@ Public Class MOVIE_FORM
                 ' Check if the click was on the poster image
                 If itemRect.Contains(e.Location) Then
                     ' Open the DetailsForm with the movie details
-                    Dim detailsForm As New DetailsForm(Me, movie)
+                    Dim detailsForm As New DetailsForm(Me, movie, userid)
                     detailsForm.Show()
                 End If
             End If

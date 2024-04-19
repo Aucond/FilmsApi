@@ -55,7 +55,7 @@ Public Class LOGIN_FORM
                 Dim salt As String = table.Rows(0)("salt").ToString()
                 Dim inputPassword = CPasswordHash.HashPassword(password, salt)
                 Dim id As Integer = table.Rows(0)("id")
-                Dim updateView As New CUpdateView()
+                Dim movieform As New MOVIE_FORM
 
                 If hashedPasswordFromDB = inputPassword Then
                     Dim CAccountType As New CAccountType
@@ -63,7 +63,7 @@ Public Class LOGIN_FORM
                     Dim age As Integer = table.Rows(0)("age")
 
                     idNR.idNR(table.Rows(0)("id"))
-                    updateView.SetIntegerValue(table.Rows(0)("id"))
+                    movieform.SetIntegerValue(table.Rows(0)("id"))
 
                     If age < 18 Then
                         Me.Hide()

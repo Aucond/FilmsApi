@@ -1,9 +1,4 @@
 ﻿Public Class CUpdateView
-    Public Property userid As Integer
-    Public Sub SetIntegerValue(value As Integer)
-        userid = value
-        AddHandler MOVIE_FORM.ListViewMovies.ItemActivate, AddressOf ListViewMovies_ItemActivate
-    End Sub
     Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
@@ -79,11 +74,5 @@
             MOVIE_FORM.ListViewMovies.Columns(i).Width = -2
         Next
 
-    End Sub
-    Public Sub ListViewMovies_ItemActivate(sender As Object, e As EventArgs)
-        ' Retrieve the selected item
-        Dim selectedItem As ListViewItem = DirectCast(MOVIE_FORM.ListViewMovies.SelectedItems(0), ListViewItem)
-        ' Retrieve the movie ID from the selected item
-        Dim movieId As Integer = CInt(selectedItem.ImageKey)
     End Sub
 End Class
