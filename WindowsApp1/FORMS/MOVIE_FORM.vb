@@ -206,6 +206,8 @@ Public Class MOVIE_FORM
             Dim genreNames As New List(Of String)()
             Dim movieRuntime As Integer = Await SearchMovieRuntimeAsync(movie.id)
             Dim runtimeString As String = If(movieRuntime >= 0, $"{movieRuntime} min", "N/A")
+            item.Tag = movie  ' movie should be an instance of TmdbMovie or a similar object
+            ListViewMovies.Items.Add(item)
 
             ' Retrieve genre names based on genre IDs
             For Each genreId In movie.genre_ids
@@ -240,7 +242,7 @@ Public Class MOVIE_FORM
                 item.ImageKey = movie.id.ToString()
             End If
 
-            ListViewMovies.Items.Add(item)
+
         Next
 
         ' Automatically adjust column widths for better viewing
@@ -345,5 +347,22 @@ Public Class MOVIE_FORM
         ListViewMovies.Sort()
 
     End Sub
+    Private Sub ListViewMovies_MouseClick(sender As Object, e As MouseEventArgs) Handles ListViewMovies.MouseClick
+        Dim info As ListViewHitTestInfo = ListViewMovies.HitTest(e.Location)
 
+        If info.Item IsNot Nothing Then
+            Dim movie As TmdbMovie = CType(info.Item.Tag, TmdbMovie)
+            If movie IsNot Nothing AndAlso Not String.IsNullOrEmpty(movie.poster_path) Then
+                ' Assuming that poster images are in the first column
+                Dim itemRect As Rectangle = info.Item.GetBounds(ItemBoundsPortion.Icon)
+
+                ' Check if the click was on the poster image
+                If itemRect.Contains(e.Location) Then
+                    ' Open the DetailsForm with the movie details
+                    Dim detailsForm As New DetailsForm(Me, movie)
+                    detailsForm.Show()
+                End If
+            End If
+        End If
+    End Sub
 End Class

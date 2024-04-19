@@ -7,4 +7,7 @@
     Public Property adult As String
     Public Property poster_path As String
     Public Property id As Integer
+    Public Property overview As String
+    Public Property original_language As String
+
 End Class

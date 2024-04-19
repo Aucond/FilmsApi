@@ -161,6 +161,12 @@
     <Compile Include="CLASSES\ListViewVoteCountComparer.vb" />
     <Compile Include="CLASSES\CPasswordHash.vb" />
     <Compile Include="DATABASE\DB.vb" />
+    <Compile Include="FORMS\DetailsForm.Designer.vb">
+      <DependentUpon>DetailsForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FORMS\DetailsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FORMS\MOVIE_FORM.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -200,6 +206,9 @@
     <Compile Include="CLASSES\TmdbSearchResult.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FORMS\DetailsForm.resx">
+      <DependentUpon>DetailsForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FORMS\MOVIE_FORM.resx">
       <DependentUpon>MOVIE_FORM.vb</DependentUpon>
     </EmbeddedResource>
