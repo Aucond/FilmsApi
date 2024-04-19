@@ -60,4 +60,24 @@ Public Class DetailsForm
     Private Sub VoteAverage_Click(sender As Object, e As EventArgs) Handles LabelVoteAverage.Click
 
     End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        ' Check if a user is logged in. This requires a user management system.
+        ' Assuming you have a method GetCurrentUserId that returns the logged-in user's ID or Nothing if no one is logged in.
+        Dim database As New DB()
+
+        Dim userId As Integer? = GetCurrentUserId()
+        If userId.HasValue Then
+            ' Call the method to add the movie to the watch list for the user
+            Dim success As Boolean = database.AddMovieToWatchList(userId.Value, movie)
+            If success Then
+                MessageBox.Show("Movie added to your watch list.")
+            Else
+                MessageBox.Show("Could not add the movie to your watch list.")
+            End If
+        Else
+            MessageBox.Show("You must be logged in to add movies to your watch list.")
+        End If
+    End Sub
+
 End Class

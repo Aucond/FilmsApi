@@ -75,5 +75,35 @@ Public Class DB
 
     End Function
 
+    Public Function AddMovieToWatchList(userId As Integer, movie As TmdbMovie) As Boolean
+        Dim query As String = "INSERT INTO watchlist (user_id, movie_id, title, poster_path) VALUES (@userId, @movieId, @title, @posterPath;"
 
+        ' Create the parameters
+        Dim params() As NpgsqlParameter = {
+            New NpgsqlParameter("@userId", userId),
+            New NpgsqlParameter("@movieId", movie.id),
+            New NpgsqlParameter("@title", movie.title),
+            New NpgsqlParameter("@posterPath", movie.poster_path)
+        }
+
+        ' Call the setData function to execute the query
+        Try
+            openConnection()
+            Dim result As Integer = setData(query, params)
+            closeConnection()
+            Return result > 0
+        Catch ex As Exception
+            ' Handle any errors
+            MessageBox.Show("An error occurred while adding to watch list: " & ex.Message)
+            Return False
+        End Try
+    End Function
+    ' A hypothetical property to hold the current user's ID.
+    ' This should be set when the user logs in to your application.
+    Public Property CurrentUserId As Integer?
+
+    ' A method to get the current user's ID
+    Public Function GetCurrentUserId() As Integer?
+        Return CurrentUserId
+    End Function
 End Class

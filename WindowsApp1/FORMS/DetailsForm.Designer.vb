@@ -91,7 +91,7 @@ Partial Class DetailsForm
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(119, 23)
         Me.Button1.TabIndex = 6
-        Me.Button1.Text = "Button1"
+        Me.Button1.Text = "AddToWatchList"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'DetailsForm
