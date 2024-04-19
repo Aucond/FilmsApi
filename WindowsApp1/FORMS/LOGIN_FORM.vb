@@ -62,8 +62,10 @@ Public Class LOGIN_FORM
                     Dim idNR As New MOVIE_FORM
                     Dim age As Integer = table.Rows(0)("age")
 
+
                     idNR.idNR(table.Rows(0)("id"))
-                    movieform.SetIntegerValue(table.Rows(0)("id"))
+
+                    personID = table.Rows(0)("id")
 
                     If age < 18 Then
                         Me.Hide()

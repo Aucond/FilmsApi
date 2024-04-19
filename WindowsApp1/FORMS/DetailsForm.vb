@@ -44,6 +44,9 @@ Public Class DetailsForm
         LabelOverview.BorderStyle = BorderStyle.FixedSingle
         LabelOverview.AutoEllipsis = True
 
+
+
+
         ' Ensure image fits in the PictureBox
         PictureBoxMovie.SizeMode = PictureBoxSizeMode.Zoom
         DisplayMovieDetails()

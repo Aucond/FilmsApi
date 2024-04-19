@@ -2,11 +2,9 @@
 Imports System.IO
 Imports Newtonsoft.Json
 Imports System.Net.Http
+Imports Microsoft.VisualBasic.ApplicationServices
 Public Class MOVIE_FORM
-    Public Property _userid As Integer
-    Public Sub SetIntegerValue(value As Integer)
-        _userid = value
-    End Sub
+    Dim _userid As Integer = LOGIN_FORM.personID
 
     Private WithEvents searchTimer As New System.Windows.Forms.Timer()
     Private Async Sub searchTimer_Tick(sender As Object, e As EventArgs) Handles searchTimer.Tick
@@ -176,19 +174,19 @@ Public Class MOVIE_FORM
             Await CSearch.SearchMoviesByCompanyAsync(companies)
         End If
     End Sub
+
     Private Sub ListViewMovies_MouseClick(sender As Object, e As MouseEventArgs) Handles ListViewMovies.MouseClick
         Dim info As ListViewHitTestInfo = ListViewMovies.HitTest(e.Location)
-        Dim userid As Integer = _userid
         If info.Item IsNot Nothing Then
-            Dim movie As TmdbMovie = CType(info.Item.Tag, TmdbMovie)
+            Dim movie As TmdbMovie = TryCast(info.Item.Tag, TmdbMovie)
             If movie IsNot Nothing AndAlso Not String.IsNullOrEmpty(movie.poster_path) Then
                 ' Assuming that poster images are in the first column
                 Dim itemRect As Rectangle = info.Item.GetBounds(ItemBoundsPortion.Icon)
 
                 ' Check if the click was on the poster image
                 If itemRect.Contains(e.Location) Then
-                    ' Open the DetailsForm with the movie details
-                    Dim detailsForm As New DetailsForm(Me, movie, userid)
+                    ' Pass the current user ID to the OpenDetailsForm method
+                    Dim detailsForm As New DetailsForm(ParentForm, movie, _userid)
                     detailsForm.Show()
                 End If
             End If
