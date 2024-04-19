@@ -35,6 +35,8 @@
             Dim genreNames As New List(Of String)()
             Dim movieRuntime As Integer = Await CSearch.SearchMovieRuntimeAsync(movie.id)
             Dim runtimeString As String = If(movieRuntime >= 0, $"{movieRuntime} min", "N/A")
+            item.Tag = movie
+
 
             ' Retrieve genre names based on genre IDs
             For Each genreId In movie.genre_ids
@@ -79,12 +81,9 @@
 
     End Sub
     Public Sub ListViewMovies_ItemActivate(sender As Object, e As EventArgs)
-
         ' Retrieve the selected item
         Dim selectedItem As ListViewItem = DirectCast(MOVIE_FORM.ListViewMovies.SelectedItems(0), ListViewItem)
         ' Retrieve the movie ID from the selected item
         Dim movieId As Integer = CInt(selectedItem.ImageKey)
-        MessageBox.Show($"Clicked on movie with ID: {movieId}")
-        MessageBox.Show($"Person ID: {userid}")
     End Sub
 End Class

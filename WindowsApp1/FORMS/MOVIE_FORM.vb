@@ -173,9 +173,22 @@ Public Class MOVIE_FORM
             Await CSearch.SearchMoviesByCompanyAsync(companies)
         End If
     End Sub
+    Private Sub ListViewMovies_MouseClick(sender As Object, e As MouseEventArgs) Handles ListViewMovies.MouseClick
+        Dim info As ListViewHitTestInfo = ListViewMovies.HitTest(e.Location)
 
+        If info.Item IsNot Nothing Then
+            Dim movie As TmdbMovie = CType(info.Item.Tag, TmdbMovie)
+            If movie IsNot Nothing AndAlso Not String.IsNullOrEmpty(movie.poster_path) Then
+                ' Assuming that poster images are in the first column
+                Dim itemRect As Rectangle = info.Item.GetBounds(ItemBoundsPortion.Icon)
 
-    Private Sub ListViewMovies_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles ListViewMovies.ItemSelectionChanged
-
+                ' Check if the click was on the poster image
+                If itemRect.Contains(e.Location) Then
+                    ' Open the DetailsForm with the movie details
+                    Dim detailsForm As New DetailsForm(Me, movie)
+                    detailsForm.Show()
+                End If
+            End If
+        End If
     End Sub
 End Class
