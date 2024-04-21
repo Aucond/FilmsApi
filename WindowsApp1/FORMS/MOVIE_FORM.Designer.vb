@@ -23,8 +23,10 @@ Partial Class MOVIE_FORM
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.cmbboxCompanies = New System.Windows.Forms.ComboBox()
         Me.btnFamilyFriendly = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -37,8 +39,6 @@ Partial Class MOVIE_FORM
         Me.ListViewMovies = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.cmbboxCompanies = New System.Windows.Forms.ComboBox()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -57,6 +57,25 @@ Partial Class MOVIE_FORM
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(147, 236)
         Me.Panel1.TabIndex = 9
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(3, 105)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(76, 16)
+        Me.Label3.TabIndex = 11
+        Me.Label3.Text = "Companies"
+        '
+        'cmbboxCompanies
+        '
+        Me.cmbboxCompanies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbboxCompanies.FormattingEnabled = True
+        Me.cmbboxCompanies.Location = New System.Drawing.Point(4, 125)
+        Me.cmbboxCompanies.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmbboxCompanies.Name = "cmbboxCompanies"
+        Me.cmbboxCompanies.Size = New System.Drawing.Size(139, 24)
+        Me.cmbboxCompanies.TabIndex = 10
         '
         'btnFamilyFriendly
         '
@@ -143,9 +162,9 @@ Partial Class MOVIE_FORM
         '
         Me.ListViewMovies.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ListViewMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
-        ListViewGroup2.Header = "ListViewGroup"
-        ListViewGroup2.Name = "ListViewGroup1"
-        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        ListViewGroup1.Header = "ListViewGroup"
+        ListViewGroup1.Name = "ListViewGroup1"
+        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.ListViewMovies.HideSelection = False
         Me.ListViewMovies.Location = New System.Drawing.Point(160, 33)
         Me.ListViewMovies.Margin = New System.Windows.Forms.Padding(4)
@@ -153,25 +172,6 @@ Partial Class MOVIE_FORM
         Me.ListViewMovies.Size = New System.Drawing.Size(1173, 650)
         Me.ListViewMovies.TabIndex = 10
         Me.ListViewMovies.UseCompatibleStateImageBehavior = False
-        '
-        'cmbboxCompanies
-        '
-        Me.cmbboxCompanies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbboxCompanies.FormattingEnabled = True
-        Me.cmbboxCompanies.Location = New System.Drawing.Point(4, 125)
-        Me.cmbboxCompanies.Margin = New System.Windows.Forms.Padding(4)
-        Me.cmbboxCompanies.Name = "cmbboxCompanies"
-        Me.cmbboxCompanies.Size = New System.Drawing.Size(139, 24)
-        Me.cmbboxCompanies.TabIndex = 10
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(3, 105)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(76, 16)
-        Me.Label3.TabIndex = 11
-        Me.Label3.Text = "Companies"
         '
         'MOVIE_FORM
         '

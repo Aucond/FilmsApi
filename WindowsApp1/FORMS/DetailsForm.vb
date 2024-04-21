@@ -77,7 +77,7 @@ Public Class DetailsForm
         adapter.Fill(table)
 
         If table.Rows.Count > 0 AndAlso Not table.Rows(0)("movieid") Is DBNull.Value Then
-            ' Assuming 'table' has a single row for the user
+
             Dim movieIds As Integer() = CType(table.Rows(0)("movieid"), Integer())
 
             ' Check if the movie ID already exists in the array

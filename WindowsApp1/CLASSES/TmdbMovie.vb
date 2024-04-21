@@ -9,4 +9,5 @@
     Public Property id As Integer
     Public Property overview As String
     Public Property original_language As String
+    Property time As Integer
 End Class
