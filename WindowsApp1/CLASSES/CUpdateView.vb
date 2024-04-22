@@ -1,4 +1,6 @@
-﻿Imports Microsoft.VisualBasic.ApplicationServices
+﻿Imports System.IO
+Imports System.Net
+Imports Microsoft.VisualBasic.ApplicationServices
 Imports Npgsql
 
 Public Class CUpdateView

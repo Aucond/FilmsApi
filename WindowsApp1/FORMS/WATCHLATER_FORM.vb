@@ -13,6 +13,7 @@ Public Class WATCHLATER_FORM
         AccessMovieID()
     End Sub
     Public Async Sub AccessMovieID()
+        Dim movieInfo As New CSearch
         Dim mydb As New DB()
         Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
@@ -28,7 +29,7 @@ Public Class WATCHLATER_FORM
 
             For Each movieId In movieIds
                 ' Call GetMovieInfo for each movie ID
-                Dim movie As TmdbMovie = Await GetMovieInfo(movieId)
+                Dim movie As TmdbMovie = Await movieInfo.GetMovieInfoWL(movieId)
                 If movie IsNot Nothing Then
                     ' Update the list of movies
                     movieList.Add(movie)
@@ -39,29 +40,6 @@ Public Class WATCHLATER_FORM
             ' Display movies in ListView
         End If
     End Sub
-    Private Async Function GetMovieInfo(movieID As Integer) As Task(Of TmdbMovie)
-        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
-        Dim url As String = $"https://api.themoviedb.org/3/movie/{movieID}?api_key={apiKey}"
-        Dim request As HttpWebRequest = WebRequest.Create(url)
-
-        Using response As HttpWebResponse = request.GetResponse()
-            Using reader As New StreamReader(response.GetResponseStream())
-                Dim jsonResponse As String = reader.ReadToEnd()
-                Dim jsonObject As JObject = JObject.Parse(jsonResponse)
-                Dim movie As New TmdbMovie()
-
-                movie.id = jsonObject("id")
-                movie.title = jsonObject("title")
-                movie.release_date = jsonObject("release_date")
-                movie.overview = jsonObject("overview")
-                movie.poster_path = jsonObject("poster_path")
-                movie.time = jsonObject("runtime")
-                movie.vote_average = jsonObject("vote_average")
-
-                Return movie
-            End Using
-        End Using
-    End Function
     Private Async Sub UpdateListView(movies As List(Of TmdbMovie))
         Dim posters As New ImageList()
         posters.ImageSize = New Size(100, 140)

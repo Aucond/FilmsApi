@@ -1,4 +1,7 @@
 ﻿Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
+Imports System.IO
+Imports System.Net
 Imports System.Net.Http
 
 Public Class CSearch
@@ -100,6 +103,29 @@ Public Class CSearch
                     CUpdateView.UpdateListView(searchResults)
                 End If
             End If
+        End Using
+    End Function
+    Public Async Function GetMovieInfoWL(movieID As Integer) As Task(Of TmdbMovie)
+        Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
+        Dim url As String = $"https://api.themoviedb.org/3/movie/{movieID}?api_key={apiKey}"
+        Dim request As HttpWebRequest = WebRequest.Create(url)
+
+        Using response As HttpWebResponse = request.GetResponse()
+            Using reader As New StreamReader(response.GetResponseStream())
+                Dim jsonResponse As String = reader.ReadToEnd()
+                Dim jsonObject As JObject = JObject.Parse(jsonResponse)
+                Dim movie As New TmdbMovie()
+
+                movie.id = jsonObject("id")
+                movie.title = jsonObject("title")
+                movie.release_date = jsonObject("release_date")
+                movie.overview = jsonObject("overview")
+                movie.poster_path = jsonObject("poster_path")
+                movie.time = jsonObject("runtime")
+                movie.vote_average = jsonObject("vote_average")
+
+                Return movie
+            End Using
         End Using
     End Function
 End Class
