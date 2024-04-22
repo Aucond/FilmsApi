@@ -5,6 +5,7 @@ Imports NpgsqlTypes
 Imports Newtonsoft.Json
 Imports System.Net.Http
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
+Imports Mysqlx.XDevAPI.Relational
 Public Class DetailsForm
     Private movie As TmdbMovie
     Private posterPath As String
@@ -146,5 +147,46 @@ Public Class DetailsForm
             MessageBox.Show("No movies found in your watch list")
         End If
         Me.Close()
+    End Sub
+
+    Private Sub btnBlock_Click(sender As Object, e As EventArgs) Handles btnBlock.Click
+        Dim mydb As New DB()
+        Dim adapter As New NpgsqlDataAdapter()
+        Dim table As New DataTable()
+        Dim commandCheck As New NpgsqlCommand("SELECT blockid FROM users_info WHERE id = @UserID;", mydb.getConnection)
+
+        commandCheck.Parameters.AddWithValue("@UserID", userid)
+        adapter.SelectCommand = commandCheck
+        adapter.Fill(table)
+
+        If table.Rows.Count > 0 AndAlso Not table.Rows(0)("blockid") Is DBNull.Value Then
+
+            Dim movieIds As Integer() = CType(table.Rows(0)("blockid"), Integer())
+
+            ' Check if the movie ID already exists in the array
+            Dim movieExists As Boolean = False
+            For Each id As Integer In movieIds
+                If id = movie.id Then
+                    movieExists = True
+                    Exit For
+                End If
+            Next
+
+            ' If the movie already exists, display a message and exit
+            If movieExists Then
+                MessageBox.Show("Movie already exists in your blocked list")
+                Return
+            End If
+        End If
+
+        Dim command As New NpgsqlCommand("UPDATE users_info SET blockid = array_append(blockid, @MovieID) WHERE id = @UserID;", mydb.getConnection)
+
+        command.Parameters.AddWithValue("@MovieID", movie.id)
+        command.Parameters.AddWithValue("@UserID", userid)
+
+        adapter.SelectCommand = command
+        adapter.Fill(table)
+
+        MessageBox.Show("Movie has been added to your blocked list")
     End Sub
 End Class

@@ -117,6 +117,7 @@ Public Class WATCHLATER_FORM
                 Dim detailsForm As New DetailsForm(Me, selectedMovie, userid)
                 detailsForm.Show()
                 detailsForm.btnWatchlist.Hide()
+                detailsForm.btnBlock.Hide()
                 Me.Close()
             End If
         End If

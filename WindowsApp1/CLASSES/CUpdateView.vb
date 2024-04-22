@@ -1,4 +1,8 @@
-﻿Public Class CUpdateView
+﻿Imports Microsoft.VisualBasic.ApplicationServices
+Imports Npgsql
+
+Public Class CUpdateView
+    Dim userid As Integer = LOGIN_FORM.personID
     Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
@@ -21,8 +25,26 @@
         Dim allFilms As New List(Of Integer)()
         Dim runtime As New List(Of Integer)()
 
+        Dim blockedMovieIds As New List(Of Integer)()
+        Dim mydb As New DB()
+        Dim commandBlockedMovies As New NpgsqlCommand("SELECT blockid FROM users_info WHERE id = @UserID;", mydb.getConnection)
+        commandBlockedMovies.Parameters.AddWithValue("@UserID", userid) ' Assuming userid is already defined somewhere in your code
+
+        Dim adapter As New NpgsqlDataAdapter(commandBlockedMovies)
+        Dim table As New DataTable()
+        adapter.Fill(table)
+
+        If table.Rows.Count > 0 AndAlso Not table.Rows(0)("blockid") Is DBNull.Value Then
+            blockedMovieIds.AddRange(CType(table.Rows(0)("blockid"), Integer()))
+        End If
+
         ' Populate ListView with items
         For Each movie In searchResults.results
+
+            If blockedMovieIds.Contains(movie.id) Then
+                Continue For ' Skip this movie if it's blocked
+            End If
+
             Dim CSearch As New CSearch
             Dim list As New CLists
             Dim item As New ListViewItem(movie.title)

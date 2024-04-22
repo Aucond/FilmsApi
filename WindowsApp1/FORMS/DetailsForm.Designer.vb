@@ -29,6 +29,7 @@ Partial Class DetailsForm
         Me.LabelVoteAverage = New System.Windows.Forms.Label()
         Me.btnWatchlist = New System.Windows.Forms.Button()
         Me.btnRemove = New System.Windows.Forms.Button()
+        Me.btnBlock = New System.Windows.Forms.Button()
         CType(Me.PictureBoxMovie, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -83,7 +84,7 @@ Partial Class DetailsForm
         '
         'btnWatchlist
         '
-        Me.btnWatchlist.Location = New System.Drawing.Point(1235, 652)
+        Me.btnWatchlist.Location = New System.Drawing.Point(1235, 612)
         Me.btnWatchlist.Margin = New System.Windows.Forms.Padding(4)
         Me.btnWatchlist.Name = "btnWatchlist"
         Me.btnWatchlist.Size = New System.Drawing.Size(159, 28)
@@ -93,18 +94,28 @@ Partial Class DetailsForm
         '
         'btnRemove
         '
-        Me.btnRemove.Location = New System.Drawing.Point(1235, 687)
+        Me.btnRemove.Location = New System.Drawing.Point(1234, 682)
         Me.btnRemove.Name = "btnRemove"
         Me.btnRemove.Size = New System.Drawing.Size(159, 26)
         Me.btnRemove.TabIndex = 7
         Me.btnRemove.Text = "Remove"
         Me.btnRemove.UseVisualStyleBackColor = True
         '
+        'btnBlock
+        '
+        Me.btnBlock.Location = New System.Drawing.Point(1235, 647)
+        Me.btnBlock.Name = "btnBlock"
+        Me.btnBlock.Size = New System.Drawing.Size(157, 29)
+        Me.btnBlock.TabIndex = 8
+        Me.btnBlock.Text = "Block"
+        Me.btnBlock.UseVisualStyleBackColor = True
+        '
         'DetailsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1428, 725)
+        Me.Controls.Add(Me.btnBlock)
         Me.Controls.Add(Me.btnRemove)
         Me.Controls.Add(Me.btnWatchlist)
         Me.Controls.Add(Me.LabelVoteAverage)
@@ -128,4 +139,5 @@ Partial Class DetailsForm
     Friend WithEvents LabelVoteAverage As Label
     Friend WithEvents btnWatchlist As Button
     Friend WithEvents btnRemove As Button
+    Friend WithEvents btnBlock As Button
 End Class
