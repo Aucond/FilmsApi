@@ -195,7 +195,6 @@ Public Class MOVIE_FORM
 
     Private Sub AccountToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AccountToolStripMenuItem.Click
         Dim watchLater As New WATCHLATER_FORM
-        Me.Close()
         WATCHLATER_FORM.Show()
         watchLater.AccessMovieID()
     End Sub

@@ -1,6 +1,7 @@
 ﻿Public Class TmdbMovie
     Public Property title As String
     Public Property release_date As String
+    Public Property genreID As Integer
     Public Property genre_ids As List(Of Integer)
     Public Property vote_average As Double
     Public Property vote_count As Double

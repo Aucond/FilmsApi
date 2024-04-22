@@ -7,7 +7,7 @@ Imports Size = System.Drawing.Size
 Public Class WATCHLATER_FORM
     Dim userid As Integer = LOGIN_FORM.personID
     Dim movieList As New List(Of TmdbMovie)()
-    Private WithEvents ListViewMovies As New ListView()
+    Public WithEvents ListViewMovies As New ListView()
     Public Sub New()
         InitializeComponent()
         AccessMovieID()
@@ -43,7 +43,6 @@ Public Class WATCHLATER_FORM
         Dim apiKey As String = "0d77f86880fc2d980da7ba1ab371bdbb"
         Dim url As String = $"https://api.themoviedb.org/3/movie/{movieID}?api_key={apiKey}"
         Dim request As HttpWebRequest = WebRequest.Create(url)
-        request.Method = "GET"
 
         Using response As HttpWebResponse = request.GetResponse()
             Using reader As New StreamReader(response.GetResponseStream())
@@ -57,6 +56,7 @@ Public Class WATCHLATER_FORM
                 movie.overview = jsonObject("overview")
                 movie.poster_path = jsonObject("poster_path")
                 movie.time = jsonObject("runtime")
+                movie.vote_average = jsonObject("vote_average")
 
                 Return movie
             End Using
@@ -72,10 +72,12 @@ Public Class WATCHLATER_FORM
         ListViewMovies.View = View.Details
 
         ' Add columns
+        ListViewMovies.Clear()
         ListViewMovies.Columns.Add("Poster", 100)
         ListViewMovies.Columns.Add("Name", 200)
         ListViewMovies.Columns.Add("Release year", 80)
         ListViewMovies.Columns.Add("Length", 80)
+        ListViewMovies.Columns.Add("Rating", 50)
         ListViewMovies.Columns.Add("Overview", 300)
         ListViewMovies.SmallImageList = posters
 
@@ -96,16 +98,14 @@ Public Class WATCHLATER_FORM
             item.SubItems.Add(movie.title)
             item.SubItems.Add(If(Not String.IsNullOrEmpty(movie.release_date), movie.release_date.Substring(0, 4), "N/A"))
             item.SubItems.Add(runtimeString)
+            item.SubItems.Add(movie.vote_average.ToString("0.0"))
             item.SubItems.Add(movie.overview)
 
             ' Add the item to the ListView
             ListViewMovies.Items.Add(item)
-
-            For j As Integer = 0 To ListViewMovies.Columns.Count - 1
-                ListViewMovies.Columns(i).Width = -2
-            Next
         Next
     End Sub
+    
     Public Function LoadImageFromUrl(url As String) As Image
         Try
             Using client As New WebClient()
@@ -118,4 +118,23 @@ Public Class WATCHLATER_FORM
             Return Nothing
         End Try
     End Function
+
+    Private Sub ListViewMovies_MouseClick(sender As Object, e As MouseEventArgs) Handles ListViewMovies.MouseClick
+        Dim info As ListViewHitTestInfo = ListViewMovies.HitTest(e.Location)
+        If info.Item IsNot Nothing Then
+            Dim movie As TmdbMovie = TryCast(info.Item.Tag, TmdbMovie)
+            If movie IsNot Nothing AndAlso Not String.IsNullOrEmpty(movie.poster_path) Then
+                ' Assuming that poster images are in the first column
+                Dim itemRect As Rectangle = info.Item.GetBounds(ItemBoundsPortion.Icon)
+
+                ' Check if the click was on the poster image
+                If itemRect.Contains(e.Location) Then
+                    ' Pass the current user ID to the OpenDetailsForm method
+                    Dim detailsForm As New DetailsForm(ParentForm, movie, userid)
+                    detailsForm.Show()
+                    MessageBox.Show("XD")
+                End If
+            End If
+        End If
+    End Sub
 End Class

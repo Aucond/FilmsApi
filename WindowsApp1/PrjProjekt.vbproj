@@ -208,10 +208,10 @@
     </Compile>
     <Compile Include="CLASSES\TmdbMovie.vb" />
     <Compile Include="CLASSES\TmdbSearchResult.vb" />
-    <Compile Include="WATCHLATER_FORM.Designer.vb">
+    <Compile Include="FORMS\WATCHLATER_FORM.Designer.vb">
       <DependentUpon>WATCHLATER_FORM.vb</DependentUpon>
     </Compile>
-    <Compile Include="WATCHLATER_FORM.vb">
+    <Compile Include="FORMS\WATCHLATER_FORM.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -234,7 +234,7 @@
     <EmbeddedResource Include="FORMS\REGISTER_FORM.resx">
       <DependentUpon>REGISTER_FORM.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WATCHLATER_FORM.resx">
+    <EmbeddedResource Include="FORMS\WATCHLATER_FORM.resx">
       <DependentUpon>WATCHLATER_FORM.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
