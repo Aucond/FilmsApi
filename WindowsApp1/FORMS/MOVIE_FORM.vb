@@ -180,7 +180,6 @@ Public Class MOVIE_FORM
         If info.Item IsNot Nothing Then
             Dim movie As TmdbMovie = TryCast(info.Item.Tag, TmdbMovie)
             If movie IsNot Nothing AndAlso Not String.IsNullOrEmpty(movie.poster_path) Then
-                ' Assuming that poster images are in the first column
                 Dim itemRect As Rectangle = info.Item.GetBounds(ItemBoundsPortion.Icon)
 
                 ' Check if the click was on the poster image

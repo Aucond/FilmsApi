@@ -11,11 +11,9 @@
         Dim itemX As ListViewItem = DirectCast(x, ListViewItem)
         Dim itemY As ListViewItem = DirectCast(y, ListViewItem)
 
-        ' Parse release years from subitem text
         Dim releaseYearX As Integer = If(Integer.TryParse(itemX.SubItems(1).Text, releaseYearX), releaseYearX, 0)
         Dim releaseYearY As Integer = If(Integer.TryParse(itemY.SubItems(1).Text, releaseYearY), releaseYearY, 0)
 
-        ' Compare release years based on sorting order
         If ascending Then
             Return releaseYearX.CompareTo(releaseYearY)
         Else

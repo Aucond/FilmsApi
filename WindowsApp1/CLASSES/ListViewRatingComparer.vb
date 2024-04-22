@@ -11,11 +11,9 @@
         Dim itemX As ListViewItem = DirectCast(x, ListViewItem)
         Dim itemY As ListViewItem = DirectCast(y, ListViewItem)
 
-        ' Parse ratings from subitem text
         Dim ratingX As Double = Double.Parse(itemX.SubItems(3).Text)
         Dim ratingY As Double = Double.Parse(itemY.SubItems(3).Text)
 
-        ' Compare ratings based on sorting order
         If ascending Then
             Return ratingX.CompareTo(ratingY)
         Else

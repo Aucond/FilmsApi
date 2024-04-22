@@ -3,7 +3,6 @@ Imports System.Net.Http
 
 Public Class CAccountType
     Public Async Sub Under18(age As Integer)
-        ' Here you can use the age parameter as needed
         Dim CUpdateView As New CUpdateView
         If age < 18 Then
             MOVIE_FORM.Show()
@@ -34,7 +33,6 @@ Public Class CAccountType
         End If
     End Sub
     Public Async Sub Guest(age As Integer)
-        ' Here you can use the age parameter as needed
         Dim CUpdateView As New CUpdateView
         If age < 18 Then
             MOVIE_FORM.Show()

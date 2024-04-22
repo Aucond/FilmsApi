@@ -13,14 +13,12 @@ Public Class LOGIN_FORM
 
     Private Sub Label_Close_MouseEnter(sender As Object, e As EventArgs) Handles Label_Close.MouseEnter
 
-        ' change the color to yellow
         Label_Close.ForeColor = Color.Yellow
 
     End Sub
 
     Private Sub Label_Close_MouseLeave(sender As Object, e As EventArgs) Handles Label_Close.MouseLeave
 
-        ' change the color to white
         Label_Close.ForeColor = Color.White
 
     End Sub

@@ -8,7 +8,7 @@ Public Class CUpdateView
     Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
-        posters.ImageSize = New Size(100, 140) ' Approximate poster size
+        posters.ImageSize = New Size(100, 140)
 
         ' Create a dictionary for genres
         ' Configure ListView columns
@@ -30,7 +30,7 @@ Public Class CUpdateView
         Dim blockedMovieIds As New List(Of Integer)()
         Dim mydb As New DB()
         Dim commandBlockedMovies As New NpgsqlCommand("SELECT blockid FROM users_info WHERE id = @UserID;", mydb.getConnection)
-        commandBlockedMovies.Parameters.AddWithValue("@UserID", userid) ' Assuming userid is already defined somewhere in your code
+        commandBlockedMovies.Parameters.AddWithValue("@UserID", userid)
 
         Dim adapter As New NpgsqlDataAdapter(commandBlockedMovies)
         Dim table As New DataTable()
@@ -66,7 +66,7 @@ Public Class CUpdateView
 
             Dim productionCompanies As String = Await CSearch.GetProductionCompanyNamesAsync(movie.id)
             Dim genres As String = String.Join(", ", genreNames) ' Join genre names with a comma
-            Dim rating As String = movie.vote_average.ToString("0.0") ' Format rating to one decimal place
+            Dim rating As String = movie.vote_average.ToString("0.0")
             Dim voteCount As String = movie.vote_count.ToString()
             Dim adultContent As String = movie.adult.ToString()
             allFilms.Add(movie.id)
@@ -77,15 +77,9 @@ Public Class CUpdateView
             item.SubItems.Add(runtimeString)
             item.SubItems.Add(voteCount)
             item.SubItems.Add(productionCompanies)
-            ' If adultContent Is "false" Then
-            ' item.SubItems.Add("No")
-            ' Else
-            ' item.SubItems.Add("Yes")
-            ' End If
 
-            ' Load poster image
             Dim posterUrl As String = $"https://image.tmdb.org/t/p/w500{movie.poster_path}"
-            Dim poster As Image = MOVIE_FORM.LoadImageFromUrl(posterUrl) ' Make sure LoadImageFromUrl supports synchronous requests
+            Dim poster As Image = MOVIE_FORM.LoadImageFromUrl(posterUrl)
             If poster IsNot Nothing Then
                 posters.Images.Add(movie.id.ToString(), poster)
                 item.ImageKey = movie.id.ToString()

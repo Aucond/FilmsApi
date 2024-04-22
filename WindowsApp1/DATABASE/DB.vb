@@ -6,14 +6,11 @@ Public Class DB
 
     Private connection As New NpgsqlConnection("Host=snuffleupagus.db.elephantsql.com;Port=5432;Username=mmrfecqh;Password=IZCtzNu-HIZIVnOtTfX-R4F5eO_oQNW7;Database=mmrfecqh;")
 
-
-    ' create a unction to return the connection
     ReadOnly Property getConnection() As NpgsqlConnection
         Get
             Return connection
         End Get
     End Property
-
 
     ' open the connection 
     Sub openConnection()
@@ -33,7 +30,7 @@ Public Class DB
 
     End Sub
 
-    ' create a Function to get data
+    ' Function to get data
     Public Function getData(ByVal query As String, ByVal params() As NpgsqlParameter) As DataTable
 
         Dim command As New NpgsqlCommand(query, connection)
@@ -54,7 +51,7 @@ Public Class DB
     End Function
 
 
-    ' create a Function to set data and execute a query
+    ' Function to set data and execute a query
     Public Function setData(ByVal query As String, ByVal params As NpgsqlParameter()) As Integer
 
         Dim command As New NpgsqlCommand(query, connection)

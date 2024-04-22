@@ -20,11 +20,10 @@ Public Class DetailsForm
     End Sub
 
     Private Sub DisplayMovieDetails()
+
         ' Display details of movie in the form controls
-        ' For example:
         LabelTitle.Text = movie.title
         LabelOverview.Text = movie.overview
-        ' Add more fields as per your UI design
         If Not String.IsNullOrEmpty(movie.release_date) AndAlso
     DateTime.TryParse(movie.release_date, Nothing) Then
 
@@ -33,8 +32,6 @@ Public Class DetailsForm
         Else
             LabelReleaseDate.Text = "N/A"
         End If
-
-        ' Set the vote average and original language
         LabelVoteAverage.Text = movie.vote_average.ToString("0.0") ' Formatting to one decimal place
 
     End Sub
@@ -48,10 +45,6 @@ Public Class DetailsForm
         LabelOverview.BorderStyle = BorderStyle.FixedSingle
         LabelOverview.AutoEllipsis = True
 
-
-
-
-        ' Ensure image fits in the PictureBox
         PictureBoxMovie.SizeMode = PictureBoxSizeMode.Zoom
         DisplayMovieDetails()
         Try
