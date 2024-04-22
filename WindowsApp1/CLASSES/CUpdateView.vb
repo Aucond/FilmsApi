@@ -99,4 +99,5 @@ Public Class CUpdateView
         Next
 
     End Sub
+
 End Class
