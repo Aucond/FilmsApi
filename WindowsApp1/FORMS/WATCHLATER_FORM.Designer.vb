@@ -28,7 +28,7 @@ Partial Class WATCHLATER_FORM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1531, 888)
+        Me.ClientSize = New System.Drawing.Size(1328, 859)
         Me.Name = "WATCHLATER_FORM"
         Me.Text = "WATCHLATER_FORM"
         Me.ResumeLayout(False)

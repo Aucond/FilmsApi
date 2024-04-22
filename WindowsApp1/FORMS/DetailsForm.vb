@@ -35,7 +35,7 @@ Public Class DetailsForm
 
         ' Set the vote average and original language
         LabelVoteAverage.Text = movie.vote_average.ToString("0.0") ' Formatting to one decimal place
-        LabelOriginalLanguage.Text = movie.original_language.ToUpper() ' Assuming you want the language code in uppercase
+
     End Sub
 
     Private Async Sub DetailsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -105,5 +105,46 @@ Public Class DetailsForm
         adapter.Fill(table)
 
         MessageBox.Show("Movie has been added to your watch list")
+    End Sub
+
+    Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
+        Dim watchLater As New WATCHLATER_FORM
+        Dim mydb As New DB()
+        Dim adapter As New NpgsqlDataAdapter()
+        Dim table As New DataTable()
+        Dim commandCheck As New NpgsqlCommand("SELECT movieid FROM users_info WHERE id = @UserID;", mydb.getConnection)
+
+        commandCheck.Parameters.AddWithValue("@UserID", userid)
+        adapter.SelectCommand = commandCheck
+        adapter.Fill(table)
+
+        If table.Rows.Count > 0 AndAlso Not table.Rows(0)("movieid") Is DBNull.Value Then
+
+            Dim movieIds As Integer() = CType(table.Rows(0)("movieid"), Integer())
+
+            Dim movieIndex As Integer = Array.IndexOf(movieIds, movie.id)
+
+            If movieIndex <> -1 Then
+
+                Dim updatedMovieIds As New List(Of Integer)(movieIds)
+                updatedMovieIds.RemoveAt(movieIndex)
+
+                Dim updatedMovieIdsArray As Integer() = updatedMovieIds.ToArray()
+                Dim commandRemove As New NpgsqlCommand("UPDATE users_info SET movieid = @MovieIDArray WHERE id = @UserID;", mydb.getConnection)
+
+                commandRemove.Parameters.AddWithValue("@MovieIDArray", NpgsqlDbType.Array Or NpgsqlDbType.Integer, updatedMovieIdsArray)
+                commandRemove.Parameters.AddWithValue("@UserID", userid)
+
+                adapter.SelectCommand = commandRemove
+                adapter.Fill(table)
+
+                MessageBox.Show("Movie has been removed from your watch list")
+            Else
+                MessageBox.Show("Movie does not exist in your watch list")
+            End If
+        Else
+            MessageBox.Show("No movies found in your watch list")
+        End If
+        Me.Close()
     End Sub
 End Class

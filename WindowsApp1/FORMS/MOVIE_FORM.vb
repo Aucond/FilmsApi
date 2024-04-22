@@ -188,6 +188,7 @@ Public Class MOVIE_FORM
                     ' Pass the current user ID to the OpenDetailsForm method
                     Dim detailsForm As New DetailsForm(ParentForm, movie, _userid)
                     detailsForm.Show()
+                    detailsForm.btnRemove.Hide()
                 End If
             End If
         End If

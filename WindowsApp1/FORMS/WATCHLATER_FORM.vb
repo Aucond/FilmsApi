@@ -105,7 +105,22 @@ Public Class WATCHLATER_FORM
             ListViewMovies.Items.Add(item)
         Next
     End Sub
-    
+    Private Sub ListViewMovies_MouseClick(sender As Object, e As MouseEventArgs) Handles ListViewMovies.MouseClick
+        ' Check if an item is clicked
+        Dim selectedItem As ListViewItem = ListViewMovies.GetItemAt(e.X, e.Y)
+        If selectedItem IsNot Nothing Then
+            ' Retrieve the corresponding movie from the movieList
+            Dim selectedMovieIndex As Integer = selectedItem.Index
+            If selectedMovieIndex >= 0 AndAlso selectedMovieIndex < movieList.Count Then
+                Dim selectedMovie As TmdbMovie = movieList(selectedMovieIndex)
+                ' Open the DetailsForm for the selected movie
+                Dim detailsForm As New DetailsForm(Me, selectedMovie, userid)
+                detailsForm.Show()
+                detailsForm.btnWatchlist.Hide()
+                Me.Close()
+            End If
+        End If
+    End Sub
     Public Function LoadImageFromUrl(url As String) As Image
         Try
             Using client As New WebClient()
@@ -118,23 +133,4 @@ Public Class WATCHLATER_FORM
             Return Nothing
         End Try
     End Function
-
-    Private Sub ListViewMovies_MouseClick(sender As Object, e As MouseEventArgs) Handles ListViewMovies.MouseClick
-        Dim info As ListViewHitTestInfo = ListViewMovies.HitTest(e.Location)
-        If info.Item IsNot Nothing Then
-            Dim movie As TmdbMovie = TryCast(info.Item.Tag, TmdbMovie)
-            If movie IsNot Nothing AndAlso Not String.IsNullOrEmpty(movie.poster_path) Then
-                ' Assuming that poster images are in the first column
-                Dim itemRect As Rectangle = info.Item.GetBounds(ItemBoundsPortion.Icon)
-
-                ' Check if the click was on the poster image
-                If itemRect.Contains(e.Location) Then
-                    ' Pass the current user ID to the OpenDetailsForm method
-                    Dim detailsForm As New DetailsForm(ParentForm, movie, userid)
-                    detailsForm.Show()
-                    MessageBox.Show("XD")
-                End If
-            End If
-        End If
-    End Sub
 End Class

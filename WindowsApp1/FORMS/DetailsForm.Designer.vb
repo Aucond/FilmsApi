@@ -27,8 +27,8 @@ Partial Class DetailsForm
         Me.LabelReleaseDate = New System.Windows.Forms.Label()
         Me.LabelOverview = New System.Windows.Forms.Label()
         Me.LabelVoteAverage = New System.Windows.Forms.Label()
-        Me.LabelOriginalLanguage = New System.Windows.Forms.Label()
         Me.btnWatchlist = New System.Windows.Forms.Button()
+        Me.btnRemove = New System.Windows.Forms.Button()
         CType(Me.PictureBoxMovie, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -44,7 +44,7 @@ Partial Class DetailsForm
         'LabelTitle
         '
         Me.LabelTitle.AutoSize = True
-        Me.LabelTitle.Location = New System.Drawing.Point(433, 38)
+        Me.LabelTitle.Location = New System.Drawing.Point(433, 55)
         Me.LabelTitle.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelTitle.Name = "LabelTitle"
         Me.LabelTitle.Size = New System.Drawing.Size(48, 16)
@@ -81,16 +81,6 @@ Partial Class DetailsForm
         Me.LabelVoteAverage.TabIndex = 4
         Me.LabelVoteAverage.Text = "Label4"
         '
-        'LabelOriginalLanguage
-        '
-        Me.LabelOriginalLanguage.AutoSize = True
-        Me.LabelOriginalLanguage.Location = New System.Drawing.Point(433, 82)
-        Me.LabelOriginalLanguage.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LabelOriginalLanguage.Name = "LabelOriginalLanguage"
-        Me.LabelOriginalLanguage.Size = New System.Drawing.Size(48, 16)
-        Me.LabelOriginalLanguage.TabIndex = 5
-        Me.LabelOriginalLanguage.Text = "Label5"
-        '
         'btnWatchlist
         '
         Me.btnWatchlist.Location = New System.Drawing.Point(1235, 652)
@@ -101,13 +91,22 @@ Partial Class DetailsForm
         Me.btnWatchlist.Text = "Add to watchlist"
         Me.btnWatchlist.UseVisualStyleBackColor = True
         '
+        'btnRemove
+        '
+        Me.btnRemove.Location = New System.Drawing.Point(1235, 687)
+        Me.btnRemove.Name = "btnRemove"
+        Me.btnRemove.Size = New System.Drawing.Size(159, 26)
+        Me.btnRemove.TabIndex = 7
+        Me.btnRemove.Text = "Remove"
+        Me.btnRemove.UseVisualStyleBackColor = True
+        '
         'DetailsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1428, 725)
+        Me.Controls.Add(Me.btnRemove)
         Me.Controls.Add(Me.btnWatchlist)
-        Me.Controls.Add(Me.LabelOriginalLanguage)
         Me.Controls.Add(Me.LabelVoteAverage)
         Me.Controls.Add(Me.LabelOverview)
         Me.Controls.Add(Me.LabelReleaseDate)
@@ -127,6 +126,6 @@ Partial Class DetailsForm
     Friend WithEvents LabelReleaseDate As Label
     Friend WithEvents LabelOverview As Label
     Friend WithEvents LabelVoteAverage As Label
-    Friend WithEvents LabelOriginalLanguage As Label
     Friend WithEvents btnWatchlist As Button
+    Friend WithEvents btnRemove As Button
 End Class
