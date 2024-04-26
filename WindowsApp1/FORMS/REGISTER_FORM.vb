@@ -3,8 +3,10 @@
 Public Class REGISTER_FORM
     Private Sub Button_register_Click(sender As Object, e As EventArgs) Handles Button_register.Click
         Dim age As String = TextBox_age.Text.Trim()
-        Dim salt As String = CPasswordHash.GenerateSalt()
-        Dim password As String = CPasswordHash.HashPassword(TextBox_password.Text, salt)
+        Dim PasswordHash As PrjPasswordHash.IPasswordHash
+        PasswordHash = New PrjPasswordHash.CPasswordHash
+        Dim salt As String = PasswordHash.GenerateSalt
+        Dim password As String = PasswordHash.HashPassword(TextBox_password.Text, salt)
 
         If Not IsNumeric(age) Then
             MessageBox.Show("Incorrect age!")

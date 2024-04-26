@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PrjProjekt", "WindowsApp1\PrjProjekt.vbproj", "{016AB465-7529-466A-8A6D-1127606D11CE}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PrjPasswordHash", "PrjPasswordHash\PrjPasswordHash.vbproj", "{2FDA5D9F-C8E8-4FD7-8001-76A02F8DCB05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{016AB465-7529-466A-8A6D-1127606D11CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{016AB465-7529-466A-8A6D-1127606D11CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{016AB465-7529-466A-8A6D-1127606D11CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FDA5D9F-C8E8-4FD7-8001-76A02F8DCB05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FDA5D9F-C8E8-4FD7-8001-76A02F8DCB05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FDA5D9F-C8E8-4FD7-8001-76A02F8DCB05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FDA5D9F-C8E8-4FD7-8001-76A02F8DCB05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

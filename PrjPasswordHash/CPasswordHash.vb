@@ -2,14 +2,16 @@
 Imports System.Text
 
 Public Class CPasswordHash
-    Public Shared Function GenerateSalt() As String
+    Implements IPasswordHash
+
+    Public Function GenerateSalt() As String Implements IPasswordHash.GenerateSalt
         Dim rng As New RNGCryptoServiceProvider()
         Dim saltBytes(15) As Byte
         rng.GetBytes(saltBytes)
         Return Convert.ToBase64String(saltBytes)
     End Function
 
-    Public Shared Function HashPassword(password As String, salt As String) As String
+    Public Function HashPassword(password As String, salt As String) As String Implements IPasswordHash.HashPassword
         Dim saltedPassword As String = password & salt
         Dim sha256 As SHA256 = SHA256.Create()
         Dim bytes As Byte() = sha256.ComputeHash(Encoding.UTF8.GetBytes(saltedPassword))

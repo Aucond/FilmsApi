@@ -24,6 +24,8 @@ Public Class LOGIN_FORM
     End Sub
 
     Public Sub Button_login_Click(sender As Object, e As EventArgs) Handles Button_login.Click
+        Dim PasswordHash As PrjPasswordHash.IPasswordHash
+        PasswordHash = New PrjPasswordHash.CPasswordHash
 
         ' the login button 
         ' allow the user or not to access the application main window ( the dashboard )
@@ -51,7 +53,7 @@ Public Class LOGIN_FORM
             If table.Rows.Count > 0 Then
                 Dim hashedPasswordFromDB As String = table.Rows(0)("password").ToString()
                 Dim salt As String = table.Rows(0)("salt").ToString()
-                Dim inputPassword = CPasswordHash.HashPassword(password, salt)
+                Dim inputPassword = PasswordHash.HashPassword(password, salt)
                 Dim id As Integer = table.Rows(0)("id")
                 Dim movieform As New MOVIE_FORM
 
