@@ -263,10 +263,9 @@ Public Class MOVIE_FORM
             Next
 
             ' Export data to CSV file
-            Dim rowsWritten As Integer = exporter.saveDataToCsv(data, dataAppend)
+            exporter.saveDataToCsv(data, dataAppend)
 
             ' Display a message indicating the number of rows written and the file path
-            MessageBox.Show($"Data exported to {filePath}. {rowsWritten} rows written.")
         Else
             MessageBox.Show("No data found in the table.")
         End If
