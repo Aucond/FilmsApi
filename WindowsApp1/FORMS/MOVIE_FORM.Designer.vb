@@ -23,7 +23,7 @@ Partial Class MOVIE_FORM
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup5 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cmbboxCompanies = New System.Windows.Forms.ComboBox()
@@ -39,6 +39,14 @@ Partial Class MOVIE_FORM
         Me.ListViewMovies = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.btnDwnld = New System.Windows.Forms.Button()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.txtBoxQualifier = New System.Windows.Forms.TextBox()
+        Me.txtBoxDelimiter = New System.Windows.Forms.TextBox()
+        Me.chkBoxData = New System.Windows.Forms.CheckBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -138,13 +146,13 @@ Partial Class MOVIE_FORM
         'ListToolStripMenuItem
         '
         Me.ListToolStripMenuItem.Name = "ListToolStripMenuItem"
-        Me.ListToolStripMenuItem.Size = New System.Drawing.Size(60, 24)
+        Me.ListToolStripMenuItem.Size = New System.Drawing.Size(60, 26)
         Me.ListToolStripMenuItem.Text = "Login"
         '
         'AccountToolStripMenuItem
         '
         Me.AccountToolStripMenuItem.Name = "AccountToolStripMenuItem"
-        Me.AccountToolStripMenuItem.Size = New System.Drawing.Size(98, 24)
+        Me.AccountToolStripMenuItem.Size = New System.Drawing.Size(98, 26)
         Me.AccountToolStripMenuItem.Text = "Watch later"
         '
         'txtboxSearch
@@ -162,9 +170,9 @@ Partial Class MOVIE_FORM
         '
         Me.ListViewMovies.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ListViewMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
-        ListViewGroup1.Header = "ListViewGroup"
-        ListViewGroup1.Name = "ListViewGroup1"
-        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
+        ListViewGroup5.Header = "ListViewGroup"
+        ListViewGroup5.Name = "ListViewGroup1"
+        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup5})
         Me.ListViewMovies.HideSelection = False
         Me.ListViewMovies.Location = New System.Drawing.Point(160, 33)
         Me.ListViewMovies.Margin = New System.Windows.Forms.Padding(4)
@@ -173,12 +181,97 @@ Partial Class MOVIE_FORM
         Me.ListViewMovies.TabIndex = 10
         Me.ListViewMovies.UseCompatibleStateImageBehavior = False
         '
+        'btnDwnld
+        '
+        Me.btnDwnld.Location = New System.Drawing.Point(9, 645)
+        Me.btnDwnld.Name = "btnDwnld"
+        Me.btnDwnld.Size = New System.Drawing.Size(140, 27)
+        Me.btnDwnld.TabIndex = 13
+        Me.btnDwnld.Text = "Download"
+        Me.btnDwnld.UseVisualStyleBackColor = True
+        Me.btnDwnld.Visible = False
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(8, 610)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(111, 16)
+        Me.Label4.TabIndex = 14
+        Me.Label4.Text = "Export users data"
+        Me.Label4.Visible = False
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(8, 626)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(72, 16)
+        Me.Label5.TabIndex = 15
+        Me.Label5.Text = "backup file"
+        Me.Label5.Visible = False
+        '
+        'txtBoxQualifier
+        '
+        Me.txtBoxQualifier.Location = New System.Drawing.Point(13, 467)
+        Me.txtBoxQualifier.Name = "txtBoxQualifier"
+        Me.txtBoxQualifier.Size = New System.Drawing.Size(140, 22)
+        Me.txtBoxQualifier.TabIndex = 16
+        Me.txtBoxQualifier.Visible = False
+        '
+        'txtBoxDelimiter
+        '
+        Me.txtBoxDelimiter.Location = New System.Drawing.Point(12, 388)
+        Me.txtBoxDelimiter.Name = "txtBoxDelimiter"
+        Me.txtBoxDelimiter.Size = New System.Drawing.Size(138, 22)
+        Me.txtBoxDelimiter.TabIndex = 17
+        Me.txtBoxDelimiter.Visible = False
+        '
+        'chkBoxData
+        '
+        Me.chkBoxData.AutoSize = True
+        Me.chkBoxData.Location = New System.Drawing.Point(12, 539)
+        Me.chkBoxData.Name = "chkBoxData"
+        Me.chkBoxData.Size = New System.Drawing.Size(107, 20)
+        Me.chkBoxData.TabIndex = 18
+        Me.chkBoxData.Text = "Append data"
+        Me.chkBoxData.UseVisualStyleBackColor = True
+        Me.chkBoxData.Visible = False
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(10, 369)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(60, 16)
+        Me.Label6.TabIndex = 19
+        Me.Label6.Text = "Delimiter"
+        Me.Label6.Visible = False
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(9, 448)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(85, 16)
+        Me.Label7.TabIndex = 20
+        Me.Label7.Text = "Text Qualifier"
+        Me.Label7.Visible = False
+        '
         'MOVIE_FORM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.ClientSize = New System.Drawing.Size(1376, 719)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.Label6)
+        Me.Controls.Add(Me.chkBoxData)
+        Me.Controls.Add(Me.txtBoxDelimiter)
+        Me.Controls.Add(Me.txtBoxQualifier)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.btnDwnld)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.txtboxSearch)
@@ -210,4 +303,12 @@ Partial Class MOVIE_FORM
     Friend WithEvents btnFamilyFriendly As Button
     Friend WithEvents cmbboxCompanies As ComboBox
     Friend WithEvents Label3 As Label
+    Friend WithEvents btnDwnld As Button
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label5 As Label
+    Friend WithEvents txtBoxQualifier As TextBox
+    Friend WithEvents txtBoxDelimiter As TextBox
+    Friend WithEvents chkBoxData As CheckBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents Label7 As Label
 End Class

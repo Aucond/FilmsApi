@@ -2,6 +2,9 @@
 Imports System.IO
 Imports Newtonsoft.Json
 Imports System.Net.Http
+Imports Npgsql
+Imports PrjDatabase
+Imports System.Data.SqlClient
 Public Class MOVIE_FORM
     Dim _userid As Integer = LOGIN_FORM.personID
 
@@ -39,6 +42,16 @@ Public Class MOVIE_FORM
             cmbboxCompanies.Items.Add(kvp.Key)
         Next
 
+        If _userid = 9 Then
+            Label6.Show()
+            Label7.Show()
+            txtBoxDelimiter.Show()
+            txtBoxQualifier.Show()
+            chkBoxData.Show()
+            Label4.Show()
+            Label5.Show()
+            btnDwnld.Show()
+        End If
 
     End Sub
     Public Async Sub btnFamilyFriendly_Click(sender As Object, e As EventArgs) Handles btnFamilyFriendly.Click
@@ -197,4 +210,66 @@ Public Class MOVIE_FORM
         WATCHLATER_FORM.Show()
         watchLater.AccessMovieID()
     End Sub
+
+    Private Sub btnDwnldl_Click(sender As Object, e As EventArgs) Handles btnDwnld.Click
+        Dim exporter As CSVExporterDNF.IExporter
+        exporter = New CSVExporterDNF.CExporter
+        Dim dataAppend As Boolean = False
+
+        Dim mydb As New CDatabase
+        Dim adapter As New NpgsqlDataAdapter()
+        Dim table As New DataTable()
+        Dim command As New NpgsqlCommand("SELECT * FROM users_info", mydb.getConnection)
+
+        If txtBoxDelimiter.Text = "" Then
+            exporter.delimiter = ":"
+        Else
+            exporter.delimiter = txtBoxDelimiter.Text
+        End If
+
+        If txtBoxQualifier.Text = "" Then
+            exporter.textQualifier = ""
+        Else
+            exporter.textQualifier = txtBoxQualifier.Text
+        End If
+
+        If chkBoxData.CheckState Then
+            dataAppend = True
+        End If
+
+        Dim filePath As String = exporter.setFileToSave()
+
+        adapter.SelectCommand = command
+        adapter.Fill(table)
+
+        If table.Rows.Count > 0 Then
+            ' Convert DataTable to two-dimensional array
+            Dim data(table.Rows.Count - 1, table.Columns.Count - 1) As String
+            For i As Integer = 0 To table.Rows.Count - 1
+                For j As Integer = 0 To table.Columns.Count - 1
+                    If table.Columns(j).ColumnName = "movieid" Or table.Columns(j).ColumnName = "blockid" Then
+                        ' Handle DBNull values in array columns
+                        If Not table.Rows(i)(j) Is DBNull.Value Then
+                            Dim arrayValues As Integer() = DirectCast(table.Rows(i)(j), Integer())
+                            data(i, j) = String.Join(",", arrayValues.Select(Function(x) x.ToString()))
+                        Else
+                            data(i, j) = String.Empty ' Set an empty string for DBNull values
+                        End If
+                    Else
+                        ' For non-array columns, convert to string
+                        data(i, j) = table.Rows(i)(j).ToString()
+                    End If
+                Next
+            Next
+
+            ' Export data to CSV file
+            Dim rowsWritten As Integer = exporter.saveDataToCsv(data, dataAppend)
+
+            ' Display a message indicating the number of rows written and the file path
+            MessageBox.Show($"Data exported to {filePath}. {rowsWritten} rows written.")
+        Else
+            MessageBox.Show("No data found in the table.")
+        End If
+    End Sub
+
 End Class
