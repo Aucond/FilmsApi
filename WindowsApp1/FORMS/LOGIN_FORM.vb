@@ -1,6 +1,6 @@
-﻿Imports Microsoft.VisualBasic.ApplicationServices
-Imports Npgsql
+﻿Imports Npgsql
 Imports NpgsqlTypes
+Imports PrjDatabase
 
 Public Class LOGIN_FORM
     Public personID As Double
@@ -32,7 +32,7 @@ Public Class LOGIN_FORM
         Dim username As String = TextBox_username.Text.Trim()
         Dim password As String = TextBox_password.Text.Trim()
 
-        Dim mydb As New DB()
+        Dim mydb As New CDatabase
         Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
         Dim command As New NpgsqlCommand("SELECT * FROM users_info WHERE username = @usn", mydb.getConnection)

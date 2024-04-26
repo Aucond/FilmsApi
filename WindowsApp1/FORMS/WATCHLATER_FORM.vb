@@ -1,8 +1,8 @@
-﻿Imports Newtonsoft.Json.Linq
-Imports System.IO
+﻿Imports System.IO
 Imports System.Net
 Imports Npgsql
 Imports Size = System.Drawing.Size
+Imports PrjDatabase
 
 Public Class WATCHLATER_FORM
     Dim userid As Integer = LOGIN_FORM.personID
@@ -14,7 +14,7 @@ Public Class WATCHLATER_FORM
     End Sub
     Public Async Sub AccessMovieID()
         Dim movieInfo As New CSearch
-        Dim mydb As New DB()
+        Dim mydb As New CDatabase
         Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
         Dim commandCheck As New NpgsqlCommand("SELECT movieid FROM users_info WHERE id = @UserID;", mydb.getConnection)

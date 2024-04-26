@@ -2,7 +2,6 @@
 Imports System.IO
 Imports Newtonsoft.Json
 Imports System.Net.Http
-Imports Microsoft.VisualBasic.ApplicationServices
 Public Class MOVIE_FORM
     Dim _userid As Integer = LOGIN_FORM.personID
 

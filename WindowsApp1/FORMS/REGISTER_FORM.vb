@@ -1,4 +1,5 @@
 ﻿Imports Npgsql
+Imports PrjDatabase
 
 Public Class REGISTER_FORM
     Private Sub Button_register_Click(sender As Object, e As EventArgs) Handles Button_register.Click
@@ -21,7 +22,7 @@ Public Class REGISTER_FORM
             Return
         End If
 
-        Dim mydb As New DB()
+        Dim mydb As New CDatabase
         Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
 

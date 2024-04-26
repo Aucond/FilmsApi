@@ -2,10 +2,7 @@
 Imports System.IO
 Imports Npgsql
 Imports NpgsqlTypes
-Imports Newtonsoft.Json
-Imports System.Net.Http
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
-Imports Mysqlx.XDevAPI.Relational
+Imports PrjDatabase
 Public Class DetailsForm
     Private movie As TmdbMovie
     Private posterPath As String
@@ -61,7 +58,7 @@ Public Class DetailsForm
 
     Private Sub btnWatchlist_Click(sender As Object, e As EventArgs) Handles btnWatchlist.Click
 
-        Dim mydb As New DB()
+        Dim mydb As New CDatabase
         Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
         Dim commandCheck As New NpgsqlCommand("SELECT movieid FROM users_info WHERE id = @UserID;", mydb.getConnection)
@@ -103,7 +100,7 @@ Public Class DetailsForm
 
     Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
         Dim watchLater As New WATCHLATER_FORM
-        Dim mydb As New DB()
+        Dim mydb As New CDatabase
         Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
         Dim commandCheck As New NpgsqlCommand("SELECT movieid FROM users_info WHERE id = @UserID;", mydb.getConnection)
@@ -143,7 +140,7 @@ Public Class DetailsForm
     End Sub
 
     Private Sub btnBlock_Click(sender As Object, e As EventArgs) Handles btnBlock.Click
-        Dim mydb As New DB()
+        Dim mydb As New CDatabase
         Dim adapter As New NpgsqlDataAdapter()
         Dim table As New DataTable()
         Dim commandCheck As New NpgsqlCommand("SELECT blockid FROM users_info WHERE id = @UserID;", mydb.getConnection)

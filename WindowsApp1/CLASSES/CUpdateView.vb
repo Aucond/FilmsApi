@@ -1,11 +1,12 @@
-﻿Imports System.IO
-Imports System.Net
-Imports Microsoft.VisualBasic.ApplicationServices
-Imports Npgsql
+﻿Imports Npgsql
+Imports PrjDatabase
 
 Public Class CUpdateView
     Dim userid As Integer = LOGIN_FORM.personID
     Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
+        Dim databaseConnection As PrjDatabase.IDatabase
+        databaseConnection = New PrjDatabase.CDatabase
+
         ' Create ImageList and configure ListView
         Dim posters As New ImageList()
         posters.ImageSize = New Size(100, 140)
@@ -28,7 +29,7 @@ Public Class CUpdateView
         Dim runtime As New List(Of Integer)()
 
         Dim blockedMovieIds As New List(Of Integer)()
-        Dim mydb As New DB()
+        Dim mydb As New CDatabase()
         Dim commandBlockedMovies As New NpgsqlCommand("SELECT blockid FROM users_info WHERE id = @UserID;", mydb.getConnection)
         commandBlockedMovies.Parameters.AddWithValue("@UserID", userid)
 

@@ -1,8 +1,7 @@
-﻿Imports MySql.Data.MySqlClient
-Imports Npgsql
+﻿Imports Npgsql
 
-
-Public Class DB
+Public Class CDatabase
+    Implements IDatabase
 
     Private connection As New NpgsqlConnection("Host=snuffleupagus.db.elephantsql.com;Port=5432;Username=mmrfecqh;Password=IZCtzNu-HIZIVnOtTfX-R4F5eO_oQNW7;Database=mmrfecqh;")
 
@@ -11,28 +10,19 @@ Public Class DB
             Return connection
         End Get
     End Property
-
-    ' open the connection 
-    Sub openConnection()
-
+    Public Sub openConnection() Implements IDatabase.openConnection
         If connection.State = ConnectionState.Closed Then
             connection.Open()
         End If
-
     End Sub
 
-    ' close the connection 
-    Sub closeConnection()
-
+    Public Sub closeConnection() Implements IDatabase.closeConnection
         If connection.State = ConnectionState.Open Then
             connection.Close()
         End If
-
     End Sub
 
-    ' Function to get data
-    Public Function getData(ByVal query As String, ByVal params() As NpgsqlParameter) As DataTable
-
+    Public Function getData(query As String, params() As NpgsqlParameter) As DataTable Implements IDatabase.getData
         Dim command As New NpgsqlCommand(query, connection)
 
         If params IsNot Nothing Then
@@ -47,13 +37,9 @@ Public Class DB
         adapter.Fill(table)
 
         Return table
-
     End Function
 
-
-    ' Function to set data and execute a query
-    Public Function setData(ByVal query As String, ByVal params As NpgsqlParameter()) As Integer
-
+    Public Function setData(query As String, params() As NpgsqlParameter) As Integer Implements IDatabase.setData
         Dim command As New NpgsqlCommand(query, connection)
 
         If params IsNot Nothing Then
@@ -69,8 +55,5 @@ Public Class DB
         closeConnection()
 
         Return commandState
-
     End Function
-
-
 End Class
