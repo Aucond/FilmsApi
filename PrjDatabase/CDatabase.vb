@@ -56,4 +56,5 @@ Public Class CDatabase
 
         Return commandState
     End Function
+
 End Class
