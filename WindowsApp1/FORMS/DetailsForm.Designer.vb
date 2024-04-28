@@ -36,6 +36,7 @@ Partial Class DetailsForm
         Me.txtComment = New System.Windows.Forms.TextBox()
         Me.btnSubmit = New System.Windows.Forms.Button()
         Me.rtbComments = New System.Windows.Forms.RichTextBox()
+        Me.btnMarkAsViewed = New System.Windows.Forms.Button()
         CType(Me.PictureBoxMovie, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -168,11 +169,21 @@ Partial Class DetailsForm
         Me.rtbComments.TabIndex = 15
         Me.rtbComments.Text = ""
         '
+        'btnMarkAsViewed
+        '
+        Me.btnMarkAsViewed.Location = New System.Drawing.Point(42, 355)
+        Me.btnMarkAsViewed.Name = "btnMarkAsViewed"
+        Me.btnMarkAsViewed.Size = New System.Drawing.Size(102, 23)
+        Me.btnMarkAsViewed.TabIndex = 16
+        Me.btnMarkAsViewed.Text = "Mark as Viewed"
+        Me.btnMarkAsViewed.UseVisualStyleBackColor = True
+        '
         'DetailsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1071, 589)
+        Me.Controls.Add(Me.btnMarkAsViewed)
         Me.Controls.Add(Me.rtbComments)
         Me.Controls.Add(Me.btnSubmit)
         Me.Controls.Add(Me.txtComment)
@@ -209,4 +220,5 @@ Partial Class DetailsForm
     Friend WithEvents txtComment As TextBox
     Friend WithEvents btnSubmit As Button
     Friend WithEvents rtbComments As RichTextBox
+    Friend WithEvents btnMarkAsViewed As Button
 End Class

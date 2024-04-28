@@ -3,11 +3,12 @@ Imports System.IO
 Imports Npgsql
 Imports NpgsqlTypes
 Imports PrjDatabase
+
 Public Class DetailsForm
     Private movie As TmdbMovie
     Private posterPath As String
     Private userid As Integer
-
+    Private movieViewed As Boolean = False
 
     Public Sub New(parentForm As Form, movie As TmdbMovie, id As Integer)
         InitializeComponent()
@@ -57,6 +58,15 @@ Public Class DetailsForm
             MessageBox.Show("An error occurred while loading the image.")
         End Try
         LoadComments()
+        If userid <= 0 Then
+            btnMarkAsViewed.Visible = False
+        Else
+            btnMarkAsViewed.Visible = True
+        End If
+        ' Check if the movie is marked as viewed
+        movieViewed = IsMovieViewed(movie.id, userid)
+        btnMarkAsViewed.Text = If(movieViewed, "✓ Viewed", "Mark as Viewed")
+
     End Sub
 
     Private Sub btnWatchlist_Click(sender As Object, e As EventArgs) Handles btnWatchlist.Click
@@ -300,5 +310,82 @@ Public Class DetailsForm
             MessageBox.Show("An error occurred while loading comments: " & ex.Message)
         End Try
     End Sub
+
+    Private Async Sub btnMarkAsViewed_Click(sender As Object, e As EventArgs) Handles btnMarkAsViewed.Click
+        ' Toggle the movieViewed state
+        movieViewed = Not movieViewed
+
+        ' Call the function to update the database with the viewed status
+        Dim success As Boolean = Await SaveViewedStatusAsync(movie.id, userid, movieViewed)
+
+        ' Update the button text based on the result
+        If success Then
+            btnMarkAsViewed.Text = If(movieViewed, "✓ Viewed", "Mark as Viewed")
+        Else
+            ' If there was an error, revert the view state change
+            movieViewed = Not movieViewed
+            MessageBox.Show("There was an error updating the movie status.")
+        End If
+    End Sub
+
+
+    Private Async Function SaveViewedStatusAsync(movieId As Integer, userId As Integer?, viewed As Boolean) As Task(Of Boolean)
+        Dim mydb As New CDatabase()
+        Try
+            ' Fetch movie runtime asynchronously
+            Dim movieRuntime As Integer = Await New CSearch().SearchMovieRuntimeAsync(movieId)
+
+            mydb.openConnection()
+
+            Dim command As New NpgsqlCommand()
+            command.Connection = mydb.getConnection()
+
+            If viewed Then
+                ' If marking as viewed, insert or update the record with the movie duration
+                command.CommandText = "INSERT INTO MovieViewedStatus (MovieID, UserID, Viewed, Duration, ViewDate) " &
+                                  "VALUES (@MovieID, @UserID, @Viewed, @Duration, CURRENT_TIMESTAMP) " &
+                                  "ON CONFLICT (MovieID, UserID) DO UPDATE SET Viewed = EXCLUDED.Viewed, Duration = EXCLUDED.Duration, ViewDate = CURRENT_TIMESTAMP;"
+                command.Parameters.AddWithValue("@Duration", movieRuntime)  ' Use the fetched movie runtime
+            Else
+                ' If unwatching, set Viewed to FALSE and do not update Duration
+                command.CommandText = "UPDATE MovieViewedStatus SET Viewed = @Viewed, Duration = NULL WHERE MovieID = @MovieID AND UserID = COALESCE(@UserID, UserID);"
+            End If
+
+            command.Parameters.AddWithValue("@MovieID", movieId)
+            command.Parameters.AddWithValue("@UserID", If(userId.HasValue AndAlso userId > 0, userId.Value, DBNull.Value))
+            command.Parameters.AddWithValue("@Viewed", viewed)
+
+            Dim result = command.ExecuteNonQuery()
+            Return result > 0
+        Catch ex As Exception
+            MessageBox.Show("An error occurred: " & ex.Message)
+            Return False
+        Finally
+            mydb.closeConnection()
+        End Try
+    End Function
+
+
+
+
+
+    Private Function IsMovieViewed(movieId As Integer, userId As Integer) As Boolean
+        Dim mydb As New CDatabase()
+        Try
+            Dim sql As String = "SELECT COUNT(1) FROM MovieViewedStatus WHERE MovieID = @MovieID AND UserID = @UserID AND Viewed = TRUE;"
+            Dim command As New NpgsqlCommand(sql, mydb.getConnection())
+            command.Parameters.AddWithValue("@MovieID", movieId)
+            command.Parameters.AddWithValue("@UserID", userId)
+
+            mydb.openConnection()
+            Dim result As Integer = Convert.ToInt32(command.ExecuteScalar())
+            Return result > 0
+        Catch ex As Exception
+            MessageBox.Show("An error occurred while checking the viewed status: " & ex.Message)
+            Return False
+        Finally
+            mydb.closeConnection()
+        End Try
+    End Function
 
 End Class
