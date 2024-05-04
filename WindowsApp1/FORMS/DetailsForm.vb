@@ -37,6 +37,8 @@ Public Class DetailsForm
 
 
     Private Async Sub DetailsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim IsMovieViewed As New CCommentsvb
+
         ' Adjust label to fit text properly
         LabelOverview.AutoSize = False
         LabelOverview.Width = 500
@@ -64,7 +66,7 @@ Public Class DetailsForm
             btnMarkAsViewed.Visible = True
         End If
         ' Check if the movie is marked as viewed
-        movieViewed = IsMovieViewed(movie.id, userid)
+        movieViewed = IsMovieViewed.IsMovieViewed(movie.id, userid)
         btnMarkAsViewed.Text = If(movieViewed, "✓ Viewed", "Mark as Viewed")
 
     End Sub
@@ -194,18 +196,18 @@ Public Class DetailsForm
     End Sub
 
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
-        ' Determine if we have a logged in user or a guest
+
+        Dim SaveCommentToDatabase As New CCommentsvb
         Dim actualUserId As Integer? = If(userid > 0, userid, Nothing)
 
         If Not String.IsNullOrWhiteSpace(txtComment.Text) Then
-            Dim username As String = SaveCommentToDatabase(actualUserId, movie.id, txtComment.Text)
+            Dim username As String = SaveCommentToDatabase.SaveCommentToDatabase(actualUserId, movie.id, txtComment.Text)
             If Not String.IsNullOrEmpty(username) Then
-                ' Append the comment with the username or "Guest" to the RichTextBox for display
+
                 Dim formattedComment As String = username & ": " & txtComment.Text.Trim() & Environment.NewLine & Environment.NewLine
                 rtbComments.AppendText(formattedComment)
                 rtbComments.AppendText(Environment.NewLine)
 
-                ' Clear the textbox for the next comment
                 txtComment.Text = ""
             Else
                 MessageBox.Show("Failed to insert the comment.")
@@ -215,73 +217,12 @@ Public Class DetailsForm
         End If
     End Sub
 
-
-
     Private Sub txtComment_KeyDown(sender As Object, e As KeyEventArgs) Handles txtComment.KeyDown
         If e.Shift And e.KeyCode = Keys.Enter Then
-            e.SuppressKeyPress = True  ' Prevents the ding sound when pressing enter
+            e.SuppressKeyPress = True
             btnSubmit.PerformClick()
         End If
     End Sub
-    Private Function SaveCommentToDatabase(userId As Integer?, movieId As Integer, commentText As String) As String
-        Dim mydb As New CDatabase()
-        Dim username As String
-
-        ' Check if we have a userId or if this is a guest
-        If userId.HasValue AndAlso userId.Value > 0 Then
-            ' If it's a registered user, retrieve the username
-            Try
-                mydb.openConnection()
-                Dim usernameCommand As New NpgsqlCommand("SELECT username FROM users_info WHERE id = @UserID;", mydb.getConnection())
-                usernameCommand.Parameters.AddWithValue("@UserID", userId.Value)
-
-                Dim result As Object = usernameCommand.ExecuteScalar()
-                mydb.closeConnection()
-                If result IsNot Nothing AndAlso Not IsDBNull(result) Then
-                    username = result.ToString()
-                Else
-                    ' If no username is found, default to Guest
-                    username = "Guest"
-                End If
-            Catch ex As Exception
-                ' Log or handle exception
-                mydb.closeConnection()
-                MessageBox.Show("An error occurred: " & ex.Message)
-                Return String.Empty
-            End Try
-        Else
-            ' If userId is not provided, it means it's a guest comment
-            username = "Guest"
-        End If
-
-        ' Insert the comment into the database with the determined username
-        Try
-            mydb.openConnection()
-            Dim command As New NpgsqlCommand("INSERT INTO Comments (Username, MovieID, CommentText) VALUES (@Username, @MovieID, @CommentText);", mydb.getConnection())
-            command.Parameters.AddWithValue("@Username", username)
-            command.Parameters.AddWithValue("@MovieID", movieId)
-            command.Parameters.AddWithValue("@CommentText", commentText)
-
-            If command.ExecuteNonQuery() = 1 Then
-                mydb.closeConnection()
-                ' If the comment was successfully inserted, return the username
-                Return username
-            Else
-                mydb.closeConnection()
-                Return String.Empty
-            End If
-        Catch ex As Exception
-            ' Log or handle exception
-            MessageBox.Show("An error occurred while inserting the comment: " & ex.Message)
-            Return String.Empty
-        Finally
-            If mydb.getConnection().State = ConnectionState.Open Then
-                mydb.closeConnection()
-            End If
-        End Try
-    End Function
-
-
 
     Private Sub LoadComments()
         Try
@@ -297,10 +238,8 @@ Public Class DetailsForm
             adapter.Fill(table)
             mydb.closeConnection()
 
-            ' Clear the current comments
             rtbComments.Clear()
 
-            ' Loop through each row and append the comment to the RichTextBox
             For Each row As DataRow In table.Rows
                 Dim comment As String = String.Format("{0}: {1}" & Environment.NewLine & "{2}" & Environment.NewLine & Environment.NewLine,
                                                   row("Username"), row("CommentText"), row("CommentDate").ToString())
@@ -312,80 +251,16 @@ Public Class DetailsForm
     End Sub
 
     Private Async Sub btnMarkAsViewed_Click(sender As Object, e As EventArgs) Handles btnMarkAsViewed.Click
-        ' Toggle the movieViewed state
+        Dim SaveViewedStatusAsync As New CCommentsvb
         movieViewed = Not movieViewed
 
-        ' Call the function to update the database with the viewed status
-        Dim success As Boolean = Await SaveViewedStatusAsync(movie.id, userid, movieViewed)
+        Dim success As Boolean = Await SaveViewedStatusAsync.SaveViewedStatusAsync(movie.id, userid, movieViewed)
 
-        ' Update the button text based on the result
         If success Then
             btnMarkAsViewed.Text = If(movieViewed, "✓ Viewed", "Mark as Viewed")
         Else
-            ' If there was an error, revert the view state change
             movieViewed = Not movieViewed
             MessageBox.Show("There was an error updating the movie status.")
         End If
     End Sub
-
-
-    Private Async Function SaveViewedStatusAsync(movieId As Integer, userId As Integer?, viewed As Boolean) As Task(Of Boolean)
-        Dim mydb As New CDatabase()
-        Try
-            ' Fetch movie runtime asynchronously
-            Dim movieRuntime As Integer = Await New CSearch().SearchMovieRuntimeAsync(movieId)
-
-            mydb.openConnection()
-
-            Dim command As New NpgsqlCommand()
-            command.Connection = mydb.getConnection()
-
-            If viewed Then
-                ' If marking as viewed, insert or update the record with the movie duration
-                command.CommandText = "INSERT INTO MovieViewedStatus (MovieID, UserID, Viewed, Duration, ViewDate) " &
-                                  "VALUES (@MovieID, @UserID, @Viewed, @Duration, CURRENT_TIMESTAMP) " &
-                                  "ON CONFLICT (MovieID, UserID) DO UPDATE SET Viewed = EXCLUDED.Viewed, Duration = EXCLUDED.Duration, ViewDate = CURRENT_TIMESTAMP;"
-                command.Parameters.AddWithValue("@Duration", movieRuntime)  ' Use the fetched movie runtime
-            Else
-                ' If unwatching, set Viewed to FALSE and do not update Duration
-                command.CommandText = "UPDATE MovieViewedStatus SET Viewed = @Viewed, Duration = NULL WHERE MovieID = @MovieID AND UserID = COALESCE(@UserID, UserID);"
-            End If
-
-            command.Parameters.AddWithValue("@MovieID", movieId)
-            command.Parameters.AddWithValue("@UserID", If(userId.HasValue AndAlso userId > 0, userId.Value, DBNull.Value))
-            command.Parameters.AddWithValue("@Viewed", viewed)
-
-            Dim result = command.ExecuteNonQuery()
-            Return result > 0
-        Catch ex As Exception
-            MessageBox.Show("An error occurred: " & ex.Message)
-            Return False
-        Finally
-            mydb.closeConnection()
-        End Try
-    End Function
-
-
-
-
-
-    Private Function IsMovieViewed(movieId As Integer, userId As Integer) As Boolean
-        Dim mydb As New CDatabase()
-        Try
-            Dim sql As String = "SELECT COUNT(1) FROM MovieViewedStatus WHERE MovieID = @MovieID AND UserID = @UserID AND Viewed = TRUE;"
-            Dim command As New NpgsqlCommand(sql, mydb.getConnection())
-            command.Parameters.AddWithValue("@MovieID", movieId)
-            command.Parameters.AddWithValue("@UserID", userId)
-
-            mydb.openConnection()
-            Dim result As Integer = Convert.ToInt32(command.ExecuteScalar())
-            Return result > 0
-        Catch ex As Exception
-            MessageBox.Show("An error occurred while checking the viewed status: " & ex.Message)
-            Return False
-        Finally
-            mydb.closeConnection()
-        End Try
-    End Function
-
 End Class
