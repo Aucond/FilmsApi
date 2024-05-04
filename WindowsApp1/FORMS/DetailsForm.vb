@@ -35,7 +35,6 @@ Public Class DetailsForm
 
     End Sub
 
-
     Private Async Sub DetailsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim IsMovieViewed As PrjComments.IComments
         IsMovieViewed = New PrjComments.CComments
@@ -287,56 +286,19 @@ Public Class DetailsForm
     Private Async Sub btnMarkAsViewed_Click(sender As Object, e As EventArgs) Handles btnMarkAsViewed.Click
 
         movieViewed = Not movieViewed
+        Dim statusViewed As PrjStatistics.IStatistics
+        statusViewed = New PrjStatistics.CStatistics
 
-
-        Dim success As Boolean = Await SaveViewedStatusAsync(movie.id, userid, movieViewed)
-
+        Dim success As Boolean = Await statusViewed.SaveViewedStatusAsync(movie.id, userid, movieViewed)
 
         If success Then
             btnMarkAsViewed.Text = If(movieViewed, "✓ Viewed", "Mark as Viewed")
         Else
-
             movieViewed = Not movieViewed
             MessageBox.Show("There was an error updating the movie status.")
         End If
     End Sub
 
-
-    Private Async Function SaveViewedStatusAsync(movieId As Integer, userId As Integer?, viewed As Boolean) As Task(Of Boolean)
-        Dim mydb As New CDatabase()
-        Try
-
-            Dim movieRuntime As Integer = Await New CSearch().SearchMovieRuntimeAsync(movieId)
-
-            mydb.openConnection()
-
-            Dim command As New NpgsqlCommand()
-            command.Connection = mydb.getConnection()
-
-            If viewed Then
-
-                command.CommandText = "INSERT INTO MovieViewedStatus (MovieID, UserID, Viewed, Duration, ViewDate) " &
-                                  "VALUES (@MovieID, @UserID, @Viewed, @Duration, CURRENT_TIMESTAMP) " &
-                                  "ON CONFLICT (MovieID, UserID) DO UPDATE SET Viewed = EXCLUDED.Viewed, Duration = EXCLUDED.Duration, ViewDate = CURRENT_TIMESTAMP;"
-                command.Parameters.AddWithValue("@Duration", movieRuntime)
-            Else
-
-                command.CommandText = "UPDATE MovieViewedStatus SET Viewed = @Viewed, Duration = NULL WHERE MovieID = @MovieID AND UserID = COALESCE(@UserID, UserID);"
-            End If
-
-            command.Parameters.AddWithValue("@MovieID", movieId)
-            command.Parameters.AddWithValue("@UserID", If(userId.HasValue AndAlso userId > 0, userId.Value, DBNull.Value))
-            command.Parameters.AddWithValue("@Viewed", viewed)
-
-            Dim result = command.ExecuteNonQuery()
-            Return result > 0
-        Catch ex As Exception
-            MessageBox.Show("An error occurred: " & ex.Message)
-            Return False
-        Finally
-            mydb.closeConnection()
-        End Try
-    End Function
     Private Sub LikeButtonClick(sender As Object, e As EventArgs)
         Dim btn As Button = CType(sender, Button)
         Dim commentID As Integer = Convert.ToInt32(btn.Tag)
