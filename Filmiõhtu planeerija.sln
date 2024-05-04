@@ -11,6 +11,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PrjDatabase", "PrjDatabase\
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PrjStatistics", "PrjStatistics\PrjStatistics.vbproj", "{79415AD7-C0DF-43C1-B3C1-851D944F6BB9}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PrjComments", "PrjComments\PrjComments.vbproj", "{E69FC8BD-65DC-46AD-8D7D-C6DCE3537350}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{79415AD7-C0DF-43C1-B3C1-851D944F6BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79415AD7-C0DF-43C1-B3C1-851D944F6BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79415AD7-C0DF-43C1-B3C1-851D944F6BB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E69FC8BD-65DC-46AD-8D7D-C6DCE3537350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E69FC8BD-65DC-46AD-8D7D-C6DCE3537350}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E69FC8BD-65DC-46AD-8D7D-C6DCE3537350}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E69FC8BD-65DC-46AD-8D7D-C6DCE3537350}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

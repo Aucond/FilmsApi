@@ -37,6 +37,8 @@ Public Class DetailsForm
 
 
     Private Async Sub DetailsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim IsMovieViewed As PrjComments.IComments
+        IsMovieViewed = New PrjComments.CComments
         ' Adjust label to fit text properly
         LabelOverview.AutoSize = False
         LabelOverview.Width = 500
@@ -64,7 +66,7 @@ Public Class DetailsForm
             btnMarkAsViewed.Visible = True
         End If
         ' Check if the movie is marked as viewed
-        movieViewed = IsMovieViewed(movie.id, userid)
+        movieViewed = IsMovieViewed.IsMovieViewed(movie.id, userid)
         btnMarkAsViewed.Text = If(movieViewed, "✓ Viewed", "Mark as Viewed")
 
     End Sub
@@ -196,9 +198,10 @@ Public Class DetailsForm
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
         ' Determine if we have a logged in user or a guest
         Dim actualUserId As Integer? = If(userid > 0, userid, Nothing)
-
+        Dim SaveCommentToDatabase As PrjComments.IComments
+        SaveCommentToDatabase = New PrjComments.CComments
         If Not String.IsNullOrWhiteSpace(txtComment.Text) Then
-            Dim username As String = SaveCommentToDatabase(actualUserId, movie.id, txtComment.Text)
+            Dim username As String = SaveCommentToDatabase.SaveCommentToDatabase(actualUserId, movie.id, txtComment.Text)
             If Not String.IsNullOrEmpty(username) Then
                 ' Append the comment with the username or "Guest" to the RichTextBox for display
                 Dim formattedComment As String = username & ": " & txtComment.Text.Trim() & Environment.NewLine & Environment.NewLine
@@ -223,67 +226,11 @@ Public Class DetailsForm
             btnSubmit.PerformClick()
         End If
     End Sub
-    Private Function SaveCommentToDatabase(userId As Integer?, movieId As Integer, commentText As String) As String
-        Dim mydb As New CDatabase()
-        Dim username As String
-
-        ' Check if we have a userId or if this is a guest
-        If userId.HasValue AndAlso userId.Value > 0 Then
-            ' If it's a registered user, retrieve the username
-            Try
-                mydb.openConnection()
-                Dim usernameCommand As New NpgsqlCommand("SELECT username FROM users_info WHERE id = @UserID;", mydb.getConnection())
-                usernameCommand.Parameters.AddWithValue("@UserID", userId.Value)
-
-                Dim result As Object = usernameCommand.ExecuteScalar()
-                mydb.closeConnection()
-                If result IsNot Nothing AndAlso Not IsDBNull(result) Then
-                    username = result.ToString()
-                Else
-                    ' If no username is found, default to Guest
-                    username = "Guest"
-                End If
-            Catch ex As Exception
-
-                mydb.closeConnection()
-                MessageBox.Show("An error occurred: " & ex.Message)
-                Return String.Empty
-            End Try
-        Else
-
-            username = "Guest"
-        End If
-
-
-        Try
-            mydb.openConnection()
-            Dim command As New NpgsqlCommand("INSERT INTO Comments (Username, MovieID, CommentText) VALUES (@Username, @MovieID, @CommentText);", mydb.getConnection())
-            command.Parameters.AddWithValue("@Username", username)
-            command.Parameters.AddWithValue("@MovieID", movieId)
-            command.Parameters.AddWithValue("@CommentText", commentText)
-
-            If command.ExecuteNonQuery() = 1 Then
-                mydb.closeConnection()
-
-                Return username
-            Else
-                mydb.closeConnection()
-                Return String.Empty
-            End If
-        Catch ex As Exception
-
-            MessageBox.Show("An error occurred while inserting the comment: " & ex.Message)
-            Return String.Empty
-        Finally
-            If mydb.getConnection().State = ConnectionState.Open Then
-                mydb.closeConnection()
-            End If
-        End Try
-    End Function
 
     Private Sub LoadComments()
         flpComments.Controls.Clear()
-
+        Dim GetReactionCount As PrjComments.IComments
+        GetReactionCount = New PrjComments.CComments
         Dim mydb As New CDatabase()
         Dim command As New NpgsqlCommand("SELECT CommentID, Username, CommentText, CommentDate FROM Comments WHERE MovieID = @MovieID ORDER BY CommentDate DESC;", mydb.getConnection())
         command.Parameters.AddWithValue("@MovieID", movie.id)
@@ -310,8 +257,8 @@ Public Class DetailsForm
 
 
             If userid > 0 Then
-                Dim likesCount As Integer = GetReactionCount(Convert.ToInt32(row("CommentID")), "L")
-                Dim dislikesCount As Integer = GetReactionCount(Convert.ToInt32(row("CommentID")), "D")
+                Dim likesCount As Integer = GetReactionCount.GetReactionCount(Convert.ToInt32(row("CommentID")), "L")
+                Dim dislikesCount As Integer = GetReactionCount.GetReactionCount(Convert.ToInt32(row("CommentID")), "D")
 
 
                 Dim btnLike As New Button()
@@ -332,7 +279,6 @@ Public Class DetailsForm
                 panel.Controls.Add(btnDislike)
             End If
 
-
             flpComments.Controls.Add(panel)
         Next
     End Sub
@@ -342,11 +288,8 @@ Public Class DetailsForm
 
         movieViewed = Not movieViewed
 
-        Dim SavedViewed As PrjStatistics.IStatistics
-        SavedViewed = New PrjStatistics.CStatistics
 
-
-        Dim success As Boolean = Await SavedViewed.SaveViewedStatusAsync(movie.id, userid, movieViewed)
+        Dim success As Boolean = Await SaveViewedStatusAsync(movie.id, userid, movieViewed)
 
 
         If success Then
@@ -359,71 +302,74 @@ Public Class DetailsForm
     End Sub
 
 
-    Private Function IsMovieViewed(movieId As Integer, userId As Integer) As Boolean
+    Private Async Function SaveViewedStatusAsync(movieId As Integer, userId As Integer?, viewed As Boolean) As Task(Of Boolean)
         Dim mydb As New CDatabase()
         Try
-            Dim sql As String = "SELECT COUNT(1) FROM MovieViewedStatus WHERE MovieID = @MovieID AND UserID = @UserID AND Viewed = TRUE;"
-            Dim command As New NpgsqlCommand(sql, mydb.getConnection())
-            command.Parameters.AddWithValue("@MovieID", movieId)
-            command.Parameters.AddWithValue("@UserID", userId)
+
+            Dim movieRuntime As Integer = Await New CSearch().SearchMovieRuntimeAsync(movieId)
 
             mydb.openConnection()
-            Dim result As Integer = Convert.ToInt32(command.ExecuteScalar())
+
+            Dim command As New NpgsqlCommand()
+            command.Connection = mydb.getConnection()
+
+            If viewed Then
+
+                command.CommandText = "INSERT INTO MovieViewedStatus (MovieID, UserID, Viewed, Duration, ViewDate) " &
+                                  "VALUES (@MovieID, @UserID, @Viewed, @Duration, CURRENT_TIMESTAMP) " &
+                                  "ON CONFLICT (MovieID, UserID) DO UPDATE SET Viewed = EXCLUDED.Viewed, Duration = EXCLUDED.Duration, ViewDate = CURRENT_TIMESTAMP;"
+                command.Parameters.AddWithValue("@Duration", movieRuntime)
+            Else
+
+                command.CommandText = "UPDATE MovieViewedStatus SET Viewed = @Viewed, Duration = NULL WHERE MovieID = @MovieID AND UserID = COALESCE(@UserID, UserID);"
+            End If
+
+            command.Parameters.AddWithValue("@MovieID", movieId)
+            command.Parameters.AddWithValue("@UserID", If(userId.HasValue AndAlso userId > 0, userId.Value, DBNull.Value))
+            command.Parameters.AddWithValue("@Viewed", viewed)
+
+            Dim result = command.ExecuteNonQuery()
             Return result > 0
         Catch ex As Exception
-            MessageBox.Show("An error occurred while checking the viewed status: " & ex.Message)
+            MessageBox.Show("An error occurred: " & ex.Message)
             Return False
         Finally
             mydb.closeConnection()
         End Try
     End Function
-    Private Function GetReactionCount(commentID As Integer, reactionType As Char) As Integer
-        Dim mydb As New CDatabase()
-        Dim count As Integer = 0
-        Try
-            mydb.openConnection()
-            Dim command As New NpgsqlCommand("SELECT COUNT(*) FROM CommentReactions WHERE CommentID = @CommentID AND ReactionType = @ReactionType;", mydb.getConnection())
-            command.Parameters.AddWithValue("@CommentID", commentID)
-            command.Parameters.AddWithValue("@ReactionType", reactionType)
-            count = Convert.ToInt32(command.ExecuteScalar())
-        Catch ex As Exception
-            MessageBox.Show("Error fetching reaction count: " & ex.Message)
-        Finally
-            mydb.closeConnection()
-        End Try
-        Return count
-    End Function
     Private Sub LikeButtonClick(sender As Object, e As EventArgs)
         Dim btn As Button = CType(sender, Button)
         Dim commentID As Integer = Convert.ToInt32(btn.Tag)
-        HandleReaction(commentID, True)
+        HandleReaction(commentID, True, userid)
     End Sub
 
     Private Sub DislikeButtonClick(sender As Object, e As EventArgs)
         Dim btn As Button = CType(sender, Button)
         Dim commentID As Integer = Convert.ToInt32(btn.Tag)
-        HandleReaction(commentID, False)
+        HandleReaction(commentID, False, userid)
     End Sub
-    Private Sub HandleReaction(commentID As Integer, isLike As Boolean)
+    Private Sub HandleReaction(commentID As Integer, isLike As Boolean, UserID As Integer)
+        Dim GetCurrentReaction As PrjComments.IComments
+        GetCurrentReaction = New PrjComments.CComments
         Dim mydb As New CDatabase()
         Try
             mydb.openConnection()
 
-            Dim currentReactionType As Char? = GetCurrentReaction(commentID)
+            Dim currentReactionType As Char? = GetCurrentReaction.GetCurrentReaction(commentID, UserID)
             Dim newReactionType As Char = If(isLike, "L"c, "D"c)
 
             If currentReactionType.HasValue Then
                 If currentReactionType = newReactionType Then
 
                     Dim commandDelete As New NpgsqlCommand("DELETE FROM CommentReactions WHERE UserID = @UserID AND CommentID = @CommentID;", mydb.getConnection())
-                    commandDelete.Parameters.AddWithValue("@UserID", userid)
+                    commandDelete.Parameters.AddWithValue("@UserID", UserID)
                     commandDelete.Parameters.AddWithValue("@CommentID", commentID)
                     commandDelete.ExecuteNonQuery()
                 Else
 
                     Dim commandUpdate As New NpgsqlCommand("UPDATE CommentReactions SET ReactionType = @NewType WHERE UserID = @UserID AND CommentID = @CommentID;", mydb.getConnection())
                     commandUpdate.Parameters.AddWithValue("@NewType", newReactionType)
-                    commandUpdate.Parameters.AddWithValue("@UserID", userid)
+                    commandUpdate.Parameters.AddWithValue("@UserID", UserID)
                     commandUpdate.Parameters.AddWithValue("@CommentID", commentID)
                     commandUpdate.ExecuteNonQuery()
                 End If
@@ -431,7 +377,7 @@ Public Class DetailsForm
 
                 Dim commandInsert As New NpgsqlCommand("INSERT INTO CommentReactions (CommentID, UserID, ReactionType) VALUES (@CommentID, @UserID, @ReactionType);", mydb.getConnection())
                 commandInsert.Parameters.AddWithValue("@CommentID", commentID)
-                commandInsert.Parameters.AddWithValue("@UserID", userid)
+                commandInsert.Parameters.AddWithValue("@UserID", UserID)
                 commandInsert.Parameters.AddWithValue("@ReactionType", newReactionType)
                 commandInsert.ExecuteNonQuery()
             End If
@@ -442,23 +388,4 @@ Public Class DetailsForm
             LoadComments()
         End Try
     End Sub
-    Private Function GetCurrentReaction(commentID As Integer) As Char?
-        Dim mydb As New CDatabase()
-        Try
-            mydb.openConnection()
-            Dim command As New NpgsqlCommand("SELECT ReactionType FROM CommentReactions WHERE UserID = @UserID AND CommentID = @CommentID;", mydb.getConnection())
-            command.Parameters.AddWithValue("@UserID", userid)
-            command.Parameters.AddWithValue("@CommentID", commentID)
-
-            Dim result As Object = command.ExecuteScalar()
-            If result IsNot Nothing Then
-                Return Convert.ToChar(result)
-            End If
-        Catch ex As Exception
-            MessageBox.Show("Error fetching current reaction: " & ex.Message)
-        Finally
-            mydb.closeConnection()
-        End Try
-        Return Nothing
-    End Function
 End Class
