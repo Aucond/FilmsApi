@@ -244,17 +244,17 @@ Public Class DetailsForm
                     username = "Guest"
                 End If
             Catch ex As Exception
-                ' Log or handle exception
+
                 mydb.closeConnection()
                 MessageBox.Show("An error occurred: " & ex.Message)
                 Return String.Empty
             End Try
         Else
-            ' If userId is not provided, it means it's a guest comment
+
             username = "Guest"
         End If
 
-        ' Insert the comment into the database with the determined username
+
         Try
             mydb.openConnection()
             Dim command As New NpgsqlCommand("INSERT INTO Comments (Username, MovieID, CommentText) VALUES (@Username, @MovieID, @CommentText);", mydb.getConnection())
@@ -264,14 +264,14 @@ Public Class DetailsForm
 
             If command.ExecuteNonQuery() = 1 Then
                 mydb.closeConnection()
-                ' If the comment was successfully inserted, return the username
+
                 Return username
             Else
                 mydb.closeConnection()
                 Return String.Empty
             End If
         Catch ex As Exception
-            ' Log or handle exception
+
             MessageBox.Show("An error occurred while inserting the comment: " & ex.Message)
             Return String.Empty
         Finally
@@ -282,7 +282,7 @@ Public Class DetailsForm
     End Function
 
     Private Sub LoadComments()
-        flpComments.Controls.Clear()  ' Clear existing controls
+        flpComments.Controls.Clear()
 
         Dim mydb As New CDatabase()
         Dim command As New NpgsqlCommand("SELECT CommentID, Username, CommentText, CommentDate FROM Comments WHERE MovieID = @MovieID ORDER BY CommentDate DESC;", mydb.getConnection())
@@ -301,19 +301,19 @@ Public Class DetailsForm
             panel.Margin = New Padding(3)
             panel.BorderStyle = BorderStyle.FixedSingle
 
-            ' Label for displaying the comment
+
             Dim lblComment As New Label()
             lblComment.Text = $"{row("Username")}: {row("CommentText")} - {Convert.ToDateTime(row("CommentDate")).ToString("dd.MM.yyyy HH:mm")}"
             lblComment.Location = New Point(5, 5)
             lblComment.AutoSize = True
             panel.Controls.Add(lblComment)
 
-            ' Add Like and Dislike buttons only if the user is logged in (userid > 0)
+
             If userid > 0 Then
                 Dim likesCount As Integer = GetReactionCount(Convert.ToInt32(row("CommentID")), "L")
                 Dim dislikesCount As Integer = GetReactionCount(Convert.ToInt32(row("CommentID")), "D")
 
-                ' Like button with count
+
                 Dim btnLike As New Button()
                 btnLike.Text = $"Like ({likesCount})"
                 btnLike.Location = New Point(5, 40)
@@ -322,7 +322,7 @@ Public Class DetailsForm
                 AddHandler btnLike.Click, AddressOf LikeButtonClick
                 panel.Controls.Add(btnLike)
 
-                ' Dislike button with count
+
                 Dim btnDislike As New Button()
                 btnDislike.Text = $"Dislike ({dislikesCount})"
                 btnDislike.Location = New Point(110, 40)
@@ -332,24 +332,24 @@ Public Class DetailsForm
                 panel.Controls.Add(btnDislike)
             End If
 
-            ' Add the entire panel to the FlowLayoutPanel
+            l
             flpComments.Controls.Add(panel)
         Next
     End Sub
 
 
     Private Async Sub btnMarkAsViewed_Click(sender As Object, e As EventArgs) Handles btnMarkAsViewed.Click
-        ' Toggle the movieViewed state
+
         movieViewed = Not movieViewed
 
-        ' Call the function to update the database with the viewed status
+
         Dim success As Boolean = Await SaveViewedStatusAsync(movie.id, userid, movieViewed)
 
-        ' Update the button text based on the result
+
         If success Then
             btnMarkAsViewed.Text = If(movieViewed, "✓ Viewed", "Mark as Viewed")
         Else
-            ' If there was an error, revert the view state change
+
             movieViewed = Not movieViewed
             MessageBox.Show("There was an error updating the movie status.")
         End If
@@ -359,7 +359,7 @@ Public Class DetailsForm
     Private Async Function SaveViewedStatusAsync(movieId As Integer, userId As Integer?, viewed As Boolean) As Task(Of Boolean)
         Dim mydb As New CDatabase()
         Try
-            ' Fetch movie runtime asynchronously
+
             Dim movieRuntime As Integer = Await New CSearch().SearchMovieRuntimeAsync(movieId)
 
             mydb.openConnection()
@@ -368,13 +368,13 @@ Public Class DetailsForm
             command.Connection = mydb.getConnection()
 
             If viewed Then
-                ' If marking as viewed, insert or update the record with the movie duration
+
                 command.CommandText = "INSERT INTO MovieViewedStatus (MovieID, UserID, Viewed, Duration, ViewDate) " &
                                   "VALUES (@MovieID, @UserID, @Viewed, @Duration, CURRENT_TIMESTAMP) " &
                                   "ON CONFLICT (MovieID, UserID) DO UPDATE SET Viewed = EXCLUDED.Viewed, Duration = EXCLUDED.Duration, ViewDate = CURRENT_TIMESTAMP;"
-                command.Parameters.AddWithValue("@Duration", movieRuntime)  ' Use the fetched movie runtime
+                command.Parameters.AddWithValue("@Duration", movieRuntime)
             Else
-                ' If unwatching, set Viewed to FALSE and do not update Duration
+
                 command.CommandText = "UPDATE MovieViewedStatus SET Viewed = @Viewed, Duration = NULL WHERE MovieID = @MovieID AND UserID = COALESCE(@UserID, UserID);"
             End If
 
@@ -441,19 +441,19 @@ Public Class DetailsForm
         Dim mydb As New CDatabase()
         Try
             mydb.openConnection()
-            ' Check current reaction state
+
             Dim currentReactionType As Char? = GetCurrentReaction(commentID)
             Dim newReactionType As Char = If(isLike, "L"c, "D"c)
 
             If currentReactionType.HasValue Then
                 If currentReactionType = newReactionType Then
-                    ' User is undoing their reaction
+
                     Dim commandDelete As New NpgsqlCommand("DELETE FROM CommentReactions WHERE UserID = @UserID AND CommentID = @CommentID;", mydb.getConnection())
                     commandDelete.Parameters.AddWithValue("@UserID", userid)
                     commandDelete.Parameters.AddWithValue("@CommentID", commentID)
                     commandDelete.ExecuteNonQuery()
                 Else
-                    ' Switching reaction from like to dislike or vice versa
+
                     Dim commandUpdate As New NpgsqlCommand("UPDATE CommentReactions SET ReactionType = @NewType WHERE UserID = @UserID AND CommentID = @CommentID;", mydb.getConnection())
                     commandUpdate.Parameters.AddWithValue("@NewType", newReactionType)
                     commandUpdate.Parameters.AddWithValue("@UserID", userid)
@@ -461,7 +461,7 @@ Public Class DetailsForm
                     commandUpdate.ExecuteNonQuery()
                 End If
             Else
-                ' No current reaction, insert new one
+
                 Dim commandInsert As New NpgsqlCommand("INSERT INTO CommentReactions (CommentID, UserID, ReactionType) VALUES (@CommentID, @UserID, @ReactionType);", mydb.getConnection())
                 commandInsert.Parameters.AddWithValue("@CommentID", commentID)
                 commandInsert.Parameters.AddWithValue("@UserID", userid)
@@ -472,7 +472,7 @@ Public Class DetailsForm
             MessageBox.Show("An error occurred while updating the reaction: " & ex.Message)
         Finally
             mydb.closeConnection()
-            LoadComments()  ' Refresh comments to show updated reactions
+            LoadComments()
         End Try
     End Sub
     Private Function GetCurrentReaction(commentID As Integer) As Char?
