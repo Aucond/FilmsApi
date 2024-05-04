@@ -37,7 +37,7 @@ Public Class DetailsForm
 
 
     Private Async Sub DetailsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim IsMovieViewed As New CCommentsvb
+        Dim IsMovieViewed As New CComments
 
         ' Adjust label to fit text properly
         LabelOverview.AutoSize = False
@@ -197,7 +197,7 @@ Public Class DetailsForm
 
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
 
-        Dim SaveCommentToDatabase As New CCommentsvb
+        Dim SaveCommentToDatabase As New CComments
         Dim actualUserId As Integer? = If(userid > 0, userid, Nothing)
 
         If Not String.IsNullOrWhiteSpace(txtComment.Text) Then
@@ -251,7 +251,7 @@ Public Class DetailsForm
     End Sub
 
     Private Async Sub btnMarkAsViewed_Click(sender As Object, e As EventArgs) Handles btnMarkAsViewed.Click
-        Dim SaveViewedStatusAsync As New CCommentsvb
+        Dim SaveViewedStatusAsync As New CComments
         movieViewed = Not movieViewed
 
         Dim success As Boolean = Await SaveViewedStatusAsync.SaveViewedStatusAsync(movie.id, userid, movieViewed)

@@ -1,7 +1,7 @@
 ﻿Imports Npgsql
 Imports PrjDatabase
 
-Public Class CCommentsvb
+Public Class CComments
     Public Function SaveCommentToDatabase(userId As Integer?, movieId As Integer, commentText As String) As String
         Dim mydb As New CDatabase()
         Dim username As String

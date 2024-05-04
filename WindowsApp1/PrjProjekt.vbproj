@@ -158,7 +158,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CLASSES\CCommentsvb.vb" />
+    <Compile Include="CLASSES\CComments.vb" />
     <Compile Include="CLASSES\CLists.vb" />
     <Compile Include="CLASSES\CAccountType.vb" />
     <Compile Include="CLASSES\ListViewRatingComparer.vb" />
