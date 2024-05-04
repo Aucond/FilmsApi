@@ -5,7 +5,7 @@ Public Class CUpdateView
     Dim userid As Integer = LOGIN_FORM.personID
     Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
 
-        If searchResults.results.Count = 0 Then
+        If searchResults.results.Count < 1 Then
             MessageBox.Show("No search results found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
         End If

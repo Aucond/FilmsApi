@@ -14,6 +14,11 @@ Public Class CSearch
             Dim response As String = Await httpClient.GetStringAsync(requestUrl)
             Dim searchResults = JsonConvert.DeserializeObject(Of TmdbSearchResult)(response)
 
+            If searchResults.results.Count = 0 Then
+                MessageBox.Show("No search results found")
+                Return
+            End If
+
             If searchResults IsNot Nothing AndAlso searchResults.results.Count > 0 Then
                 If MOVIE_FORM.ListViewMovies.InvokeRequired Then
                     MOVIE_FORM.ListViewMovies.Invoke(Sub() CUpdateView.UpdateListView(searchResults))
