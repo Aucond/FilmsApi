@@ -4,6 +4,12 @@ Imports PrjDatabase
 Public Class CUpdateView
     Dim userid As Integer = LOGIN_FORM.personID
     Public Async Sub UpdateListView(searchResults As TmdbSearchResult)
+
+        If searchResults.results.Count = 0 Then
+            MessageBox.Show("No search results found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+
         Dim databaseConnection As PrjDatabase.IDatabase
         databaseConnection = New PrjDatabase.CDatabase
 
@@ -57,6 +63,9 @@ Public Class CUpdateView
             Dim runtimeString As String = If(movieRuntime >= 0, $"{movieRuntime} min", "N/A")
             item.Tag = movie
 
+            If movieRuntime < 0.5 Then
+                Continue For
+            End If
 
             ' Retrieve genre names based on genre IDs
             For Each genreId In movie.genre_ids

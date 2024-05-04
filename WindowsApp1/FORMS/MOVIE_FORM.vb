@@ -26,12 +26,6 @@ Public Class MOVIE_FORM
         Return nr
     End Function
 
-    Private Sub txtboxSearch_TextChanged(sender As Object, e As EventArgs) Handles txtboxSearch.TextChanged
-
-        searchTimer.Stop()
-        searchTimer.Start()
-
-    End Sub
     Public Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim list As New CLists
         For Each kvp As KeyValuePair(Of Integer, String) In list.genreDictionary
@@ -305,5 +299,10 @@ Public Class MOVIE_FORM
     Private Sub StatusToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StatusToolStripMenuItem.Click
         Dim totalMinutes As Integer = CalculateTotalViewTime(_userid)
         MessageBox.Show(String.Format("You have spent a total of {0} minutes watching movies.", totalMinutes))
+    End Sub
+
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        searchTimer.Stop()
+        searchTimer.Start()
     End Sub
 End Class

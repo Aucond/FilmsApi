@@ -23,7 +23,7 @@ Partial Class MOVIE_FORM
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left)
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cmbboxCompanies = New System.Windows.Forms.ComboBox()
@@ -35,6 +35,7 @@ Partial Class MOVIE_FORM
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AccountToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.StatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.txtboxSearch = New System.Windows.Forms.TextBox()
         Me.ListViewMovies = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -47,7 +48,7 @@ Partial Class MOVIE_FORM
         Me.chkBoxData = New System.Windows.Forms.CheckBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.StatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnSearch = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -88,7 +89,7 @@ Partial Class MOVIE_FORM
         'btnFamilyFriendly
         '
         Me.btnFamilyFriendly.Location = New System.Drawing.Point(2, 165)
-        Me.btnFamilyFriendly.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.btnFamilyFriendly.Margin = New System.Windows.Forms.Padding(2)
         Me.btnFamilyFriendly.Name = "btnFamilyFriendly"
         Me.btnFamilyFriendly.Size = New System.Drawing.Size(104, 24)
         Me.btnFamilyFriendly.TabIndex = 9
@@ -157,6 +158,12 @@ Partial Class MOVIE_FORM
         Me.AccountToolStripMenuItem.Size = New System.Drawing.Size(79, 20)
         Me.AccountToolStripMenuItem.Text = "Watch later"
         '
+        'StatusToolStripMenuItem
+        '
+        Me.StatusToolStripMenuItem.Name = "StatusToolStripMenuItem"
+        Me.StatusToolStripMenuItem.Size = New System.Drawing.Size(51, 20)
+        Me.StatusToolStripMenuItem.Text = "Status"
+        '
         'txtboxSearch
         '
         Me.txtboxSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
@@ -171,9 +178,9 @@ Partial Class MOVIE_FORM
         '
         Me.ListViewMovies.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ListViewMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
-        ListViewGroup2.Header = "ListViewGroup"
-        ListViewGroup2.Name = "ListViewGroup1"
-        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        ListViewGroup1.Header = "ListViewGroup"
+        ListViewGroup1.Name = "ListViewGroup1"
+        Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.ListViewMovies.HideSelection = False
         Me.ListViewMovies.Location = New System.Drawing.Point(120, 27)
         Me.ListViewMovies.Name = "ListViewMovies"
@@ -184,7 +191,7 @@ Partial Class MOVIE_FORM
         'btnDwnld
         '
         Me.btnDwnld.Location = New System.Drawing.Point(7, 524)
-        Me.btnDwnld.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.btnDwnld.Margin = New System.Windows.Forms.Padding(2)
         Me.btnDwnld.Name = "btnDwnld"
         Me.btnDwnld.Size = New System.Drawing.Size(105, 22)
         Me.btnDwnld.TabIndex = 13
@@ -217,7 +224,7 @@ Partial Class MOVIE_FORM
         'txtBoxQualifier
         '
         Me.txtBoxQualifier.Location = New System.Drawing.Point(10, 379)
-        Me.txtBoxQualifier.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtBoxQualifier.Margin = New System.Windows.Forms.Padding(2)
         Me.txtBoxQualifier.Name = "txtBoxQualifier"
         Me.txtBoxQualifier.Size = New System.Drawing.Size(106, 20)
         Me.txtBoxQualifier.TabIndex = 16
@@ -226,7 +233,7 @@ Partial Class MOVIE_FORM
         'txtBoxDelimiter
         '
         Me.txtBoxDelimiter.Location = New System.Drawing.Point(9, 315)
-        Me.txtBoxDelimiter.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtBoxDelimiter.Margin = New System.Windows.Forms.Padding(2)
         Me.txtBoxDelimiter.Name = "txtBoxDelimiter"
         Me.txtBoxDelimiter.Size = New System.Drawing.Size(104, 20)
         Me.txtBoxDelimiter.TabIndex = 17
@@ -236,7 +243,7 @@ Partial Class MOVIE_FORM
         '
         Me.chkBoxData.AutoSize = True
         Me.chkBoxData.Location = New System.Drawing.Point(9, 438)
-        Me.chkBoxData.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.chkBoxData.Margin = New System.Windows.Forms.Padding(2)
         Me.chkBoxData.Name = "chkBoxData"
         Me.chkBoxData.Size = New System.Drawing.Size(87, 17)
         Me.chkBoxData.TabIndex = 18
@@ -266,11 +273,15 @@ Partial Class MOVIE_FORM
         Me.Label7.Text = "Text Qualifier"
         Me.Label7.Visible = False
         '
-        'StatusToolStripMenuItem
+        'btnSearch
         '
-        Me.StatusToolStripMenuItem.Name = "StatusToolStripMenuItem"
-        Me.StatusToolStripMenuItem.Size = New System.Drawing.Size(51, 20)
-        Me.StatusToolStripMenuItem.Text = "Status"
+        Me.btnSearch.Location = New System.Drawing.Point(824, 54)
+        Me.btnSearch.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Size = New System.Drawing.Size(104, 24)
+        Me.btnSearch.TabIndex = 21
+        Me.btnSearch.Text = "Search"
+        Me.btnSearch.UseVisualStyleBackColor = True
         '
         'MOVIE_FORM
         '
@@ -278,6 +289,7 @@ Partial Class MOVIE_FORM
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.ClientSize = New System.Drawing.Size(1032, 584)
+        Me.Controls.Add(Me.btnSearch)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.chkBoxData)
@@ -325,4 +337,5 @@ Partial Class MOVIE_FORM
     Friend WithEvents Label6 As Label
     Friend WithEvents Label7 As Label
     Friend WithEvents StatusToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents btnSearch As Button
 End Class
