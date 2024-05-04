@@ -274,30 +274,11 @@ Public Class MOVIE_FORM
             MessageBox.Show("No data found in the table.")
         End If
     End Sub
-    Private Function CalculateTotalViewTime(userId As Integer) As Integer
-        Dim mydb As New CDatabase()
-        Dim totalViewTime As Integer = 0
-
-        Try
-            mydb.openConnection()
-            Dim command As New NpgsqlCommand("SELECT SUM(Duration) AS TotalViewTime FROM MovieViewedStatus WHERE UserID = @UserID AND Viewed = TRUE;", mydb.getConnection())
-            command.Parameters.AddWithValue("@UserID", userId)
-
-            Dim result = command.ExecuteScalar()
-            If result IsNot Nothing AndAlso Not IsDBNull(result) Then
-                totalViewTime = Convert.ToInt32(result)
-            End If
-        Catch ex As Exception
-            MessageBox.Show("An error occurred while calculating the total view time: " & ex.Message)
-        Finally
-            mydb.closeConnection()
-        End Try
-
-        Return totalViewTime
-    End Function
 
     Private Sub StatusToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StatusToolStripMenuItem.Click
-        Dim totalMinutes As Integer = CalculateTotalViewTime(_userid)
+        Dim prjstat As PrjStatistics.IStatistics
+        prjstat = New PrjStatistics.CStatistics
+        Dim totalMinutes As Integer = prjstat.CalculateTotalViewTime(_userid)
         MessageBox.Show(String.Format("You have spent a total of {0} minutes watching movies.", totalMinutes))
     End Sub
 
