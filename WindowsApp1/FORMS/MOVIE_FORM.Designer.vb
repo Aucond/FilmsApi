@@ -62,18 +62,18 @@ Partial Class MOVIE_FORM
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.cmbboxFilter)
         Me.Panel1.Controls.Add(Me.cmbboxSort)
-        Me.Panel1.Location = New System.Drawing.Point(7, 27)
+        Me.Panel1.Location = New System.Drawing.Point(9, 33)
+        Me.Panel1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(110, 192)
+        Me.Panel1.Size = New System.Drawing.Size(147, 236)
         Me.Panel1.TabIndex = 9
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(2, 85)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label3.Location = New System.Drawing.Point(3, 105)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(59, 13)
+        Me.Label3.Size = New System.Drawing.Size(76, 16)
         Me.Label3.TabIndex = 11
         Me.Label3.Text = "Companies"
         '
@@ -81,17 +81,18 @@ Partial Class MOVIE_FORM
         '
         Me.cmbboxCompanies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbboxCompanies.FormattingEnabled = True
-        Me.cmbboxCompanies.Location = New System.Drawing.Point(3, 102)
+        Me.cmbboxCompanies.Location = New System.Drawing.Point(4, 126)
+        Me.cmbboxCompanies.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cmbboxCompanies.Name = "cmbboxCompanies"
-        Me.cmbboxCompanies.Size = New System.Drawing.Size(105, 21)
+        Me.cmbboxCompanies.Size = New System.Drawing.Size(139, 24)
         Me.cmbboxCompanies.TabIndex = 10
         '
         'btnFamilyFriendly
         '
-        Me.btnFamilyFriendly.Location = New System.Drawing.Point(2, 165)
-        Me.btnFamilyFriendly.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnFamilyFriendly.Location = New System.Drawing.Point(3, 203)
+        Me.btnFamilyFriendly.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnFamilyFriendly.Name = "btnFamilyFriendly"
-        Me.btnFamilyFriendly.Size = New System.Drawing.Size(104, 24)
+        Me.btnFamilyFriendly.Size = New System.Drawing.Size(139, 30)
         Me.btnFamilyFriendly.TabIndex = 9
         Me.btnFamilyFriendly.Text = "Family Friendly"
         Me.btnFamilyFriendly.UseVisualStyleBackColor = True
@@ -99,20 +100,18 @@ Partial Class MOVIE_FORM
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(2, 44)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label2.Location = New System.Drawing.Point(3, 54)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(29, 13)
+        Me.Label2.Size = New System.Drawing.Size(36, 16)
         Me.Label2.TabIndex = 8
         Me.Label2.Text = "Filter"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(2, 5)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label1.Location = New System.Drawing.Point(3, 6)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(41, 13)
+        Me.Label1.Size = New System.Drawing.Size(50, 16)
         Me.Label1.TabIndex = 7
         Me.Label1.Text = "Sort By"
         '
@@ -120,9 +119,10 @@ Partial Class MOVIE_FORM
         '
         Me.cmbboxFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbboxFilter.FormattingEnabled = True
-        Me.cmbboxFilter.Location = New System.Drawing.Point(2, 60)
+        Me.cmbboxFilter.Location = New System.Drawing.Point(3, 74)
+        Me.cmbboxFilter.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cmbboxFilter.Name = "cmbboxFilter"
-        Me.cmbboxFilter.Size = New System.Drawing.Size(105, 21)
+        Me.cmbboxFilter.Size = New System.Drawing.Size(139, 24)
         Me.cmbboxFilter.TabIndex = 6
         '
         'cmbboxSort
@@ -130,9 +130,10 @@ Partial Class MOVIE_FORM
         Me.cmbboxSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbboxSort.FormattingEnabled = True
         Me.cmbboxSort.Items.AddRange(New Object() {"Ascending length", "Descending length", "", "Ascending rating", "Descending rating", "", "Ascending year", "Descending year", "", "Ascending vote", "Descending vote"})
-        Me.cmbboxSort.Location = New System.Drawing.Point(2, 21)
+        Me.cmbboxSort.Location = New System.Drawing.Point(3, 26)
+        Me.cmbboxSort.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cmbboxSort.Name = "cmbboxSort"
-        Me.cmbboxSort.Size = New System.Drawing.Size(105, 21)
+        Me.cmbboxSort.Size = New System.Drawing.Size(139, 24)
         Me.cmbboxSort.TabIndex = 0
         '
         'MenuStrip1
@@ -141,36 +142,37 @@ Partial Class MOVIE_FORM
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListToolStripMenuItem, Me.AccountToolStripMenuItem, Me.StatusToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(4, 2, 0, 2)
-        Me.MenuStrip1.Size = New System.Drawing.Size(1032, 24)
+        Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(5, 2, 0, 2)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1376, 28)
         Me.MenuStrip1.TabIndex = 12
         Me.MenuStrip1.Text = "MenuStrip1"
         '
         'ListToolStripMenuItem
         '
         Me.ListToolStripMenuItem.Name = "ListToolStripMenuItem"
-        Me.ListToolStripMenuItem.Size = New System.Drawing.Size(49, 20)
+        Me.ListToolStripMenuItem.Size = New System.Drawing.Size(60, 24)
         Me.ListToolStripMenuItem.Text = "Login"
         '
         'AccountToolStripMenuItem
         '
         Me.AccountToolStripMenuItem.Name = "AccountToolStripMenuItem"
-        Me.AccountToolStripMenuItem.Size = New System.Drawing.Size(79, 20)
+        Me.AccountToolStripMenuItem.Size = New System.Drawing.Size(98, 24)
         Me.AccountToolStripMenuItem.Text = "Watch later"
         '
         'StatusToolStripMenuItem
         '
         Me.StatusToolStripMenuItem.Name = "StatusToolStripMenuItem"
-        Me.StatusToolStripMenuItem.Size = New System.Drawing.Size(51, 20)
-        Me.StatusToolStripMenuItem.Text = "Status"
+        Me.StatusToolStripMenuItem.Size = New System.Drawing.Size(81, 24)
+        Me.StatusToolStripMenuItem.Text = "Statistics"
         '
         'txtboxSearch
         '
         Me.txtboxSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.txtboxSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
-        Me.txtboxSearch.Location = New System.Drawing.Point(306, 57)
+        Me.txtboxSearch.Location = New System.Drawing.Point(408, 70)
+        Me.txtboxSearch.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtboxSearch.Name = "txtboxSearch"
-        Me.txtboxSearch.Size = New System.Drawing.Size(493, 20)
+        Me.txtboxSearch.Size = New System.Drawing.Size(656, 22)
         Me.txtboxSearch.TabIndex = 11
         Me.txtboxSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
@@ -182,18 +184,19 @@ Partial Class MOVIE_FORM
         ListViewGroup1.Name = "ListViewGroup1"
         Me.ListViewMovies.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.ListViewMovies.HideSelection = False
-        Me.ListViewMovies.Location = New System.Drawing.Point(120, 27)
+        Me.ListViewMovies.Location = New System.Drawing.Point(160, 33)
+        Me.ListViewMovies.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.ListViewMovies.Name = "ListViewMovies"
-        Me.ListViewMovies.Size = New System.Drawing.Size(881, 529)
+        Me.ListViewMovies.Size = New System.Drawing.Size(1173, 650)
         Me.ListViewMovies.TabIndex = 10
         Me.ListViewMovies.UseCompatibleStateImageBehavior = False
         '
         'btnDwnld
         '
-        Me.btnDwnld.Location = New System.Drawing.Point(7, 524)
-        Me.btnDwnld.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnDwnld.Location = New System.Drawing.Point(9, 645)
+        Me.btnDwnld.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnDwnld.Name = "btnDwnld"
-        Me.btnDwnld.Size = New System.Drawing.Size(105, 22)
+        Me.btnDwnld.Size = New System.Drawing.Size(140, 27)
         Me.btnDwnld.TabIndex = 13
         Me.btnDwnld.Text = "Download"
         Me.btnDwnld.UseVisualStyleBackColor = True
@@ -202,10 +205,9 @@ Partial Class MOVIE_FORM
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(6, 496)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label4.Location = New System.Drawing.Point(8, 610)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(89, 13)
+        Me.Label4.Size = New System.Drawing.Size(111, 16)
         Me.Label4.TabIndex = 14
         Me.Label4.Text = "Export users data"
         Me.Label4.Visible = False
@@ -213,39 +215,38 @@ Partial Class MOVIE_FORM
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(6, 509)
-        Me.Label5.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label5.Location = New System.Drawing.Point(8, 626)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(59, 13)
+        Me.Label5.Size = New System.Drawing.Size(72, 16)
         Me.Label5.TabIndex = 15
         Me.Label5.Text = "backup file"
         Me.Label5.Visible = False
         '
         'txtBoxQualifier
         '
-        Me.txtBoxQualifier.Location = New System.Drawing.Point(10, 379)
-        Me.txtBoxQualifier.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtBoxQualifier.Location = New System.Drawing.Point(13, 466)
+        Me.txtBoxQualifier.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtBoxQualifier.Name = "txtBoxQualifier"
-        Me.txtBoxQualifier.Size = New System.Drawing.Size(106, 20)
+        Me.txtBoxQualifier.Size = New System.Drawing.Size(140, 22)
         Me.txtBoxQualifier.TabIndex = 16
         Me.txtBoxQualifier.Visible = False
         '
         'txtBoxDelimiter
         '
-        Me.txtBoxDelimiter.Location = New System.Drawing.Point(9, 315)
-        Me.txtBoxDelimiter.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtBoxDelimiter.Location = New System.Drawing.Point(12, 388)
+        Me.txtBoxDelimiter.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtBoxDelimiter.Name = "txtBoxDelimiter"
-        Me.txtBoxDelimiter.Size = New System.Drawing.Size(104, 20)
+        Me.txtBoxDelimiter.Size = New System.Drawing.Size(137, 22)
         Me.txtBoxDelimiter.TabIndex = 17
         Me.txtBoxDelimiter.Visible = False
         '
         'chkBoxData
         '
         Me.chkBoxData.AutoSize = True
-        Me.chkBoxData.Location = New System.Drawing.Point(9, 438)
-        Me.chkBoxData.Margin = New System.Windows.Forms.Padding(2)
+        Me.chkBoxData.Location = New System.Drawing.Point(12, 539)
+        Me.chkBoxData.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.chkBoxData.Name = "chkBoxData"
-        Me.chkBoxData.Size = New System.Drawing.Size(87, 17)
+        Me.chkBoxData.Size = New System.Drawing.Size(107, 20)
         Me.chkBoxData.TabIndex = 18
         Me.chkBoxData.Text = "Append data"
         Me.chkBoxData.UseVisualStyleBackColor = True
@@ -254,10 +255,9 @@ Partial Class MOVIE_FORM
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(8, 300)
-        Me.Label6.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label6.Location = New System.Drawing.Point(11, 369)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(47, 13)
+        Me.Label6.Size = New System.Drawing.Size(60, 16)
         Me.Label6.TabIndex = 19
         Me.Label6.Text = "Delimiter"
         Me.Label6.Visible = False
@@ -265,30 +265,29 @@ Partial Class MOVIE_FORM
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(7, 364)
-        Me.Label7.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label7.Location = New System.Drawing.Point(9, 448)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(69, 13)
+        Me.Label7.Size = New System.Drawing.Size(85, 16)
         Me.Label7.TabIndex = 20
         Me.Label7.Text = "Text Qualifier"
         Me.Label7.Visible = False
         '
         'btnSearch
         '
-        Me.btnSearch.Location = New System.Drawing.Point(824, 54)
-        Me.btnSearch.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnSearch.Location = New System.Drawing.Point(1099, 66)
+        Me.btnSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnSearch.Name = "btnSearch"
-        Me.btnSearch.Size = New System.Drawing.Size(104, 24)
+        Me.btnSearch.Size = New System.Drawing.Size(139, 30)
         Me.btnSearch.TabIndex = 21
         Me.btnSearch.Text = "Search"
         Me.btnSearch.UseVisualStyleBackColor = True
         '
         'MOVIE_FORM
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ClientSize = New System.Drawing.Size(1032, 584)
+        Me.ClientSize = New System.Drawing.Size(1376, 719)
         Me.Controls.Add(Me.btnSearch)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Label6)
@@ -302,6 +301,7 @@ Partial Class MOVIE_FORM
         Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.txtboxSearch)
         Me.Controls.Add(Me.ListViewMovies)
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "MOVIE_FORM"
         Me.Text = "Form1"
         Me.Panel1.ResumeLayout(False)
