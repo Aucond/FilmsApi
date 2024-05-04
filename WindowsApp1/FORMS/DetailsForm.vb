@@ -72,44 +72,48 @@ Public Class DetailsForm
 
     Private Sub btnWatchlist_Click(sender As Object, e As EventArgs) Handles btnWatchlist.Click
 
-        Dim mydb As New CDatabase
-        Dim adapter As New NpgsqlDataAdapter()
-        Dim table As New DataTable()
-        Dim commandCheck As New NpgsqlCommand("SELECT movieid FROM users_info WHERE id = @UserID;", mydb.getConnection)
+        If userid = 0 Then
+            MessageBox.Show("Please log in to add movies to watchlist!")
+        Else
+            Dim mydb As New CDatabase
+            Dim adapter As New NpgsqlDataAdapter()
+            Dim table As New DataTable()
+            Dim commandCheck As New NpgsqlCommand("SELECT movieid FROM users_info WHERE id = @UserID;", mydb.getConnection)
 
-        commandCheck.Parameters.AddWithValue("@UserID", userid)
-        adapter.SelectCommand = commandCheck
-        adapter.Fill(table)
+            commandCheck.Parameters.AddWithValue("@UserID", userid)
+            adapter.SelectCommand = commandCheck
+            adapter.Fill(table)
 
-        If table.Rows.Count > 0 AndAlso Not table.Rows(0)("movieid") Is DBNull.Value Then
+            If table.Rows.Count > 0 AndAlso Not table.Rows(0)("movieid") Is DBNull.Value Then
 
-            Dim movieIds As Integer() = CType(table.Rows(0)("movieid"), Integer())
+                Dim movieIds As Integer() = CType(table.Rows(0)("movieid"), Integer())
 
-            ' Check if the movie ID already exists in the array
-            Dim movieExists As Boolean = False
-            For Each id As Integer In movieIds
-                If id = movie.id Then
-                    movieExists = True
-                    Exit For
+                ' Check if the movie ID already exists in the array
+                Dim movieExists As Boolean = False
+                For Each id As Integer In movieIds
+                    If id = movie.id Then
+                        movieExists = True
+                        Exit For
+                    End If
+                Next
+
+                ' If the movie already exists, display a message and exit
+                If movieExists Then
+                    MessageBox.Show("Movie already exists in your watch list")
+                    Return
                 End If
-            Next
-
-            ' If the movie already exists, display a message and exit
-            If movieExists Then
-                MessageBox.Show("Movie already exists in your watch list")
-                Return
             End If
+
+            Dim command As New NpgsqlCommand("UPDATE users_info SET movieid = array_append(movieid, @MovieID) WHERE id = @UserID;", mydb.getConnection)
+
+            command.Parameters.AddWithValue("@MovieID", movie.id)
+            command.Parameters.AddWithValue("@UserID", userid)
+
+            adapter.SelectCommand = command
+            adapter.Fill(table)
+
+            MessageBox.Show("Movie has been added to your watch list")
         End If
-
-        Dim command As New NpgsqlCommand("UPDATE users_info SET movieid = array_append(movieid, @MovieID) WHERE id = @UserID;", mydb.getConnection)
-
-        command.Parameters.AddWithValue("@MovieID", movie.id)
-        command.Parameters.AddWithValue("@UserID", userid)
-
-        adapter.SelectCommand = command
-        adapter.Fill(table)
-
-        MessageBox.Show("Movie has been added to your watch list")
     End Sub
 
     Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click

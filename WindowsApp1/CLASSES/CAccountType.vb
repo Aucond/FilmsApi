@@ -36,6 +36,7 @@ Public Class CAccountType
         Dim CUpdateView As New CUpdateView
         If age < 18 Then
             MOVIE_FORM.Show()
+            MOVIE_FORM.btnSearch.Hide()
             MOVIE_FORM.txtboxSearch.Hide()
             MOVIE_FORM.Label2.Hide()
             MOVIE_FORM.cmbboxFilter.Hide()
